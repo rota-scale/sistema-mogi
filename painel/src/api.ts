@@ -83,7 +83,10 @@ export async function entrar(login: string, senha: string): Promise<Usuario> {
 }
 
 export const quemSou = () => pedir<Usuario>('/auth/eu')
-export const listar = () => pedir<Ocorrencia[]>('/ocorrencias?limite=5000')
+// Sem ?demo= o servidor decide: com DEMO_CHAMADOS=0 vêm só os relatos reais.
+// A chave "Mostrar chamados simulados" pede a demonstração junto.
+export const urlDaLista = (simulados: boolean) => `/ocorrencias?limite=5000${simulados ? '&demo=incluir' : ''}`
+export const listar = (simulados = false) => pedir<Ocorrencia[]>(urlDaLista(simulados))
 export const detalhar = (id: string) => pedir<Ocorrencia>(`/ocorrencias/${id}`)
 export const revisar = (id: string, nivel: number) => pedir<Ocorrencia>(`/ocorrencias/${id}/revisao`, enviar('POST', { nivel }))
 // Com secretaria, o despacho troca a responsável pelo chamado.

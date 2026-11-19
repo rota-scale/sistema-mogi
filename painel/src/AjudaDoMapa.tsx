@@ -80,6 +80,7 @@ export function AjudaDoMapa({ aberta, preferencias, aoMudar, aoFechar, aoGuia }:
       <h3 className="ajuda-secao">Tela</h3>
       <div className="ajuda-chaves">
         <Chave nome="Ver só o mapa" ligada={preferencias.soMapa} aoMudar={() => aoMudar('soMapa')} />
+        <Chave nome="Mostrar chamados simulados" ligada={preferencias.simulados} aoMudar={() => aoMudar('simulados')} />
       </div>
 
       <h3 className="ajuda-secao">Acessibilidade</h3>
@@ -88,7 +89,7 @@ export function AjudaDoMapa({ aberta, preferencias, aoMudar, aoFechar, aoGuia }:
         <Chave nome="Alto contraste" ligada={preferencias.altoContraste} aoMudar={() => aoMudar('altoContraste')} />
         <Chave nome="Reduzir animações" ligada={preferencias.poucoMovimento} aoMudar={() => aoMudar('poucoMovimento')} />
       </div>
-      <p className="ajuda-nota">As opções ficam guardadas neste aparelho. Camadas, 3D e estilo do mapa ficam no botão de camadas, no canto de cima do mapa. Sons e notificações ficam no menu da sua conta.</p>
+      <p className="ajuda-nota">Chamados simulados são da demonstração e aparecem com a marca Simulado; desligado, a fila e o mapa mostram só relatos reais quando o servidor não tem demo ligada. As opções ficam guardadas neste aparelho. Camadas, 3D e estilo do mapa ficam no botão de camadas, no canto de cima do mapa. Sons e notificações ficam no menu da sua conta.</p>
 
       <button type="button" className="botao-secundario" onClick={aoGuia}>
         Ver o guia de novo

@@ -362,12 +362,15 @@ export default function App() {
     setLista((l) => mesclar(l, o))
   }, [])
 
+  // Mostrar os chamados simulados (demo) é preferência deste aparelho. Fica
+  // num ref para trocar a chave não derrubar o tempo real.
+  const simulados = useRef(preferencias.simulados)
   const recarregar = useCallback(async () => {
     const daSessao = sessao.current
     const n = ++pedido.current
     const inicio = relogio.current
     try {
-      const recebida = await listar()
+      const recebida = await listar(simulados.current)
       // Resposta de outra sessão ou mais velha que uma já aplicada: fora.
       if (daSessao !== sessao.current || n < aplicado.current) return
       aplicado.current = n
@@ -437,6 +440,8 @@ export default function App() {
         // Relato novo, ou mais um relato num chamado que já existia. O
         // crítico para conferir tem a faixa de alerta, que não some sozinha.
         const antes = listaRef.current.find((x) => x.id === o.id)
+        // Chamado simulado novo não entra na fila de quem vê só relatos reais.
+        if (o.demo && !antes && !simulados.current) return
         if ((ev.tipo === 'OcorrenciaCriada' || (antes && o.relatos > antes.relatos)) && !criticoParaConferir(o)) {
           setUltima(o)
           // O som acompanha o aviso "Chamado novo" e o anel no pino.
@@ -446,6 +451,13 @@ export default function App() {
       }
     }, aoEstado, expirar)
   }, [daCentral, recarregar, aplicar, expirar])
+
+  // Ligou ou desligou os simulados: a lista vem de novo do servidor.
+  useEffect(() => {
+    if (simulados.current === preferencias.simulados) return
+    simulados.current = preferencias.simulados
+    if (daCentral) void recarregar()
+  }, [preferencias.simulados, daCentral, recarregar])
 
   useEffect(() => {
     if (!ultima) return

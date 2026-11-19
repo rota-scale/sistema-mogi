@@ -264,7 +264,22 @@ type Reavaliador func(ctx context.Context, reg triagem.Registro, relatos int) (t
 // categoria a menos de 50 m, o relato entra nele, a tendência é recalculada
 // e o nível pode subir (RF08, C4); senão nasce um chamado novo. O segundo
 // valor diz se houve agrupamento.
+// ErrOrigemMisturada: chamado simulado não pode levar cadastro nem aparelho
+// de morador, para a demo nunca se passar por relato real (nem o contrário).
+var ErrOrigemMisturada = errors.New("chamado simulado com dado de morador")
+
+// conferirOrigem garante a separação entre demo e relato real antes de gravar.
+func conferirOrigem(n Nova) error {
+	if n.Demo && (n.MoradorID != "" || n.Aparelho != "" || n.IDCliente != "") {
+		return ErrOrigemMisturada
+	}
+	return nil
+}
+
 func (r *Repositorio) Registrar(ctx context.Context, n Nova, reavaliar Reavaliador, agora time.Time) (Ocorrencia, bool, error) {
+	if err := conferirOrigem(n); err != nil {
+		return Ocorrencia{}, false, err
+	}
 	tx, err := r.pool.Begin(ctx)
 	if err != nil {
 		return Ocorrencia{}, false, err
@@ -759,8 +774,37 @@ func (r *Repositorio) Reabrir(ctx context.Context, id, login, motivo string) (Oc
 // separados por vírgula), vira a fila: nível, depois GUT esperada (ADR 0010).
 //
 // Com secretaria, só entram os chamados dela (visão da equipe de campo).
-func (r *Repositorio) Listar(ctx context.Context, status string, limite int, secretaria string) ([]Ocorrencia, error) {
-	q := `SELECT ` + colunas + ` FROM ocorrencias WHERE ($2 = '' OR secretaria = $2)`
+// FiltroDemo diz se a lista traz os chamados simulados (semente da demo).
+type FiltroDemo string
+
+const (
+	DemoIncluir FiltroDemo = "incluir" // reais e simulados
+	DemoOcultar FiltroDemo = "ocultar" // só os relatos reais
+	DemoSo      FiltroDemo = "so"      // só os simulados
+)
+
+// LerFiltroDemo interpreta ?demo=; vazio ou desconhecido devolve o padrão.
+func LerFiltroDemo(v string, padrao FiltroDemo) FiltroDemo {
+	switch f := FiltroDemo(strings.ToLower(strings.TrimSpace(v))); f {
+	case DemoIncluir, DemoOcultar, DemoSo:
+		return f
+	}
+	return padrao
+}
+
+// clausula devolve o pedaço do WHERE, sem parâmetro do usuário (só constantes).
+func (f FiltroDemo) clausula() string {
+	switch f {
+	case DemoOcultar:
+		return ` AND NOT demo`
+	case DemoSo:
+		return ` AND demo`
+	}
+	return ""
+}
+
+func (r *Repositorio) Listar(ctx context.Context, status string, limite int, secretaria string, demo FiltroDemo) ([]Ocorrencia, error) {
+	q := `SELECT ` + colunas + ` FROM ocorrencias WHERE ($2 = '' OR secretaria = $2)` + demo.clausula()
 	args := []any{limite, secretaria}
 	if status != "" {
 		q += ` AND status = ANY($3) ORDER BY nivel DESC NULLS FIRST,

@@ -1,11 +1,12 @@
 // Preferências de quem usa o painel, guardadas neste aparelho. Cada uma vira
 // um atributo em <html>, e o CSS decide o resto.
 
-export type Preferencia = 'textoGrande' | 'altoContraste' | 'poucoMovimento' | 'soMapa'
+// simulados: mostrar na fila e no mapa os chamados da demo (desligado: só relatos reais).
+export type Preferencia = 'textoGrande' | 'altoContraste' | 'poucoMovimento' | 'soMapa' | 'simulados'
 
 export type Preferencias = Record<Preferencia, boolean>
 
-export const PADRAO: Preferencias = { textoGrande: false, altoContraste: false, poucoMovimento: false, soMapa: false }
+export const PADRAO: Preferencias = { textoGrande: false, altoContraste: false, poucoMovimento: false, soMapa: false, simulados: false }
 
 export const CHAVE_PREFERENCIAS = 'mogi.painel.preferencias'
 
@@ -22,6 +23,7 @@ export function lerPreferencias(ler: (chave: string) => string | null): Preferen
       altoContraste: d.altoContraste === true,
       poucoMovimento: d.poucoMovimento === true,
       soMapa: d.soMapa === true,
+      simulados: d.simulados === true,
     }
   } catch {
     return PADRAO

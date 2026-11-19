@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { comJitter, ErroDaApi, fraseDoLogin, NaoAutorizado, opcional } from './api'
+import { comJitter, ErroDaApi, fraseDoLogin, NaoAutorizado, opcional, urlDaLista } from './api'
 
 describe('reconexão', () => {
   it('varia a espera em até 30% para cima ou para baixo', () => {
@@ -32,5 +32,12 @@ describe('fraseDoLogin', () => {
   it('começa com maiúscula e termina com ponto', () => {
     expect(fraseDoLogin(new Error('o navegador bloqueou o armazenamento da sessão'))).toBe('O navegador bloqueou o armazenamento da sessão.')
     expect(fraseDoLogin(null)).toBe('Não deu para entrar.')
+  })
+})
+
+describe('lista do painel e chamados simulados', () => {
+  it('sem a chave deixa o servidor decidir; com a chave pede a demo junto', () => {
+    expect(urlDaLista(false)).toBe('/ocorrencias?limite=5000')
+    expect(urlDaLista(true)).toBe('/ocorrencias?limite=5000&demo=incluir')
   })
 })

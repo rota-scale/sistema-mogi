@@ -198,6 +198,8 @@ func rodar(log *slog.Logger) error {
 		CentroLng:  local.CentroLng,
 		Parametros: cid.Atuais,
 		Morador:    mor.Identificar,
+		// Sem semente da demo no ambiente, a central abre só com relatos reais.
+		OcultarDemo: cfg.DemoChamados == 0,
 		// Com algum modelo vendo a foto, o morador pode deixar a categoria para a triagem.
 		IAAtiva: servico.Descritor != nil,
 	}
