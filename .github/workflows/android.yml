@@ -40,7 +40,7 @@ jobs:
       # Sem o segredo, o APK sai com o mapa vazio (câmera e envio funcionam).
       GOOGLE_MAPS_ANDROID_KEY: ${{ secrets.GOOGLE_MAPS_ANDROID_KEY }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
         with:
           node-version: 22
