@@ -2,7 +2,7 @@
 
 <p align="center"><b>Triagem urbana com IA para Itamogi-MG:</b> o morador fotografa o problema, o MOGI dá a prioridade de 1 a 5 e a prefeitura vê tudo ao vivo no mapa.</p>
 
-![status](https://img.shields.io/badge/status-build%20de%20teste-E9B526) ![licença](https://img.shields.io/badge/licen%C3%A7a-a%20definir-lightgrey) ![Go](https://img.shields.io/badge/Go-backend-00ADD8?logo=go&logoColor=white) ![Lua](https://img.shields.io/badge/Lua-regras-2C2D72?logo=lua&logoColor=white) ![React](https://img.shields.io/badge/React%20%2B%20Vite-painel-61DAFB?logo=react&logoColor=black) ![Expo](https://img.shields.io/badge/Expo-app-000020?logo=expo&logoColor=white) ![PostGIS](https://img.shields.io/badge/PostGIS%20%2B%20H3-geodados-336791?logo=postgresql&logoColor=white)
+![status](https://img.shields.io/badge/status-build%20de%20teste-E9B526) [![licença](https://img.shields.io/badge/licen%C3%A7a-Apache--2.0-blue)](LICENSE) ![Go](https://img.shields.io/badge/Go-backend-00ADD8?logo=go&logoColor=white) ![Lua](https://img.shields.io/badge/Lua-regras-2C2D72?logo=lua&logoColor=white) ![React](https://img.shields.io/badge/React%20%2B%20Vite-painel-61DAFB?logo=react&logoColor=black) ![Expo](https://img.shields.io/badge/Expo-app-000020?logo=expo&logoColor=white) ![PostGIS](https://img.shields.io/badge/PostGIS%20%2B%20H3-geodados-336791?logo=postgresql&logoColor=white)
 
 # Sistema MOGI
 **Monitoramento e Ocorrências com Gestão Inteligente.** Piloto de cidade inteligente em Itamogi-MG, time ROTA Scale, AKCIT Camp Sul 2026 (hackathon de 21/11/2026). O nome faz referência a Itamogi.
@@ -271,3 +271,6 @@ IA_CHAVE=...           # opcional: visão e reserva do Jev
 
 ## Equipe
 João Russo (tecnologia) e Renan (produto e negócio), time Rota Scale, AKCIT Camp Sul 2026. Os dois estarão presencialmente em Florianópolis em 21/11/2026. O relatório único do evento vence em 26/11. Papéis em [docs/time.md](docs/time.md).
+
+## Licença
+Código sob a [Apache License 2.0](LICENSE). Copyright 2026 ROTA, equipe ROTA Scale. O nome "MOGI", os logotipos e a pasta `brand/` não entram na licença e seguem com todos os direitos reservados (ver [NOTICE](NOTICE)).

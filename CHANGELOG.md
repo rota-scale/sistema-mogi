@@ -8,6 +8,7 @@ As versões seguem `MAIOR.MENOR.CORREÇÃO`. Enquanto o MOGI estiver em piloto, 
 - **Chave "Mostrar chamados simulados"** na ajuda do painel (tecla `?`), guardada no aparelho. Chamado simulado aparece com a marca **Simulado** na fila e no detalhe.
 - **Trava no servidor:** chamado simulado não grava cadastro de morador, aparelho nem chave de idempotência (`ErrOrigemMisturada`). Relato real continua entrando com `demo = false`, `morador_id` e `aparelho`.
 - **Testes novos:** filtro e trava da demo (Go), borrão de região e cascata de rostos com imagens sintéticas (Go), preferência e URL da lista (painel), e o `make conferir` confere que relato real chega com `demo = false` e que o filtro separa as duas listas.
+- **Licença Apache-2.0** (`LICENSE`), com copyright de ROTA, equipe ROTA Scale. O `NOTICE` deixa o nome MOGI e a pasta `brand/` fora da licença.
 
 ## v0.3.3: pronto para evoluir (18/11/2026)
 
