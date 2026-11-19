@@ -1,0 +1,69 @@
+# APK de teste do app Expo para Android (ADRs 0025 e 0026). Gera o projeto
+# nativo com expo prebuild e compila com Gradle num runner do GitHub. O APK
+# sai como artefato da execução e é assinado com a chave de depuração do
+# modelo do Expo: serve só para teste, nunca para a loja.
+#
+# Para testar com o servidor do momento, rode à mão em Actions, "Android (APK
+# de teste)", "Run workflow", e informe o link do túnel no campo "servidor".
+name: Android (APK de teste)
+
+on:
+  workflow_dispatch:
+    inputs:
+      servidor:
+        description: "Endereço do servidor (ex.: link do make tunel, sem barra no fim)"
+        required: false
+        default: ""
+  pull_request:
+    paths: ["app/**", ".github/workflows/android.yml"]
+  push:
+    branches: [main]
+    paths: ["app/**", ".github/workflows/android.yml"]
+
+concurrency:
+  group: android-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  apk:
+    name: APK de teste
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    defaults:
+      run:
+        working-directory: app
+    env:
+      EXPO_PUBLIC_API_URL: ${{ inputs.servidor }}
+      # Sem o segredo, o APK sai com o mapa vazio (câmera e envio funcionam).
+      GOOGLE_MAPS_ANDROID_KEY: ${{ secrets.GOOGLE_MAPS_ANDROID_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: gradle/actions/setup-gradle@v6
+      - run: npm ci
+      - name: Gerar o projeto Android (CNG)
+        run: npx expo prebuild --platform android --no-install
+      - name: Compilar o APK
+        working-directory: app/android
+        run: ./gradlew assembleRelease --no-daemon
+      - name: Nome do arquivo
+        id: nome
+        run: echo "arquivo=mogi-$(node -p "require('./app.json').expo.version")-${GITHUB_SHA::7}.apk" >> "$GITHUB_OUTPUT"
+      - name: Renomear
+        run: cp android/app/build/outputs/apk/release/app-release.apk "${{ steps.nome.outputs.arquivo }}"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: ${{ steps.nome.outputs.arquivo }}
+          path: app/${{ steps.nome.outputs.arquivo }}
+          retention-days: 14

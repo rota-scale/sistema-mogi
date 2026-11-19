@@ -1,0 +1,30 @@
+/* Guia de primeiro uso da prefeitura (central, gestor e equipe de campo). */
+.guia { position: fixed; inset: 0; z-index: 1000; font-family: inherit; }
+.guia-fundo { position: fixed; inset: 0; background: rgba(18, 48, 26, 0.62); animation: guia-aparecer 0.2s ease-out; }
+.guia-recorte {
+  position: fixed; border-radius: 14px; pointer-events: none;
+  box-shadow: 0 0 0 9999px rgba(18, 48, 26, 0.62); outline: 3px solid #e9b526;
+  transition: left 0.3s ease, top 0.3s ease, width 0.3s ease, height 0.3s ease;
+  animation: guia-luz 1.8s ease-in-out infinite;
+}
+@keyframes guia-luz { 50% { outline-color: #fff3c4; } }
+@keyframes guia-aparecer { from { opacity: 0; } to { opacity: 1; } }
+.guia-cartao {
+  position: fixed; left: 16px; right: 16px; margin: 0 auto; max-width: 420px; box-sizing: border-box;
+  display: grid; gap: 10px; padding: 18px; border-radius: 16px; background: #fff; color: #2b2420;
+  box-shadow: 0 12px 40px rgba(18, 48, 26, 0.35); animation: guia-entra 0.25s ease-out both;
+}
+@keyframes guia-entra { from { opacity: 0; translate: 0 8px; } to { opacity: 1; translate: 0 0; } }
+.guia-cabeca { display: flex; justify-content: space-between; align-items: center; }
+.guia-conta { font-size: 0.9rem; font-weight: 800; color: #6b6054; }
+.guia-pular { min-height: 44px; min-width: 44px; padding: 0 8px; border: 0; background: none; font: inherit; font-size: 0.95rem; font-weight: 800; color: #6b6054; cursor: pointer; }
+.guia-titulo { margin: 0; font-size: 1.3rem; font-weight: 900; line-height: 1.2; color: #1f4d2b; outline: none; }
+.guia-frase { margin: 0; font-size: 1.05rem; line-height: 1.45; }
+.guia-acoes { display: flex; gap: 10px; margin-top: 4px; }
+.guia-botao { min-height: 52px; padding: 0 18px; border-radius: 12px; font: inherit; font-size: 1.05rem; font-weight: 900; cursor: pointer; }
+.guia-seguir { flex: 1; border: 0; background: #1f4d2b; color: #fff; }
+.guia-voltar { border: 2px solid #1f4d2b; background: #fff; color: #1f4d2b; }
+.guia-botao:focus-visible, .guia-pular:focus-visible { outline: 3px solid #e9b526; outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) {
+  .guia-recorte, .guia-cartao, .guia-fundo { animation: none; transition: none; }
+}

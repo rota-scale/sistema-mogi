@@ -1,0 +1,89 @@
+# Sistema MOGI num servidor só (SOP 01 e 07, RNF04).
+#
+#   make dev     só a infraestrutura (Postgres e SeaweedFS); o Go e o painel
+#                rodam fora do Compose, com recarga a cada mudança.
+#   make subir   tudo em contêiner (perfil app): abra http://localhost:8080.
+#   make tunel   também abre um link https público para testar no celular.
+name: mogi
+
+services:
+  postgres:
+    build: ./infra/postgres
+    image: mogi-postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-mogi}
+      POSTGRES_USER: ${POSTGRES_USER:-mogi}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?defina POSTGRES_PASSWORD no .env}
+    ports:
+      # Só na própria máquina: o banco não fica exposto na rede.
+      - "127.0.0.1:${POSTGRES_PORTA:-5433}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  seaweedfs:
+    # Edição comunitária Apache-2.0, versão fixada (ADR 0013).
+    image: chrislusf/seaweedfs:4.50
+    restart: unless-stopped
+    entrypoint: ["/bin/sh", "/entrypoint.sh"]
+    environment:
+      S3_ACCESS_KEY: ${S3_ACCESS_KEY:?defina S3_ACCESS_KEY no .env}
+      S3_SECRET_KEY: ${S3_SECRET_KEY:?defina S3_SECRET_KEY no .env}
+    ports:
+      # A mídia só sai pelo Go, em link assinado; o S3 fica local.
+      - "127.0.0.1:8333:8333"   # API S3
+      - "127.0.0.1:9333:9333"   # master (status)
+    volumes:
+      - ./infra/seaweedfs/entrypoint.sh:/entrypoint.sh:ro
+      - seaweed:/data
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1:9333/cluster/status || exit 1"]
+      interval: 3s
+      timeout: 3s
+      retries: 30
+
+  api:
+    profiles: [app, tunel]
+    build: .
+    image: mogi-api:local
+    restart: unless-stopped
+    depends_on:
+      postgres: { condition: service_healthy }
+      seaweedfs: { condition: service_healthy }
+    env_file: .env
+    environment:
+      # Dentro do Compose os serviços se acham pelo nome.
+      POSTGRES_HOST: postgres
+      POSTGRES_PORTA: "5432"
+      S3_ENDPOINT: seaweedfs:8333
+      API_ENDERECO: 0.0.0.0:8080
+      # make tunel liga: atrás do túnel, o IP de quem chama vem no cabeçalho.
+      PROXY_CONFIAVEL: ${PROXY_CONFIAVEL:-false}
+    ports:
+      - "${API_PORTA:-8080}:8080"
+    volumes:
+      # O que o gestor salva no Admin fica neste volume e sobrevive a
+      # reinícios. Ele nasce com as regras da imagem (backend/regras).
+      - regras:/app/regras
+
+  # Link https público e temporário (Cloudflare Quick Tunnel, sem conta) para
+  # abrir o app do morador no celular: câmera e GPS do navegador exigem
+  # https. Só sobe com make tunel; enquanto estiver no ar, quem tiver o link
+  # alcança o servidor.
+  tunel:
+    profiles: [tunel]
+    image: cloudflare/cloudflared:latest
+    restart: unless-stopped
+    depends_on:
+      api: { condition: service_healthy }
+    command: tunnel --no-autoupdate --url http://api:8080
+
+volumes:
+  pgdata:
+  seaweed:
+  regras:

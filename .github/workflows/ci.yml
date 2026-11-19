@@ -1,0 +1,99 @@
+# Verificação automática de toda PR e da main (ADR 0021, pilar de
+# manutenibilidade): testes, lint e build do servidor e do painel, tipos e
+# testes do app Expo, e o
+# sistema inteiro de pé em contêiner com o teste de fumaça.
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  servidor:
+    name: Servidor (Go)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: backend/go.mod
+          cache-dependency-path: backend/go.sum
+      - name: Formatação
+        run: test -z "$(gofmt -l .)" || (gofmt -l . && exit 1)
+      - name: Vet
+        run: go vet ./...
+      - name: Testes
+        run: go test ./...
+
+  painel:
+    name: Painel, app do morador e equipe de campo
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: painel
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: painel/package-lock.json
+      - run: npm ci
+      - name: Testes
+        run: npm test
+      - name: Lint
+        run: npm run lint
+      - name: Build
+        run: npm run build
+
+  app:
+    name: App Expo (tipos e testes)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+      - run: npm ci
+      - name: Tipos
+        run: npm run typecheck
+      - name: Testes
+        run: npm test -- --ci
+
+  sistema:
+    name: Sistema de pé (fumaça)
+    runs-on: ubuntu-latest
+    needs: [servidor, painel]
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Ambiente local com segredos aleatórios
+        run: |
+          make env
+          # Sem chave de IA e sem geocodificação externa: o CI não chama serviço de fora.
+          sed -i 's|^NOMINATIM_URL=.*|NOMINATIM_URL=|' .env
+      - name: Sobe tudo em contêiner
+        run: docker compose --profile app up -d --build --wait
+      - name: Teste de fumaça
+        run: make fumaca
+      - name: Rotas do morador e da equipe de campo
+        run: make conferir
+      - name: Log do servidor, se algo falhou
+        if: failure()
+        run: docker compose --profile app logs --tail 200 api

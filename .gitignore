@@ -1,0 +1,33 @@
+node_modules/
+.next/
+dist/
+build/
+.env
+.env*.local
+*.log
+.DS_Store
+coverage/
+.vercel/
+*.sqlite
+
+# Go
+backend/bin/
+
+# Relatórios exportados do teste de campo (make relatorio)
+relatorios/
+
+# Backups locais (make backup): ficam fora do Git
+backups/
+
+# Rascunho interno, não publicar
+rascunho-email-akcit.md
+
+# Ambiente local e chaves (nunca publicar)
+.env.*
+!.env.example
+.claude/
+docs/conversas/
+*.pem
+*.key
+id_rsa
+id_rsa.pub

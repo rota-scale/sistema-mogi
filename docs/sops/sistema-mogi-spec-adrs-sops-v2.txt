@@ -1,0 +1,1465 @@
+
+
+L A B S   ×   R U S S O D E V     ·     R O T A   S C A L E
+
+A K C I T   C A M P   S U L   2 0 2 6   ·   D O C U M E N T A Ç Ã O   T É C N I C A
+
+Sistema MOGI
+
+Monitoramento e Ocorrências c om Gestão In teligente. A SPEC
+do MVP, o ﬂux o com RAG e function c alling, os 13 ADRs aceit os
+em lote, os 7 SOP s passo a passo, o plano até o r elatório únic o e
+o roteiro do pitch. Piloto em Itamogi-MG.
+
+Versão
+
+v2  · 0 2 /1 1 /2 0 2 6
+ Estado
+
+ADRs aceitos em lote
+ Datas
+
+alpha 1 4 /1 1  · hackathon 2 1 /1 1  · relató rio 2 6/1 1
+
+MOGI · SPEC, ADRs e SOPs · v2  · 0 2 /1 1 /2 0 2 6 1
+
+00 Como ler
+
+Este documento é  a fonte única do MOGI para quem vai construir. Ele segue
+
+a ordem do trabalho: o que resolver, o que entregar, como decidir e como
+
+executar.
+
+0 1 Problema, soluçã o e piloto
+
+0 2 Triagem Urbana: o protocolo de prioridade
+
+0 3 SPEC do MVP: telas, requisitos e crité rios de aceite
+
+0 4 Arquitetura e stack
+
+0 5 ADRs: as 1 3  decisõ es, aceitas em lote em 0 2 /1 1
+
+0 6 Consistê ncia: o que divergia e como fechou
+
+0 7 SOPs: os 7  procedimentos
+
+0 8 Plano até  2 6/1 1  e decisõ es abertas
+
+0 9 Modelo do relató rio único
+
+1 0 Roteiro do pitch
+
+O   Q U E   M U D O U   N A   V 2   ( 0 2 / 1 1 )
+
+Fluxo redesenhado com RAG e functi on calling, cada decisã o com um dono só .
+
+ADRs 0 0 0 2 , 0 0 0 4  e 0 0 1 1  corrigidos e os 1 3  ADRs com status único. Plano com
+
+protó ti po, teste alpha, AVA, viagem, evidê ncias, vídeo plano B, pitch e relató rio.
+
+R E G R A   D O   D O C U M E N T O
+
+Toda funcionalidade nasce num requisito (RF ou RNF), é  justi ﬁ cada por um ADR
+
+e vira roti na num SOP. Se uma linha nã o tem esse caminho, ela é  ideia, nã o
+
+escopo. A matriz da seçã o 0 3  mostra o caminho de cada requisito.
+
+Papé is citados: produto decide escopo e aceita ADR; negócio cuida de validaçã o,
+
+BMC e pitch; engenharia e design cuida de backend, interface e demo; agente
+
+coordenador organiza a ﬁ la das sessõ es de IA.
+
+MOGI · SPEC, ADRs e SOPs · v2  · 0 2 /1 1 /2 0 2 6 2
+
+01 Problema, solução e piloto
+
+Itamogi, no sul de Minas, tem 1 0 .7 7 0  habitantes (Censo 2 0 2 2 ) em 2 4 3 ,7  km².
+
+Equipe enxuta, e cada saída de campo precisa valer.
+
+O problema hoje
+
+Reclamaçã o chega por telefone, WhatsApp ou balcã o, sem padrã o.
+
+O registro é  texto, sem foto e sem localizaçã o precisa.
+
+Nã o existe prioridade clara entre um lixo parado e um cano estourado.
+
+O cidadã o nã o sabe se o pedido foi visto nem quando será  resolvido.
+
+A solução em uma frase
+
+O cidadã o aponta a câ mera e fala. O MOGI transforma foto, voz e GPS num
+
+chamado com categoria, secretaria e nível de 1  a 5 , e a prefeitura vê  tudo num
+
+mapa 3 D ao vivo.
+
+P O R   Q U E   I M P O R T A
+
+Hospital atende por gravidade, nã o por ordem de chegada. A cidade hoje
+
+atende por ordem de chegada. O MOGI mede a gravidade de cada problema
+
+com probabilidade e diz o moti vo, em vez de só  listar reclamaçõ es.
+
+Plano do piloto
+
+FASE DURAÇÃ O O QUE ACONTECE
+
+Preparação 2  semanas Cadastro de secretarias, categorias, prazos e mapa da cidade
+
+Piloto interno 4  semanas Servidores usam o app em campo
+
+Piloto aberto 8 semanas Cidadã os de bairros escolhidos passam a relatar
+
+Avaliação ao ﬁ m Relató rio de resultados e decisã o de conti nuidade
+
+A prefeitura fornece a lista de secretarias e responsá veis, os prazos atuais quando
+
+existi rem, um ponto focal e a base de bairros e ruas (sem ela, usamos
+
+OpenStreetMap).
+
+Métricas de sucesso do piloto
+
+Tempo mé dio entre registro e início do atendimento, percentual resolvido dentro
+
+do prazo do nível, acerto da classiﬁ caçã o da IA conferida pelo servidor e sati sfaçã o
+
+do cidadã o.
+
+MOGI · SPEC, ADRs e SOPs · v2  · 0 2 /1 1 /2 0 2 6 3
+
+02 Triagem Urbana
+
+O protocolo de prioridade do MOGI junta duas tradiçõ es: os cinco níveis com
+
+cor e tempo má ximo da triagem de Manchester e a matriz GUT (gravidade,
+
+urgê ncia e tendê ncia).
+
+A escala
+
+NÍVEL NOME FAIXA GUT TEMPO MÁ XIMO PROPOSTO
+
+5 Críti co 1 0 0  a 1 2 5 até  2  horas
+
+4 Muito urgente 60  a 9 9 até  2 4  horas
+
+3 Urgente 2 8 a 5 9 até  3  dias úteis
+
+2 Padrã o 9  a 2 7 até  7  dias úteis
+
+1 Nã o urgente 1  a 8 roti na da equipe responsá vel
+
+Faixas e tempos sã o proposta, a validar com a prefeitura de Itamogi.
+
+Como o nível é decidido
+
+1 O Jev devolve distribuições
+
+Para G, U e T, a probabilidade de cada nota de 1  a 5 . Para cada sinal de risco (á gua jorrando, ﬁ o exposto, via
+
+bloqueada, perto de escola), sim ou nã o com probabilidade.
+
+2 Sinal crítico trava o piso
+
+Sinal críti co com probabilidade acima de 0 ,8 trava o nível mínimo daquele sinal. Na dúvida, sobe, como em
+
+Manchester.
+
+3 Sem sinal decisivo, vale a faixa da GUT
+
+Com conﬁ ança normal, a GUT esperada. Com incerteza alta, a GUT pessimista (percenti l 9 0 ).
+
+4 A fila se ordena pela GUT esperada
+
+Dentro do mesmo nível, o maior valor esperado vai primeiro.
+
+5 Níveis 4 e 5 sempre têm humano
+
+Revisã o do operador antes do despacho, sempre. Conﬁ ança baixa també m vai para revisã o ou pede nova foto.
+
+MOGI · SPEC, ADRs e SOPs · v2  · 0 2 /1 1 /2 0 2 6 4
+
+Exemplo: cano estourado
+
+1 2 3 4 5 MÉDIA
+
+G 0 0 0 0 ,2 0 0 ,80 4 ,8
+
+U 0 0 0 0 ,3 0 0 ,7 0 4 ,7
+
+T 0 0 0 ,2 0 0 ,60 0 ,2 0 4 ,0
+
+GUT esperada: 4 ,8 ×  4 ,7  ×  4 ,0  =  9 0 ,2 , faixa laranja.
+
+P(G ×  U ×  T =  1 2 5 ) =  0 ,8 ×  0 ,7  ×  0 ,2  =  0 ,1 1 2 . Como passa de 0 ,1 0 , a GUT
+
+pessimista (p9 0 ) é  1 2 5 , faixa vermelha.
+
+Sinal á gua jorrando com P =  0 ,9 3  trava o piso no nível 5 .
+
+Resultado: nível 5 , vermelho, revisã o humana, bairro vermelho no mapa.
+
+Com mais 3  relatos no mesmo quadrante, a T sobe e a GUT esperada passa
+
+de 1 0 0 .
+
+Categorias e discriminadores
+
+CATEGORIA EXEMPLO NÍVEL PADRÃ O SINAIS DE RISCO PERGUNTADOS AO JEV
+
+Água e esgoto Cano estourado 5 á gua jorrando, alagamento, falta de á gua no bairro
+
+Água e esgoto Esgoto a cé u aberto 4 perto de escola, creche ou posto
+
+Iluminação Fio caído 5 ﬁ o exposto ao alcance de pessoas
+
+Iluminação Poste apagado 3 rua inteira escura, ponto de ô nibus
+
+Limpeza Lixo parado 1 acúmulo grande, calçada bloqueada
+
+Limpeza Entulho na calçada 2 pedestre obrigado a ir para a rua
+
+Vias Buraco grande em via movimentada 4 risco a motos, perto de curva
+
+Vias Buraco pequeno 3 crescendo, relatos repeti dos
+
+Árvores Árvore caída na via 5 sobre ﬁ os, bloqueio total
+
+Árvores Poda necessá ria 2 encostando em ﬁ os
+
+Sinalização Semá foro apagado 4 cruzamento movimentado
+
+Sinalização Placa daniﬁ cada 2 placa de pare ou preferê ncia
+
+Calçadas Calçada quebrada 2 rampa de acessibilidade
+
+Animais Animal morto na via 3 calor, perto de residê ncias
+
+MOGI · SPEC, ADRs e SOPs · v2  · 0 2 /1 1 /2 0 2 6 5
+
+03 SPEC do MVP
+
+MVP enxuto para Itamogi: open source, custo mínimo, um servidor só .
+
+Entrega uti lizá vel até  1 4 /1 1 /2 0 2 6.
+
+Telas
+
+# TELA QUEM USA ONDE
+
+T1 Captura falar e mostrar: câ mera, botã o de falar, GPS Cidadã o ou servidor App Expo
+
+T2 Formulá rio pré -preenchido, conﬁ rmar com um toque Cidadã o App Expo
+
+T3 Conﬁ rmaçã o com protocolo, nível e prazo Cidadã o App Expo
+
+T4 Mapa 3 D com pins vivos, mapa de calor, ﬁ ltros e contador por bairro Operador Painel web
+
+T5 Fila de triagem por prioridade, revisã o dos níveis 4  e 5 Operador Painel web
+
+T6 Detalhe do chamado: mídia borrada, endereço, barras G U T, relatos agrupados Operador Painel web
+
+T7 Admin: regras Lua, limiares e secretarias Gestor Painel web
+
+T8 Indicadores: tempo de resposta, acerto da IA, custo e latê ncia Gestor Painel web
+
+Requisitos funcionais
+
+ID REQUISITO
+
+RF0 1 Registrar ocorrê ncia com foto (vídeo desejá vel), voz transcrita em pt-BR e GPS, sem digitar
+
+RF0 2 Converter GPS em endereço e bairro (Nominati m com cache) e quadrante H3
+
+RF0 3 Borrar rostos e placas antes de qualquer exibiçã o ou envio externo
+
+RF0 4 Etapa 1 : modelo de visã o gera campos estruturados da mídia
+
+RF0 5 Etapa 2 : Jev devolve categoria, secretaria, sinais de risco e distribuiçõ es G, U e T
+
+RF0 6 Etapa 3 : script Lua da prefeitura aplica sinais, limiares e pesos e deﬁ ne o nível
+
+RF0 7 Roteamento por conﬁ ança e nível: automá ti co, revisã o humana ou nova foto
+
+RF0 8 Agrupar relatos pró ximos do mesmo problema e recalcular a tendê ncia
+
+RF0 9 Atualizar mapa e ﬁ la em tempo real por WebSocket
+
+RF1 0 Login de operador e gestor com JWT
+
+RF1 1 Log de custo e latê ncia por ocorrê ncia
+
+RF1 2 Fallback: Jev falhou, LLM com saída estruturada; falhou de novo, a classiﬁ car
+
+MOGI · SPEC, ADRs e SOPs · v2  · 0 2 /1 1 /2 0 2 6 6
+
+ID REQUISITO
+
+RF1 3 RAG na base da prefeitura devolve o prazo e a regra local da secretaria já  escolhida pelo Jev, com a fonte citada; sem
+
+resultado, vale o prazo padrã o do nível e o chamado leva a marca sem regra local
+
+RF1 4 Toda açã o do agente é  uma funçã o ti pada (functi on calling) validada por schema e executada pelo Go: geocodiﬁ car,
+
+relatos_proximos, abrir_chamado, enviar_revisao, pedir_nova_foto e noti ﬁ car. Modelo nenhum escreve direto no banco
+
+Requisitos não funcionais
+
+ID REQUISITO
+
+RNF0 1 Triagem completa em até  1 0  s (Jev de 7 0  a 5 0 0  ms, segundo o fornecedor)
+
+RNF0 2 Mapa ﬂ uido com até  5  mil pins no notebook do operador (a conﬁ rmar em teste)
+
+RNF0 3 LGPD: á udio descartado, mídia borrada, dado pessoal nunca vai ao Jev, retençã o deﬁ nida
+
+RNF0 4 Tudo em um servidor (Go, Postgres, SeaweedFS) com Docker Compose
+
+RNF0 5 Open source por padrã o; o Jev é  a única exceçã o declarada
+
+RNF0 6 Interface em portuguê s, botõ es grandes, uso com uma mã o
+
+RNF0 7 Regras Lua em sandbox com ti meout de 5 0  ms
+
+Escopo
+
+DENTRO DO MVP FORA DO MVP
+
+Telas T1  a T8, mapa 3 D simples (pré dios extrudados, câ mera
+
+inclinada), pins vivos, mapa de calor, revisã o humana,
+
+agrupamento, log de custo
+ Esti lo Poké mon GO com avatar, gamiﬁ caçã o esti lo Duolingo,
+
+terreno 3 D, integraçã o Open3 1 1  e Waze for Citi es, push, multi -
+
+cidade, alta disponibilidade
+
+Critérios de aceite
+
+C1 Um relato por voz e foto vira chamado em menos de 3 0  s, sem teclado.
+
+C2 O cano estourado do exemplo sai nível 5 , vermelho, e vai para revisã o humana.
+
+C3 O pin aparece no painel em até  2  s depois da triagem, sem recarregar a pá gina.
+
+C4 Dois relatos do mesmo problema a menos de 5 0  m viram um chamado com 2  relatos.
+
+C5 Mudar um limiar no script Lua muda o nível do pró ximo chamado sem novo deploy.
+
+C6 Nenhum rosto ou placa visível no painel; nenhum dado pessoal no payload do Jev.
+
+C7 Com o Jev fora do ar, o fallback entra e o chamado conti nua.
+
+MOGI · SPEC, ADRs e SOPs · v2  · 0 2 /1 1 /2 0 2 6 7
+
+C8 A conﬁ rmaçã o (T3 ) e o detalhe (T6) mostram o prazo com a fonte da regra local, ou a marca sem regra local.
+
+C9 O log mostra cada funçã o chamada, com argumentos e resultado; um teste prova que nenhuma escrita no
+
+banco acontece fora delas.
+
+Métricas do piloto
+
+MÉTRICA META (A CALIBRAR)
+
+Tempo do relato ao chamado menos de 3 0  s
+
+Acerto de categoria, amostra revisada 85 % ou mais
+
+Acerto de nível nos casos 4  e 5 9 0 % ou mais
+
+Calibração ( Brier e ECE) medida e reportada
+
+Custo de IA por ocorrê ncia menos de R$ 0 ,0 5
+
+Tempo até  despacho no nível 5 dentro do prazo da cor
+
+MOGI · SPEC, ADRs e SOPs · v2  · 0 2 /1 1 /2 0 2 6 8
+
+Matriz de rastreabilidade
+
+Cada requisito, a decisã o que o sustenta, o procedimento que o executa e como se
+
+prova que ﬁ cou pronto.
+
+REQUISITO ADR SOP PROVA
+
+RF0 1  captura sem teclado 0 0 1 1 , 0 0 1 3 0 1 , 0 5 C1
+
+RF0 2  endereço, bairro, H3 0 0 0 6 0 1 C4
+
+RF0 3  borrar rosto e placa 0 0 0 8 0 6 C6
+
+RF0 4  e RF0 5  visão e Jev 0 0 0 7 , 0 0 1 0 0 5 C2
+
+RF0 6 regra Lua 0 0 1 0 , 0 0 1 3 0 3 C5
+
+RF0 7  roteamento por conﬁança 0 0 1 0 0 3 C2
+
+RF0 8 agrupamento 0 0 0 6, 0 0 0 9 0 5 C4
+
+RF0 9  tempo real 0 0 0 9 , 0 0 1 3 0 5 C3
+
+RF1 0  JWT 0 0 1 3 0 1 , 0 7 teste de fumaça do SOP 0 7
+
+RF1 1  custo e latê ncia 0 0 0 7 0 5 mé tricas do piloto
+
+RF1 2  fallback 0 0 0 7 0 5 C7
+
+RF1 3  RAG de prazo e regra local 0 0 0 7 , 0 0 1 0 0 3 C8
+
+RF1 4  function calling 0 0 0 2 , 0 0 0 7 0 5 C9
+
+RNF0 3  LGPD 0 0 0 8, 0 0 1 1 0 6 C6
+
+RNF0 4  um servidor 0 0 1 3 0 7 teste de fumaça do SOP 0 7
+
+RNF0 5  open source 0 0 1 2 0 2 tabela de licenças
+
+RNF0 7  sandbox Lua 0 0 1 3 0 3 teste da regra
+
+MOGI · SPEC, ADRs e SOPs · v2  · 0 2 /1 1 /2 0 2 6 9
+
+04 Arquitetura e stack
+
+Monó lito modular com portas e adaptadores: um biná rio Go serve a API, o
+
+tempo real e o painel. Provedor externo sempre atrá s de adaptador trocá vel.
+
+MOGI · SPEC, ADRs e SOPs · v2  · 0 2 /1 1 /2 0 2 6 1 0
+
+O fluxo do agente: onde entram o RAG e o function calling
+
+falha
+ alta, nível 1  a 3
+ nível 4  ou 5
+
+operador conﬁ rma
+
+baixa
+
+Foto ou vídeo
+
+Borra rostos e placas
+
+Visão: c ampos estruturados
+ Fala do cidadão
+
+Voz nativ a do aparelho, pt-BR, 
+áudio desc artado
+ GPS
+
+fn geocodiﬁc ar: endereço, bairro, 
+H3
+
+fn relatos_proximos: mesmo 
+quadrante
+
+Jev: categoria, secretaria entre as 
+cadastradas, sinais, G U T
+
+Fallback: LLM com schema, depois 
+a classiﬁc ar RAG da prefeitura: prazo e regra 
+local da secretaria escolhida
+
+Regra Lua: sinais, limiares, pesos e 
+prazo
+
+Conﬁanç a e nível
+
+fn abrir_chamado
+
+fn enviar_revisaofn pedir_nova_foto
+
+fn notiﬁc ar: cidadão e secr etaria
+
+Roxo decide, laranja consulta, verde age. A mídia nunca sai para o Jev: ele recebe só  a descriçã o estruturada. O Jev escolhe a secretaria; o
+
+RAG só  busca o prazo e a regra local dela; o Lua aplica a regra auditá vel; toda açã o é  uma funçã o ti pada executada pelo Go.
+
+MOGI · SPEC, ADRs e SOPs · v2  · 0 2 /1 1 /2 0 2 6 1 1
+
+Quem decide o quê
+
+Cada decisã o tem um dono só . Na v1  o RAG e o Jev apareciam os dois escolhendo
+
+a secretaria; agora o RAG nã o escolhe nada, ele só  consulta.
+
+DECISÃ O DONO COMO
+
+Categoria Jev Escolha ti pada entre as categorias cadastradas, com probabilidade
+
+Secretaria Jev Escolha ti pada entre as secretarias cadastradas pela prefeitura (até
+
+2 5 5  opçõ es por escolha, segundo o fornecedor). O operador
+
+corrige na revisã o
+
+Prazo e regra local RAG da prefeitura Busca na base de regras da cidade pela categoria e pela secretaria
+
+já  escolhidas; devolve o trecho com a fonte. Vazio: prazo padrã o do
+
+nível
+
+Nível de 1  a 5 Regra Lua Sinais com probabilidade, GUT esperada e pessimista, limiares da
+
+prefeitura
+
+Ação Roteamento por functi on calling Uma funçã o por saída: abrir_chamado, enviar_revisao ou
+
+pedir_nova_foto; depois noti ﬁ car
+
+Despacho nos níveis 4  e 5 Operador Conﬁ rma ou corrige antes de abrir o chamado
+
+As funções do agente
+
+FUNÇÃ O RECEBE FAZ
+
+g e o c o d i f i c a r lat, long Endereço, bairro e quadrante H3 , com cache do
+
+Nominati m
+
+r e l a t o s _ p r o x i m o s H3 , categoria Relatos abertos no mesmo quadrante, para
+
+agrupar e recalcular a T
+
+b u s c a r _ r e g r a _ l o c a l cidade, categoria, secretaria É o RAG: prazo e regra local com a fonte
+
+a b r i r _ c h a m a d o secretaria, categoria, nível, prazo, local Grava o chamado e emite OcorrenciaClassiﬁ cada
+
+e n v i a r _ r e v i s a o ocorrê ncia, moti vo Coloca na ﬁ la T5  do operador
+
+p e d i r _ n o v a _ f o t o ocorrê ncia, moti vo Pede ao cidadã o uma foto melhor
+
+n o t i f i c a r cidadã o ou secretaria, status Protocolo, nível e prazo para o cidadã o; aviso
+
+para a secretaria
+
+P O R   Q U E   I M P O R T A
+
+Dois componentes decidindo a mesma coisa dã o duas respostas, e ningué m
+
+sabe qual vale. Com um dono por decisã o, o erro tem endereço: secretaria
+
+errada é  o Jev, prazo errado é  a base da prefeitura, nível errado é  a regra Lua.
+
+MOGI · SPEC, ADRs e SOPs · v2  · 0 2 /1 1 /2 0 2 6 1 2
+
+Contêineres
+ API e JWT
+
+upload por URL pré -assinada
+ LISTEN/NOTIFY
+ App Expo, Android e iPhone
+
+Backend Go: API, ﬁla, W ebSocket, 
+regras Lua
+
+SeaweedFS, S3 c ompatív el Postgres + P ostGIS + H3 Adaptador de visão Adaptador Jev Nominatim c om cache
+
+WebSocket no Go
+
+Painel React + Vit e
+
+OpenFreeMap, tiles OSM
+
+Upload direto do celular para o armazenamento por URL pré -assinada; o tempo real sai do Postgres por LISTEN/NOTIFY.
+
+Módulos
+ logs
+
+eventos
+
+ocorrencias
+ triagem
+
+midia
+
+geo
+ roteamento notiﬁc acoes
+
+indicadores
+
+tempo-real
+
+Mó dulos só  conversam por portas ou eventos (ADR 0 0 0 2 ).
+
+Stack e licenças
+
+COMPONENTE ESCOLHA LICENÇA CUSTO NO MVP
+
+App Android e
+
+iPhone
+ React Nati ve +  Expo, MapLibre React Nati ve MIT grá ti s
+
+Backend Go: API, ﬁ la, WebSocket, JWT, URLs pré -
+
+assinadas
+ BSD-3 -Clause grá ti s
+
+Regras de triagem Lua via gopher-lua MIT grá ti s
+
+MOGI · SPEC, ADRs e SOPs · v2  · 0 2 /1 1 /2 0 2 6 1 3
+
+COMPONENTE ESCOLHA LICENÇA CUSTO NO MVP
+
+Painel React +  Vite, react-map-gl MIT grá ti s
+
+Mapa 3 D MapLibre GL JS com ﬁ ll-extrusion BSD-3 -Clause grá ti s
+
+Camadas de dados deck.gl (pins, calor, H3 ) MIT grá ti s
+
+Tiles e pré dios OpenFreeMap, dados OpenStreetMap MIT; dados ODbL grá ti s, sem chave
+
+Endereço e bairro Nominati m GPL-3 .0 público limitado a 1  req/s; usar
+
+cache
+
+Banco e geodados PostgreSQL +  PostGIS PostgreSQL; GPL-
+
+2 .0
+ grá ti s
+
+Quadrantes H3 Apache-2 .0 grá ti s
+
+Fotos e vídeos SeaweedFS, S3  compatí vel; plano B Garage Apache-2 .0 grá ti s
+
+Voz Reconhecimento nati vo do aparelho; Whisper
+
+como opçã o
+ do sistema; MIT grá ti s
+
+Visão Qwen2 .5 -VL atrá s do adaptador Apache-2 .0 grá ti s se auto-hospedado
+
+Borrar rosto e placa OpenCV com detectores abertos Apache-2 .0 grá ti s
+
+Decisão da triagem Jev (TypeSafe), exceçã o declarada proprietá ria US$ 0 ,0 4 2  por milhã o de tokens de
+
+entrada
+
+L I C E N Ç A S
+
+As marcadas como conferidas foram veriﬁ cadas no repositó rio oﬁ cial em
+
+0 1 /1 1 /2 0 2 6; as demais precisam ser reconﬁ rmadas antes do piloto. Distribuir
+
+có digo modiﬁ cado de componente GPL traz obrigaçã o de abrir o có digo.
+
+MOGI · SPEC, ADRs e SOPs · v2  · 0 2 /1 1 /2 0 2 6 1 4
+
+05 ADRs
+
+As 1 3  decisõ es no mesmo formato: o que decide, o que moti vou, o que foi
+
+escolhido, o que foi descartado, o custo e onde a decisã o aparece na SPEC.
+
+ADR DECISÃ O STATUS
+
+0 0 0 1 Registrar decisõ es em ADR A C E I T A
+
+0 0 0 2 Monó lito modular em Go com portas e adaptadores A C E I T A
+
+0 0 0 3 Dados compatí veis com Open3 1 1  GeoReport v2 A C E I T A
+
+0 0 0 4 Mapa 3 D com fallback 2 D, sem terreno no MVP A C E I T A
+
+0 0 0 5 Captura mó vel PWA primeiro S U B S T I T U Í D A
+
+0 0 0 6 Geodados com PostGIS e H3 A C E I T A
+
+0 0 0 7 Agente de triagem: visã o, Jev, RAG de prazo e functi on calling A C E I T A
+
+0 0 0 8 Mídia e privacidade (LGPD) A C E I T A
+
+0 0 0 9 Tempo real por eventos A C E I T A
+
+0 0 1 0 Triagem Urbana: Manchester +  GUT calibrada A C E I T A
+
+0 0 1 1 Captura por voz nati va e câ mera A C E I T A
+
+0 0 1 2 Preferê ncia por open source A C E I T A
+
+0 0 1 3 Stack do MVP A C E I T A
+
+Aceitos em lote pelo produto em 0 2 /1 1 /2 0 2 6, depois das correçõ es de 0 0 0 2 ,
+
+0 0 0 4 , 0 0 0 7  e 0 0 1 1 . Status único: nã o existe mais ADR misto. Daqui em diante,
+
+mudança vira ADR novo que substi tui o anti go (SOP 0 4 ).
+
+MOGI · SPEC, ADRs e SOPs · v2  · 0 2 /1 1 /2 0 2 6 1 5
+
+A D R   0 0 0 1 Registrar decisões em ADR A C E I T A
+
+Contexto Vá rias pessoas e sessõ es de IA; os requisitos mudam entre versõ es.
+
+Decisão Toda decisã o de arquitetura vira ADR numerado em  d o c s / a d r / , com Contexto, Decisã o,
+
+Alternati vas, Consequê ncias e Status.
+
+Descartado Decisã o só  no chat (perde histó rico); wiki externa (ﬁ ca longe do có digo).
+
+Custo Disciplina a cada mudança. Ganho: histó rico rastreá vel.
+
+Aparece em SOP 0 4 .
+
+A D R   0 0 0 2 Monólito modular em Go com portas e adaptadores A C E I T A
+
+Contexto Prazo curto, ti me pequeno, requisitos que vã o surgir no piloto.
+
+Decisão Um biná rio em Go (ADR 0 0 1 3 ) com os mó dulos  o c o r r e n c i a s ,  t r i a g e m ,  g e o ,  m i d i a ,
+
+r o t e a m e n t o ,  n o t i f i c a c o e s ,  t e m p o - r e a l  e  i n d i c a d o r e s . Cada um expõ e portas e
+
+usa adaptadores para IA, banco, armazenamento e mapa. As funçõ es do agente (RF1 4 ) moram no
+
+mó dulo  r o t e a m e n t o . TypeScript só  no app Expo e no painel.
+
+Corrigido em
+02/11 O texto original dizia monó lito em TypeScript; vale Go, como no ADR 0 0 1 3 .
+
+Descartado Microsserviços (custo operacional); có digo sem fronteiras (difícil de mudar); backend em TypeScript.
+
+Custo Revisar fronteiras em cada PR. Ganho: trocar provedor sem tocar no domínio.
+
+Aparece em Arquitetura; todos os RF de provedor externo.
+
+MOGI · SPEC, ADRs e SOPs · v2  · 0 2 /1 1 /2 0 2 6 1 6
+
+A D R   0 0 0 3 Dados compatíveis com Open311 GeoReport v2 A C E I T A
+
+Contexto Prefeituras usam ou vã o usar outros sistemas; GeoReport v2  é  o padrã o aberto mais usado.
+
+Decisão O modelo mapeia  s e r v i c e _ c o d e ,  d e s c r i p t i o n ,  l a t ,  l o n g ,  m e d i a _ u r l ,  s t a t u s ,
+
+r e q u e s t e d _ d a t e t i m e ,  a g e n c y _ r e s p o n s i b l e . Prioridade, conﬁ ança e H3  viram extensõ es
+
+documentadas. Endpoints depois do MVP.
+
+Descartado Modelo pró prio sem padrã o (integraçã o cara depois).
+
+Custo Traduçã o de nomes. Ganho: integraçã o facilitada.
+
+Aparece em Fora do MVP (integraçã o Open3 1 1 ); modelo de dados desde já .
+
+A D R   0 0 0 4 Mapa 3D com fallback 2D, sem terreno no MVP A C E I T A
+
+Contexto O diferencial visual é  ver as ocorrê ncias ao vivo numa cidade em 3 D.
+
+Decisão MapLibre GL JS com pré dios extrudados (OpenFreeMap, sem chave paga), câ mera inclinada, pins
+
+vivos e mapa de calor por cima; deck.gl para as camadas. Aparelho fraco ou sem WebGL cai para 2 D
+
+com o mesmo componente. 3 D simples obrigató rio no MVP, 2  a 3  dias de uma pessoa. Terreno 3D ﬁca
+
+fora do MVP, como na SPEC, e vira desejá vel junto com o esti lo Poké mon GO na pró xima fase.
+
+Corrigido em
+02/11 O texto original citava terreno na decisã o do MVP.
+
+Pins vivos Surgem com animaçã o; tamanho pelo número de relatos; cor pelo nível; vermelho pulsa; respeitam
+
+p r e f e r s - r e d u c e d - m o t i o n .
+
+Descartado CesiumJS e Google 3 D Tiles (peso e custo); Mapbox (licença); AR nati vo (prazo).
+
+Aparece em T4 , RF0 9 , C3 .
+
+A D R   0 0 0 5 Captura móvel PWA primeiro S U B S T I T U Í D A
+
+Situação Substi tuída pelo ADR 0 0 1 3 : app Expo para Android e iPhone. Manti da só  como histó rico.
+
+MOGI · SPEC, ADRs e SOPs · v2  · 0 2 /1 1 /2 0 2 6 1 7
+
+A D R   0 0 0 6 Geodados com PostGIS e H3 A C E I T A
+
+Contexto Agrupar por rua, bairro e quadrante.
+
+Decisão PostGIS para pontos e polígonos de bairro; H3  para quadrantes uniformes, com resoluçã o a calibrar
+
+para Itamogi.
+
+Descartado Grade quadrada pró pria (distorce, sem ferramentas).
+
+Aparece em RF0 2 , RF0 8, C4 .
+
+A D R   0 0 0 7 Agente de triagem: visão, Jev, RAG de prazo e function calling A C E I T A
+
+Contexto Triagem rá pida, auditá vel e barata. O Jev decide ti pado e calibrado em 7 0  a 5 0 0  ms, segundo o
+
+fornecedor, mas nã o aceita imagem e roda nos EUA.
+
+Decisão Etapa 1 : porta  D e s c r i t o r D e M i d i a  gera campos estruturados, depois de borrar rostos e placas.
+
+Etapa 2 : porta  C l a s s i f i c a d o r D e O c o r r e n c i a  com adaptador Jev, dono da categoria e da
+
+secretaria (escolhida entre as cadastradas). Etapa 2 b: porta  B a s e D e R e g r a s L o c a i s  (RAG) busca
+
+só  o prazo e a regra local da secretaria escolhida. Etapa 3 : regra Lua por prefeitura decide o nível.
+
+Açõ es por functi on calling (RF1 4 ). Fallback: LLM com schema, depois a classiﬁ car. Ao Jev vai só  a
+
+descriçã o, nunca mídia nem dado pessoal. Log por chamada. Chave fora do repositó rio.
+
+Corrigido em
+02/11 O ﬂ uxo original punha o RAG escolhendo a secretaria, em disputa com o Jev. Agora o RAG só  consulta.
+
+Descartado Um LLM com visã o decidindo tudo (lento, caro, sem calibraçã o); modelo pró prio (sem dado nem
+
+tempo).
+
+Custo Dependê ncia de serviço em acesso antecipado, miti gada pelo fallback.
+
+Aparece em RF0 4 , RF0 5 , RF1 1 , RF1 2 , C2 , C7 .
+
+MOGI · SPEC, ADRs e SOPs · v2  · 0 2 /1 1 /2 0 2 6 1 8
+
+A D R   0 0 0 8 Mídia e privacidade (LGPD) A C E I T A
+
+Contexto Fotos e vídeos podem expor rostos e placas.
+
+Decisão Borrar antes de publicar; original só  para operador autorizado. SeaweedFS com URLs pré -assinadas
+
+geradas pelo Go. Retençã o proposta: original apagado 9 0  dias depois de fechar a ocorrê ncia.
+
+Identi dade de quem reportou só  visível à  prefeitura.
+
+Descartado Publicar a mídia original (risco legal).
+
+Aparece em RF0 3 , RNF0 3 , SOP 0 6, C6.
+
+A D R   0 0 0 9 Tempo real por eventos A C E I T A
+
+Contexto Operador e cidadã o precisam ver mudança ao vivo.
+
+Decisão Eventos de domínio ( O c o r r e n c i a C r i a d a ,  O c o r r e n c i a C l a s s i f i c a d a ,
+
+O c o r r e n c i a A g r u p a d a ,  N i v e l A l t e r a d o ,  S t a t u s A l t e r a d o ) entregues por WebSocket no
+
+Go, alimentado por LISTEN/NOTIFY. Cliente refaz a consulta ao reconectar.
+
+Descartado Polling (lento e caro).
+
+Aparece em RF0 9 , T4 , C3 .
+
+MOGI · SPEC, ADRs e SOPs · v2  · 0 2 /1 1 /2 0 2 6 1 9
+
+A D R   0 0 1 0 Triagem Urbana: Manchester + GUT calibrada A C E I T A
+
+Contexto Concorrentes priorizam por categoria, ordem de chegada ou votos.
+
+Decisão Cinco níveis com cor e tempo má ximo. O Jev preenche um esquema ﬁ xo: sinais com probabilidade e
+
+distribuiçõ es de G, U e T. GUT esperada ordena; GUT pessimista decide sob incerteza; sinal críti co
+
+trava o piso; tendê ncia recalculada a cada relato pró ximo. Sinais, limiares e pesos em Lua por
+
+prefeitura, editá veis no Admin; calibraçã o medida com Brier e ECE.
+
+Descartado Prioridade ﬁ xa por categoria; GUT com nota única; LLM gerando a nota em texto.
+
+Aparece em Seçã o 0 2 , RF0 5  a RF0 7 , SOP 0 3 , C2 , C5 .
+
+A D R   0 0 1 1 Captura por voz nativa e câmera A C E I T A
+
+Contexto O relato deve sair da voz e da câ mera, com o formulá rio preenchido pela IA.
+
+Decisão Fluxo falar e mostrar. Porta  T r a n s c r i t o r D e V o z  pt-BR. Adaptador do MVP: reconhecimento de
+
+voz nativo do aparelho, no app Expo (Android e iPhone). Whisper ﬁ ca como adaptador opcional.
+
+Formulá rio pré -preenchido, conﬁ rmar com um toque ou dizendo conﬁ rmar; campos incertos
+
+destacados. Pergunta de voz de volta é  desejá vel. Teclado como alternati va. Áudio descartado, aviso
+
+de consenti mento antes de gravar.
+
+Corrigido em
+02/11 O texto original usava a Web Speech API do navegador, que era do tempo da PWA (ADR 0 0 0 5 ,
+
+substi tuído).
+
+Descartado Formulá rio digitado (lento e excludente); só  voz sem conﬁ rmaçã o (erro sem controle); Web Speech
+
+API do navegador.
+
+Aparece em T1 , T2 , RF0 1 , C1 .
+
+MOGI · SPEC, ADRs e SOPs · v2  · 0 2 /1 1 /2 0 2 6 2 0
+
+A D R   0 0 1 2 Preferência por open source A C E I T A
+
+Contexto MVP de 1  a 2  semanas, sem orçamento.
+
+Decisão Todo componente é  open source, auto-hospedá vel ou gratuito por padrã o; pago ou fechado só  como
+
+adaptador trocá vel. Exceçã o declarada: Jev, com fallback. Respeitar licenças e atribuiçõ es (OSM,
+
+Nominati m).
+
+Custo Mais responsabilidade de operaçã o e de cumprir copyleft.
+
+Aparece em RNF0 5 , tabela de stack.
+
+A D R   0 0 1 3 Stack do MVP A C E I T A
+
+Decisão Backend Go com JWT e WebSocket; regras em Lua (gopher-lua, sandbox sem io, os, debug e package,
+
+ti meout de 5 0  ms); Postgres +  PostGIS +  H3  com LISTEN/NOTIFY; SeaweedFS para mídia; Jev como
+
+classiﬁ cador; sem Supabase. App Expo para Android e iPhone; painel React +  Vite servido como
+
+está ti co pelo Go.
+
+Riscos gopher-lua nã o tem limite de memó ria nem sandbox prontos: compensar com estado restrito,
+
+ti meout e limite do contê iner. SeaweedFS tem ediçã o paga: usar só  a comunitá ria e ﬁ xar versã o.
+
+Descartado Supabase; Next.js (SSR sem uso num painel logado); MinIO (comunitá ria em manutençã o, AGPL-3 .0 );
+
+Rust (prazo).
+
+Aparece em RNF0 4 , RNF0 7 , SOP 0 1 , SOP 0 7 .
+
+MOGI · SPEC, ADRs e SOPs · v2  · 0 2 /1 1 /2 0 2 6 2 1
+
+06 Consistência
+
+Na v1  esta seçã o listava sete pontos onde o texto mais anti go ti nha ﬁ cado
+
+para trá s. Na v2  os sete fecharam. A tabela ﬁ ca como registro do que mudou
+
+e onde.
+
+ONDE ANTES (V1) AGORA (V2, 02/11) ESTADO
+
+ADR 0 0 0 2 Monó lito modular em TypeScript Monó lito modular em Go; TypeScript só  no app
+
+e no painel
+ F E C H A D O
+
+ADR 0 0 0 4 Terreno 3 D na decisã o do MVP Terreno fora do MVP, desejá vel na pró xima fase F E C H A D O
+
+ADR 0 0 1 1 Web Speech API do navegador Voz nati va do aparelho no app Expo; Whisper
+
+opcional
+ F E C H A D O
+
+Fluxo do agente Visã o, regra, RAG e functi on calling
+
+em sequê ncia, sem dono claro
+ Figura da seçã o 0 4 : visã o, Jev, RAG de prazo, Lua
+
+e funçõ es ti padas
+ F E C H A D O
+
+RAG e Jev Os dois escolhiam a secretaria Jev escolhe entre as secretarias cadastradas; o
+
+RAG busca só  prazo e regra local (RF1 3 )
+ F E C H A D O
+
+ADR 0 0 0 7 , 0 0 1 0 ,
+
+0 0 1 3
+ Status misto Status único, Aceita F E C H A D O
+
+Pendê ncia Aprovar ADRs 0 0 0 1  a 0 0 1 0 Os 1 3  aceitos em lote em 0 2 /1 1  (0 0 0 5  segue
+
+substi tuído)
+ F E C H A D O
+
+P O R   Q U E   I M P O R T A
+
+Sessã o de IA lê  o ADR ao pé  da letra. Um ADR dizendo TypeScript enquanto
+
+outro diz Go produz có digo nas duas linguagens. Com status único e um dono
+
+por decisã o, o agente sabe o que é  regra e o que nã o é .
+
+R E G R A   P A R A   N Ã O   V O L T A R
+
+ADR aceito nã o se reescreve. Qualquer mudança daqui em diante abre um ADR
+
+novo que substi tui o anti go, e esta tabela ganha uma linha (SOP 0 4 ).
+
+MOGI · SPEC, ADRs e SOPs · v2  · 0 2 /1 1 /2 0 2 6 2 2
+
+07 SOPs
+
+Os sete procedimentos no mesmo formato: para que serve, quando usar, os
+
+passos e quando está  pronto.
+
+S O P   0 1 Setup do ambiente local
+
+Para que Rodar app, painel e backend na pró pria má quina.
+
+Quando Primeiro dia de quem entra, ou má quina nova.
+
+1 Instale Git, Docker com Compose, Go 1 .2 3  ou mais novo, Node.js 2 2  LTS e o Expo Go no celular.
+
+2 Clone o repositó rio privado (acesso com o produto) e entre na pasta.
+
+3 Copie  . e n v . e x a m p l e  para  . e n v  só  com valores locais. Chaves reais (Jev, visã o) ﬁ cam fora do Git e chegam
+
+por canal privado.
+
+4 Suba a infraestrutura:  d o c k e r   c o m p o s e   u p   - d   p o s t g r e s   s e a w e e d f s .
+
+5 Backend:  c d   b a c k e n d   & &   g o   r u n   . / c m d / a p i  (aplica migraçõ es e carrega as regras Lua).
+
+6 Painel:  c d   p a i n e l   & &   n p m   i n s t a l l   & &   n p m   r u n   d e v .
+
+7 App:  c d   a p p   & &   n p m   i n s t a l l   & &   n p x   e x p o   s t a r t  e leia o QR com o Expo Go.
+
+P R O N T O   Q U A N D O
+
+c u r l   l o c a l h o s t : 8 0 8 0 / s a u d e  responde ok e o painel abre o mapa de
+
+Itamogi.
+
+S O P   0 2 Fluxo de branch e PR
+
+Para que Toda mudança entra revisada e rastreá vel.
+
+Quando Qualquer mudança de có digo, regra ou documento.
+
+1 Atualize a main:  g i t   s w i t c h   m a i n   & &   g i t   p u l l .
+
+2 Crie a branch  t i p o / a s s u n t o - c u r t o , com ti po  f e a t ,  f i x ,  d o c s ,  r e g r a  ou  c h o r e .
+
+MOGI · SPEC, ADRs e SOPs · v2  · 0 2 /1 1 /2 0 2 6 2 3
+
+3 Commits pequenos, em portuguê s, no imperati vo.
+
+4 Antes do PR:  g o   t e s t   . / . . . , lint e testes do painel e do app; nenhum segredo no diﬀ.
+
+5 PR para a main com o que muda, como testar, print se for tela e o ADR relacionado.
+
+6 Pelo menos uma revisã o de outro membro. Regra Lua e ADR exigem revisã o do produto ou do negó cio.
+
+7 Merge por squash e apague a branch. A main congela em 2 0 /1 1 , salvo correçã o.
+
+R E G R A   N O   R E P O S I T Ó R I O ,   N Ã O   S Ó   N O   P A P E L
+
+Ligue um ruleset na main exigindo PR com 1  aprovaçã o, aprovaçã o do últi mo
+
+push por outra pessoa e checks verdes, sem bypass de admin. Sem isso, o passo
+
+6 depende de cada um lembrar.
+
+S O P   0 3 Adicionar uma regra de triagem em Lua
+
+Para que Mudar como a prefeitura prioriza, sem novo deploy.
+
+Quando Categoria nova, sinal novo ou limiar recalibrado.
+
+1 Crie ou edite  b a c k e n d / r e g r a s / < c i d a d e > / < c a t e g o r i a > . l u a .
+
+2 A funçã o recebe  t . s i n a i s ,  t . g u t  (esperado e p9 0 ) e  t . c o n f i a n c a , e devolve nível e moti vo:
+
+f u n c t i o n   a v a l i a r ( t )
+
+    i f   ( t . s i n a i s . a g u a _ j o r r a n d o   o r   0 )   >   0 . 8   t h e n
+
+        r e t u r n   {   n i v e l _ m i n i m o   =   5 ,   m o t i v o   =   " a g u a   j o r r a n d o   c o m   P   >   0 , 8 "   }
+
+    e n d
+    l o c a l   g u t   =   t . g u t . e s p e r a d o
+
+    i f   t . c o n f i a n c a   <   0 . 6   t h e n   g u t   =   t . g u t . p 9 0   e n d
+
+    r e t u r n   {   g u t   =   g u t ,   m o t i v o   =   " f a i x a   G U T "   }
+
+e n d
+
+3 Só  funçõ es liberadas pelo sandbox:  m a t h ,  s t r i n g ,  t a b l e . Nada de  i o ,  o s  ou  r e q u i r e . Tempo
+
+má ximo de 5 0  ms.
+
+4 Adicione o caso em  r e g r a s / i t a m o g i / t e s t e s /  com entrada e nível esperado e rode  g o   t e s t
+
+. / t r i a g e m / . . . .
+
+5 PR com branch  r e g r a / . . .  (SOP 0 2 ). Depois do merge, o Admin recarrega a regra.
+
+MOGI · SPEC, ADRs e SOPs · v2  · 0 2 /1 1 /2 0 2 6 2 4
+
+P R O N T O   Q U A N D O
+
+O teste passa e o pró ximo chamado da categoria sai com o nível novo, sem
+
+deploy (C5 ).
+
+S O P   0 4 Registrar decisão em ADR e conversa
+
+Para que Nenhuma decisã o ﬁ ca só  no chat.
+
+Quando Toda conversa que muda a soluçã o.
+
+1 A conversa vira seçã o datada em  d o c s / c o n v e r s a s / A A A A - M M - D D - a s s u n t o . m d , com fonte e horá rio (BRT).
+
+2 Decisã o de arquitetura vira  d o c s / a d r / N N N N - t i t u l o . m d  no formato desta seçã o 0 5 .
+
+3 Só  produto ou negó cio mudam um ADR para Aceita. ADR aceito nã o se reescreve: um novo o substi tui.
+
+4 Atualize  d o c s / d e c i s o e s - e - p e n d e n c i a s . m d  e o índice  d o c s / R E A D M E . m d .
+
+P R O N T O   Q U A N D O
+
+O ADR está  no índice com status único e a pendê ncia saiu da lista de abertas.
+
+S O P   0 5 Rodar a demo
+
+Para que Mostrar o ﬂ uxo inteiro em 3  minutos sem surpresa.
+
+Quando Ensaio e dia do hackathon.
+
+1 Na vé spera: servidor no ar (SOP 0 7 ), dados de Itamogi carregados, 5  fotos reais em  d e m o / f o t o s / , celular
+
+carregado.
+
+2 Rode  g o   r u n   . / c m d / s e e d   - - c i d a d e   i t a m o g i  para chamados de fundo.
+
+3 Painel no projetor, mapa 3 D, câ mera inclinada sobre o centro.
+
+4 Roteiro: foto real, relato falado do cano estourado, formulá rio pronto, conﬁ rmar, pin vermelho pulsando,
+
+operador abre o detalhe e despacha.
+
+5 Mostre os números medidos no teste alpha de Itamogi: latê ncia por etapa e total, custo da triagem e acerto.
+
+MOGI · SPEC, ADRs e SOPs · v2  · 0 2 /1 1 /2 0 2 6 2 5
+
+P L A N O   B
+
+Sem internet: o vídeo da demo gravado em  d e m o / v i d e o /  até  1 9 /1 1  (seçã o
+
+0 8) e o fallback no lugar do Jev. O vídeo segue o mesmo roteiro do passo 4 , com
+
+o celular e o painel na mesma tela.
+
+S O P   0 6 Checklist de LGPD
+
+Para que Nenhum dado pessoal vaza no piloto.
+
+Quando Antes de cada demo e antes do piloto real.
+
+Mídia Rostos e placas borrados antes de exibir ou enviar; original apagado 9 0  dias depois de fechar (a validar)
+
+Voz Áudio descartado depois da transcriçã o; só  o texto ﬁ ca
+
+Jev Só  a descriçã o estruturada; nunca mídia, nome, telefone ou localizaçã o exata da pessoa
+
+Identidade Quem reportou só  aparece para operador autorizado
+
+App Termo de uso e aviso de privacidade na primeira abertura
+
+Logs e banco Sem dado pessoal nos logs; banco acessível só  pelo servidor
+
+Demo Nenhum dado pessoal real
+
+Prefeitura Encarregado de dados indicado antes do piloto real
+
+S O P   0 7 Deploy do MVP
+
+Para que Colocar tudo num servidor só , com HTTPS e backup.
+
+Quando Primeira subida e cada versã o da demo.
+
+1 VPS Linux pequena (2  vCPU e 4  GB, a conﬁ rmar). Instale Docker e abra só  as portas 80  e 4 4 3 .
+
+2 Use o  d o c k e r - c o m p o s e . y m l  de produçã o: api (Go, serve o painel), postgres (PostGIS +  H3 ), seaweedfs e
+
+caddy (HTTPS automá ti co).
+
+3 Crie o  . e n v  no servidor; nunca no Git. Depois  d o c k e r   c o m p o s e   p u l l   & &   d o c k e r   c o m p o s e   u p   - d .
+
+4 Gere o painel com  n p m   r u n   b u i l d  e copie  d i s t /  para o volume do Go.
+
+MOGI · SPEC, ADRs e SOPs · v2  · 0 2 /1 1 /2 0 2 6 2 6
+
+5 Publique o app pelo Expo (EAS Update ou build interno) apontando para o domínio.
+
+6 Backup diá rio:  p g _ d u m p  e a pasta do SeaweedFS para outro disco.
+
+P R O N T O   Q U A N D O
+
+Teste de fumaça passa:  / s a u d e , login, um relato completo e o pin no mapa.
+
+MOGI · SPEC, ADRs e SOPs · v2  · 0 2 /1 1 /2 0 2 6 2 7
+
+08 Plano até 26/11 e decisões abertas
+
+Cada entrega tem dono, data e a evidê ncia que prova que ﬁ cou pronta. A
+
+evidê ncia é  o que entra no relató rio único (seçã o 0 9 ).
+
+ATÉ ENTREGA QUEM EVIDÊNCIA ESTADO
+
+0 2 /1 1 ADRs 0 0 0 2 , 0 0 0 4  e 0 0 1 1  corrigidos; 1 3
+
+ADRs aceitos em lote
+ produto seçã o 0 5  desta v2 F E I T O
+
+0 3 /1 1 Avisar a AKCIT da troca de integrante produto e-mail enviado A B E R T O
+
+0 4 /1 1 Todos inscritos no curso de Agentes
+
+de IA no AVA, com print de cada um;
+
+mó dulos concluídos registrados
+ todos prints em
+
+d o c s / e v i d e n c i a s / a v a /  e
+
+tabela de mó dulos por pessoa
+ A B E R T O
+
+1 3 /1 1 Protó ti po v1  rodando, telas T1  a T4 :
+
+captura, formulá rio, conﬁ rmaçã o e
+
+mapa
+ sessõ es de IA,
+
+revisã o do produto
+ teste de fumaça do SOP 0 7  e
+
+gravaçã o de tela
+ A B E R T O
+
+1 4 /1 1 Teste de campo alpha em Itamogi com
+
+o protó ti po v1
+ engenharia e
+
+produto
+ vídeo do teste, planilha de casos,
+
+latê ncia por etapa (p5 0  e p9 5 )
+ A B E R T O
+
+1 4 /1 1 Resultado da seleçã o AKCIT todos comunicado da AKCIT A G U A R D A N D O
+
+1 6/1 1 Passagem e hospedagem fechadas
+
+para chegar em Florianó polis em
+
+2 0 /1 1
+ todos reservas conﬁ rmadas A B E R T O
+
+1 9 /1 1 PDFs (esta SPEC e o paper) e o vídeo
+
+do teste de campo no repositó rio
+ produto d o c s / e n t r e g a s /  e
+
+d o c s / e v i d e n c i a s / c a m p o /
+
+com link no README
+ A B E R T O
+
+1 9 /1 1 Vídeo plano B da demo gravado engenharia e
+
+design
+ d e m o / v i d e o / A B E R T O
+
+1 9 /1 1 Roteiro do pitch com o caso do teste
+
+de campo e a latê ncia medida
+ negó cio e produto seçã o 1 0  preenchida e ensaio
+
+cronometrado
+ A B E R T O
+
+2 0 /1 1 Decisã o sobre o repositó rio: público
+
+ou acesso da AKCIT antes de 2 1 /1 1
+ produto linha em d o c s / d e c i s o e s - e -
+
+p e n d e n c i a s . m d
+ D E C I S Ã O
+
+2 0 /1 1 Main congelada; chegada em
+
+Florianó polis
+ todos tag da versã o da demo A B E R T O
+
+2 1 /1 1 Hackathon em Florianó polis todos fotos e link da apresentaçã o A B E R T O
+
+2 6/1 1 Relató rio ENTREGA UNICA - ROTA
+
+Scale - DD-MM-AAAA
+ produto e negó cio modelo da seçã o 0 9  preenchido A B E R T O
+
+MOGI · SPEC, ADRs e SOPs · v2  · 0 2 /1 1 /2 0 2 6 2 8
+
+Teste de campo alpha: o mínimo para valer
+
+1 Pelo menos 1 0  relatos reais em Itamogi, de categorias diferentes, com o protó ti po v1  (T1  a T4 ).
+
+2 Para cada relato, o log grava a latê ncia de cada etapa: visã o, Jev, RAG, Lua, funçõ es e total. Reportar p5 0  e p9 5
+
+contra o RNF0 1  (1 0  s).
+
+3 Um membro do ti me anota a categoria, a secretaria e o nível que daria, sem ver o do sistema. É a primeira
+
+medida de acerto, ainda sem valor estatí sti co.
+
+4 Grave em vídeo um caso do começo ao ﬁ m: a foto na rua, o relato falado, o pin no mapa. Esse é  o caso do pitch.
+
+5 Sem rosto, placa ou dado pessoal no vídeo e na planilha (SOP 0 6).
+
+Decisões abertas
+
+1 Repositório: público ou privado com acesso da AKCIT, antes de 2 1 /1 1 . Público mostra o open source do ADR
+
+0 0 1 2  e facilita a banca; exige varrer segredos e dados antes. Privado com convite é  mais rá pido e seguro para a
+
+demo. Decide o produto até  2 0 /1 1 .
+
+2 Gerar a chave da TypeSafe na conta do ti me e guardar fora do repositó rio; conﬁ rmar se o acesso antecipado
+
+cobre o volume do piloto.
+
+3 Montar a base de regras locais do RAG: prazos por secretaria e categoria, com a fonte de cada um. Sem ela, o
+
+RAG devolve vazio e vale o prazo padrã o do nível.
+
+4 Calibrar faixas GUT, tempos má ximos por nível e políti ca de retençã o de mídia com a prefeitura.
+
+5 Escolher provedor de visã o principal e reserva, e a VPS da demo.
+
+F U R O S   M A R C A D O S
+
+VPS de 2  vCPU e 4  GB, 5  mil pins ﬂ uidos e triagem em 1 0  s ainda nã o foram
+
+medidos. A latê ncia sai do teste alpha; os outros dois, do primeiro teste de
+
+carga. Até  lá , sã o meta.
+
+MOGI · SPEC, ADRs e SOPs · v2  · 0 2 /1 1 /2 0 2 6 2 9
+
+09 Modelo do relatório único
+
+Um relató rio só , entregue até  2 6/1 1 , com o nome Relatório ENTREGA UNICA
+
+- ROTA Scale - DD-MM-AAAA, onde DD-MM-AAAA é  a data da entrega. Cada
+
+meta tem cumprimento, trava e link de evidê ncia. Sem link, a meta conta
+
+como nã o cumprida.
+
+Estrutura
+
+1 Identificação
+
+Projeto (Sistema MOGI), equipe, programa (AKCIT Camp Sul 2 0 2 6), município do piloto, data e versã o.
+
+2 Resumo em cinco linhas
+
+O problema, a soluçã o, o que foi entregue, o número principal do teste de campo e o pró ximo passo.
+
+3 Metas e cumprimento
+
+A tabela abaixo, uma linha por meta do plano da seçã o 0 8.
+
+4 Travas
+
+O que travou, o efeito, como foi resolvido ou o que falta para resolver.
+
+5 Resultados do teste de campo
+
+Número de relatos, latê ncia p5 0  e p9 5  por etapa, acerto contra a anotaçã o do ti me, custo por ocorrê ncia. Só
+
+número medido; o resto marcado a medir.
+
+6 Próximos passos
+
+Piloto interno, piloto aberto e as decisõ es que dependem da prefeitura.
+
+MOGI · SPEC, ADRs e SOPs · v2  · 0 2 /1 1 /2 0 2 6 3 0
+
+Tabela de metas
+
+META PRAZO CUMPRIMENTO TRAVA EVIDÊNCIA (LINK)
+
+ADRs corrigidos e aceitos 0 2 /1 1 feito nenhuma link da SPEC v2
+
+Inscrição e módulos no AVA 0 4 /1 1 feito, parcial ou
+
+nã o
+ pasta de prints
+
+Protótipo v1 , T1  a T4 1 3 /1 1 gravaçã o de tela
+
+Teste de campo alpha 1 4 /1 1 vídeo e planilha
+
+PDFs e vídeo no repositório 1 9 /1 1 link do repositó rio
+
+Vídeo plano B 1 9 /1 1 link de demo/video
+
+Pitch com caso e latê ncia 1 9 /1 1 link do roteiro
+
+Hackathon 2 1 /1 1 link da apresentaçã o
+
+O modelo també m está  no Google Docs, pronto para duplicar e preencher.
+
+MOGI · SPEC, ADRs e SOPs · v2  · 0 2 /1 1 /2 0 2 6 3 1
+
+10 Roteiro do pitch
+
+Trê s minutos, construídos em volta de um caso real do teste de campo e da
+
+latê ncia medida. Os colchetes se preenchem com os dados do teste alpha;
+
+nada ali pode ser inventado.
+
+TEMPO BLOCO O QUE DIZER E MOSTRAR
+
+0 :0 0  a 0 :2 0 Gancho: o caso Vídeo do teste: [problema real], [rua ou bairro de Itamogi], [dia]. Fala: hoje esse
+
+problema entraria numa ﬁ la por ordem de chegada.
+
+0 :2 0  a 0 :4 5 O problema Itamogi, 1 0 .7 7 0  habitantes, equipe enxuta. Reclamaçã o por telefone e WhatsApp,
+
+sem foto, sem local, sem prioridade.
+
+0 :4 5  a 1 :4 5 A demo SOP 0 5  ao vivo, ou o vídeo plano B: foto, fala, formulá rio pronto, conﬁ rmar, pin no
+
+mapa 3 D, operador abre o detalhe com as barras G U T e o prazo da regra local.
+
+1 :4 5  a 2 :1 0 O número Do relato ao chamado em [p5 0 ] s no teste de campo, [p9 5 ] s no pior caso, contra a
+
+meta de 1 0  s. [N] relatos reais, acerto de [x de N] contra a anotaçã o do ti me.
+
+2 :1 0  a 2 :3 5 O diferencial Hospital atende por gravidade. O MOGI mede a gravidade com probabilidade, diz o
+
+moti vo, e a prefeitura edita a regra sem programador. Cada decisã o tem dono: Jev
+
+escolhe a secretaria, o RAG traz o prazo da cidade, o Lua decide o nível, o humano
+
+conﬁ rma o críti co.
+
+2 :3 5  a 3 :0 0 O pedido Piloto interno de 4  semanas e aberto de 8 em Itamogi. Open source, um servidor,
+
+custo de IA abaixo de R$ 0 ,0 5  por ocorrê ncia (meta a conﬁ rmar no piloto).
+
+R E G R A   D O   P I T C H
+
+Todo número dito no palco tem que estar na planilha do teste de campo ou ser
+
+dito como meta. Latê ncia de fornecedor nã o entra como resultado nosso.
+
+MOGI · SPEC, ADRs e SOPs · v2  · 0 2 /1 1 /2 0 2 6 3 2

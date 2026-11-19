@@ -1,0 +1,699 @@
+
+
+PA P E R   T É C N I C O   ·  V E R S Ã O   0 .2   PA R A   R E V I S Ã O   ·  P R O P O S TA   D E   M É T O D O   E   P R O T O C O L O   D E   A V A L I A Ç Ã O
+
+Gravidade com probabilidade: triagem urbana
+calibrada para zeladoria em cidades pequenas
+
+O método do Sistema MOGI (GUT probabilística, sinais de Manchester e regra auditável em
+Lua), o fluxo com um dono por decisão, o exemplo do cano estourado recalculado, uma si-
+mulação de sensibilidade à incerteza e o protocolo para medir, começando pelo teste de
+campo alpha em Itamogi-MG até 14/11. Ainda não há dado de campo.
+
+Equipe ROTA Scale · AKCIT Camp Sul 2026
+
+02/11/2026, versão 0.2 · Destino: time do MOGI, banca do AKCIT Camp e prefeitura de Itamogi · Estado: proposta; o método
+segue hipótese até o piloto, a arquitetura já está nos ADRs aceitos em 02/11 · Fontes: SPEC v2 do MOGI de 02/11/2026, IBGE,
+post de lançamento do Jev e 18 referências
+
+Resumo
+
+Aplicativos de zeladoria urbana recebem foto e localização, mas priorizam por categoria, ordem de
+chegada ou votos. Este paper propõe e formaliza a triagem do Sistema MOGI, pensado para um mu-
+nicípio de 10.770 habitantes. O relato chega por foto, voz e GPS; um modelo de visão descreve a mí-
+dia em campos estruturados; um classificador tipado devolve categoria, secretaria, sinais de risco e
+distribuições de probabilidade para gravidade, urgência e tendência (G, U e T); uma busca com recu-
+peração (RAG) traz só o prazo e a regra local da secretaria já escolhida; uma regra em Lua, editável
+pela prefeitura, decide o nível de 1 a 5 no estilo da triagem de Manchester; e toda ação sai por função
+tipada. Cada decisão tem um dono só, o que fecha a disputa da versão anterior entre o RAG e o classi-
+ficador  pela  secretaria.  Formalizamos  três  quantidades:  a  GUT  esperada,  que  ordena  a  fila;  a  GUT
+pessimista (percentil 90), que decide sob incerteza; e o piso imposto por sinal crítico. Recalculando o
+exemplo do cano estourado da documentação, a GUT esperada é 90,2 (nível 4), mas a probabilidade
+de o produto passar de 100 é 0,52 e o percentil 90 é 125 (nível 5); o sinal de água jorrando já levaria ao
+nível 5. Numa simulação em que a incerteza cresce até a distribuição uniforme, a regra pessimista
+mantém  o  nível  4  ou  5  enquanto  a  esperada  cai  para  o  nível  2.  A  regra  protege  contra  subtriagem,
+mas joga a incerteza na fila de revisão humana. Propomos decidir o nível pela probabilidade de ex-
+ceder cada faixa, com limiar por nível, e sete hipóteses com protocolo, a primeira medida sendo a la-
+tência por etapa no teste de campo alpha em Itamogi até 14/11. Nada aqui é resultado de campo: o
+protótipo ainda não rodou.
+
+Palavras-chave: zeladoria urbana; cidades inteligentes; triagem; matriz GUT; calibração de probabilidades;
+Open311; governo local; LGPD.
+
+Como ler as marcas. [DADO REAL] vem de fonte conferível e traz a fonte. [HIPÓTESE] ainda não foi me-
+dido. [NÃO CONFIRMADO] é afirmação de fornecedor ou número não relido em fonte independente. Li-
+miares escritos como critério são propostas a calibrar no piloto.
+
+Triagem urbana calibrada Paper v0.2 · proposta para revisão
+
+Triagem urbana calibrada · Equipe ROT A Scale · v0.2 · 02/11/2026 ·  1
+
+O que mudou
+
+Tabela 1. O que mudou da v0.1 para a v0.2. Dado real: pedido do dono de 02/11/2026 (fontes/pedido-2026-11-02.md) e SPEC
+v2 do MOGI (fontes/Sistema-MOGI-SPEC-ADRs-SOPs-v2.pdf ). Os números da Seção 4 foram recalculados pelo analise.py e
+não mudaram.
+
+Ponto O que a v0.1 dizia O que a v0.2 diz
+
+Fluxo (Figura 1) Visão, classificador e Lua; RAG e
+function calling só citados no texto Fluxo completo: visão, Jev, RAG de prazo e regra local,
+Lua e funções tipadas, cada um com cor pelo papel
+
+Secretaria O RAG buscava a secretaria e o prazo; o
+Jev também devolvia a secretaria Um dono: o Jev escolhe entre as secretarias cadastradas;
+o RAG só consulta prazo e regra local (Tabela 2)
+
+Ações Não tratadas Seis funções tipadas executadas pelo backend; modelo
+nenhum escreve no banco
+
+Voz e linguagem Voz sem adaptador definido Voz nativa do aparelho no app Expo; backend em Go
+(ADRs 0002 e 0011 corrigidos)
+
+Hipóteses H1 a H6 H7: a triagem completa cabe em 10 s no campo, medida
+por etapa no teste alpha
+
+Primeira medida Só o piloto de 12 semanas Teste de campo alpha em Itamogi até 14/11, com
+protocolo mínimo (Seção 5)
+
+Tese Não mudou: prioridade como distribuição, com regra auditável por cima
+
+1 Introdução
+
+Em  cidade  pequena,  a  prefeitura  atende  com  equipe  enxuta  e  cada  saída  de  campo  precisa  valer.
+Itamogi, no sul de Minas Gerais, tem 10.770 habitantes no Censo 2022, em 243,7 km². [DADO REAL:
+IBGE Cidades, Itamogi] Ali, como em muitos municípios desse porte, a reclamação chega por tele-
+fone, WhatsApp ou balcão, sem foto, sem localização precisa e sem critério explícito de prioridade
+entre um lixo parado e um cano estourado.
+
+O hospital resolveu um problema parecido décadas atrás: atende por gravidade, não por ordem de
+chegada. A triagem de Manchester define cinco níveis com cor e tempo máximo, e discriminadores
+por  queixa  que  sobem  o  nível  na  dúvida  (Mackway-Jones,  Marsden  e  Windle,  2014).  A  pergunta
+deste paper é: dá para medir a gravidade de um problema urbano com probabilidade, explicar o
+motivo e ainda assim manter a decisão auditável pela prefeitura?
+
+Contribuições. (i) Uma formalização da GUT calibrada, com as três quantidades de decisão e a regra de
+piso por sinal (Seção 3). (ii) O exemplo da documentação recalculado com a distribuição do produto, não
+só com a média (Seção 4). (iii) Uma simulação que mostra para onde a regra pessimista empurra a incer-
+teza (Seção 4). (iv) Uma regra alternativa por probabilidade de excedência e sete hipóteses com protocolo,
+começando pelo teste de campo alpha (Seções 4 e 5). (v) Um fluxo com um dono por decisão, que separa
+decidir de consultar (Seção 3).
+
+2 Trabalhos relacionados
+
+Zeladoria e padrões abertos. FixMyStreet, SeeClickFix, uReport e o brasileiro Colab recebem relato
+com foto e mapa; o roteamento é por local e categoria, e a prioridade, quando existe, é manual, por
+fila ou por votos (MOGI, 2026). O padrão aberto GeoReport v2 do Open311 define serviços, pedidos,
+status e mídia, e é o caminho para conversar com outros sistemas da prefeitura (Open311, 2012).
+
+Viés de quem relata. Em Nova York, bairros de menor renda e com mais minorias relatam menos
+problemas de rua, apesar de necessidade objetiva e subjetiva maior; dados de 311 tendem a subesti-
+
+Triagem urbana calibrada Paper v0.2 · proposta para revisão
+
+Triagem urbana calibrada · Equipe ROT A Scale · v0.2 · 02/11/2026 ·  2
+
+mar a necessidade justamente onde ela é maior (Kontokosta e Hong, 2021). Qualquer prioridade que
+some relatos herda esse viés.
+
+Triagem hospitalar. A revisão sistemática de Parenti et al. (2014) achou confiabilidade entre avalia-
+dores de boa a muito boa na maioria dos estudos do Manchester, mas segurança baixa por subtria-
+gem e baixa sensibilidade para os níveis mais altos. A lição para a cidade é direta: o erro caro é re-
+baixar o crítico, e a regra precisa preferir sobretriagem nos níveis altos.
+
+Matriz GUT. Na literatura de gestão brasileira, a matriz GUT é atribuída a Kepner e Tregoe (1965):
+gravidade, urgência e tendência recebem notas de 1 a 5, e o produto, de 1 a 125, ordena os proble-
+mas. A versão clássica usa uma nota por eixo e esconde a incerteza de quem dá a nota.
+
+Calibração. Uma probabilidade é calibrada quando, entre os casos com confiança 0,8, cerca de 80%
+estão certos. Redes modernas tendem a sair descalibradas (Guo et al., 2017). As medidas usuais são
+o escore de Brier (Brier, 1950) e o erro de calibração esperado, ECE (Naeini, Cooper e Hauskrecht,
+2015).  A  predição  conforme  dá  cobertura  garantida  fora  da  amostra  sem  supor  calibração  do  mo-
+delo (Angelopoulos e Bates, 2021).
+
+O classificador. O MOGI usa o Jev, da TypeSafe AI, lançado em 15/09/2026: entra estado não estrutu-
+rado, sai decisão tipada com probabilidade, em 70 a 500 ms, a US$ 0,042 por milhão de tokens de en-
+trada, com até 255 opções por escolha e ainda sem imagem (TypeSafe, 2026). [NÃO CONFIRMADO:
+números e alegação de calibração são do fornecedor; a comparação publicada usa como referência
+a média de dois modelos de fronteira, não rótulos humanos]
+
+O que a casa já mediu. Os Desvios algorítmicos v0.2 mostram duas coisas que valem aqui: margem
+de erro calibrada fora da amostra, por predição conforme, e a condição de estabilidade de uma re-
+cursão entre níveis, ganho menor que 1 (Rota Scale, 2026a). A Recuperação agêntica v0.1 especifica
+a  verificação  das  respostas  de  um  RAG,  que  é  o  passo  que  busca  prazo  e  regra  local  da  prefeitura
+(Rota Scale, 2026b).
+
+3 O sistema e o método
+
+Arquitetura em uma página
+
+O MOGI é um monólito modular em Go com portas e adaptadores; o app é Expo (Android e iPhone),
+com  voz  pelo  reconhecimento  nativo  do  aparelho;  o  painel  é  React  com  mapa  3D  em  MapLibre  e
+deck.gl, sem terreno no MVP; o banco é PostgreSQL com PostGIS e H3, e a mídia vai para um arma-
+zenamento  compatível  com  S3.  [DADO  REAL:  ADRs  0002,  0004,  0011  e  0013,  aceitos  em  lote  em
+02/11/2026] As regras de triagem são scripts Lua por prefeitura, executados em sandbox com tempo
+máximo  de  50  ms;  Lua  foi  escolhida  por  ser  embutível,  pequena  e  editável  sem  novo  deploy
+(Ierusalimschy, de Figueiredo e Celes, 2007). A Figura 1 mostra o caminho de um relato.
+
+Triagem urbana calibrada Paper v0.2 · proposta para revisão
+
+Triagem urbana calibrada · Equipe ROT A Scale · v0.2 · 02/11/2026 ·  3
+
+falha
+ alta, nível 1  a 3
+ nível 4  ou 5
+
+operador conﬁrma
+
+baixa
+
+Foto ou vídeo
+
+Borra rostos e placas
+
+Visão: c ampos estruturados
+ Fala do cidadão
+
+Voz  nativa  do  aparelho,  pt-BR,  áu -
+dio descartado
+ GPS
+
+fn  geocodiﬁcar:  endereço,  bairro, 
+H3
+ fn  relatos_proximos:  mesmo 
+quadrante
+
+Jev:  categoria,  secretaria  entre  as 
+cadastradas, sinais, G U T
+
+Fallback: LLM com schema, depois 
+a classiﬁcar RAG  da  prefeitura:  prazo  e  regra 
+local da secretaria escolhida
+
+Regra Lua: sinais, limiares, pesos e 
+prazo
+ Conﬁança e nível
+
+fn abrir_chamado
+
+fn enviar_revisaofn pedir_nova_foto
+
+fn notiﬁcar: cidadão e secr etaria
+
+Figura 1. O fluxo do agente. Roxo decide (classificador e regra Lua), laranja consulta (RAG de prazo e regra local), verde
+age  (funções  tipadas).  A  mídia  é  borrada  antes  de  qualquer  envio  e  nunca  chega  ao  classificador.  Dado  ilustrativo:
+desenho da arquitetura aceita nos ADRs de 02/11/2026, ainda sem código rodando.
+
+Um dono por decisão
+
+Na versão anterior, a documentação punha o RAG buscando a secretaria responsável e o classifica-
+dor também devolvendo a secretaria. [DADO REAL: documentação do MOGI de 01/11/2026, fluxo do
+agente, passos 5 e 6] Dois componentes decidindo a mesma coisa dão duas respostas e nenhum cri-
+tério para escolher. A v0.2 separa decisão de consulta (Tabela 2).
+
+Triagem urbana calibrada Paper v0.2 · proposta para revisão
+
+Triagem urbana calibrada · Equipe ROT A Scale · v0.2 · 02/11/2026 ·  4
+
+Tabela 2. Quem decide cada coisa no fluxo da Figura 1. Dado real: SPEC v2 do MOGI, seção 04, e ADR 0007 aceito em
+02/11/2026.
+
+Decisão Dono Como
+
+Categoria Classificador (Jev) Escolha tipada entre as categorias cadastradas, com probabilidade
+
+Secretaria Classificador (Jev) Escolha tipada entre as secretarias cadastradas pela prefeitura; o
+operador corrige na revisão
+
+Prazo e regra local RAG da prefeitura Busca pela categoria e pela secretaria já escolhidas; devolve o
+trecho com a fonte; vazio, vale o prazo padrão do nível
+
+Nível de 1 a 5 Regra Lua Equação 4 (ou 6), com os limiares da prefeitura
+
+Ação Funções tipadas abrir_chamado, enviar_revisao ou pedir_nova_foto, e depois
+notificar; geocodificar e relatos_proximos alimentam a entrada
+
+Despacho nos níveis 4
+e 5 Operador Confirma ou corrige antes de abrir o chamado
+
+A separação tem duas consequências para a avaliação. Primeiro, o erro ganha endereço: secretaria
+errada  se  mede  contra  o  classificador  (H1),  prazo  errado  contra  a  base  da  prefeitura,  nível  errado
+contra a regra (H3). Segundo, o RAG vira um passo verificável no sentido da Recuperação agêntica
+v0.1: cada prazo devolvido carrega a fonte, e a ausência de fonte vira marca explícita, não invenção
+(Rota Scale, 2026b). As ações por função tipada, validadas por schema e executadas pelo backend,
+são o padrão de uso de ferramentas descrito pela Anthropic (2024): o modelo propõe, o código exe-
+cuta e registra.
+
+As quantidades de decisão
+
+Para cada relato, o classificador devolve distribuições   sobre as notas de 1 a 5 e, para cada
+sinal de risco  , a probabilidade   de o sinal estar presente. Seja  . Sob independência
+
+entre os eixos, a GUT esperada é
+
+e a distribuição completa do produto sai por convolução multiplicativa,
+
+de onde vem a GUT pessimista, o menor valor com probabilidade acumulada de pelo menos 0,9:
+
+Seja   a função que leva um valor de GUT ao nível pelas faixas 1 a 8, 9 a 27, 28 a 59, 60 a 99 e 100 a
+
+125. Com   a confiança do classificador,   o limiar de sinal (proposta 0,8),   o piso do sinal   e   o
+
+corte de confiança (proposta 0,6), o nível é
+
+Dentro do nível, a fila se ordena por  . Níveis 4 e 5 sempre passam por um operador; confiança
+baixa ou entropia alta das distribuições leva a revisão humana ou a um pedido de nova foto. A ten-
+dência    é  recalculada  a  cada  relato  próximo  no  mesmo  quadrante  H3,  o  que  torna  a  prioridade
+
+viva.
+ p  , p  , p  G U T
+s q  s X = G ⋅ U ⋅ T
+
+E[X]= E[G]E[U ]E[T ] (1)
+
+P (X = x) =  p  (g)p  (u)p  (t)
+
+g u t = x
+∑ G U T (2)
+
+x   =0,9 min{x : P (X ≤ x) ≥ 0,9} (3)
+
+f (⋅) c τ m  s s c  0
+
+n = max (f (1[c ≥ c  ]E[X]+0 1[c < c  ]x  ),   m  )0 0,9 s: q  > τs
+max s (4)
+
+E[X]
+
+T
+
+Triagem urbana calibrada Paper v0.2 · proposta para revisão
+
+Triagem urbana calibrada · Equipe ROT A Scale · v0.2 · 02/11/2026 ·  5
+
+Como medir
+
+Contra a decisão do operador, três medidas: acerto de categoria; concordância de nível pelo kappa
+ponderado (Cohen, 1968), com tolerância de um nível; e calibração das probabilidades pelo escore
+de Brier,
+
+e pelo ECE em faixas de confiança. Proporções pequenas levam intervalo de 95% de Wilson, porque
+o piloto terá poucas centenas de casos.
+
+4 Resultados ilustrativos
+
+O exemplo do cano estourado, recalculado
+
+A documentação traz as distribuições de um cano estourado jorrando água e conclui GUT esperada
+de 90, pessimista de 125 e nível 5 pelo sinal de água jorrando com probabilidade 0,93. [DADO REAL:
+documentação do MOGI, seção 3] Recalculamos com a distribuição completa do produto (Tabela 3).
+
+Tabela 3. Distribuições do exemplo e o que sai delas. As três primeiras linhas são da documentação; as demais foram
+recalculadas pelo analise.py com as equações 1 a 3.
+
+Quantidade Valor Nível pela faixa
+
+G: P(4) = 0,20; P(5) = 0,80 média 4,8
+
+U: P(4) = 0,30; P(5) = 0,70 média 4,7
+
+T: P(3) = 0,20; P(4) = 0,60; P(5) = 0,20 média 4,0
+
+GUT esperada, equação 1 90,2 4, laranja
+
+Mediana do produto 100 5, vermelho
+
+P(G × U × T = 125) 0,112
+
+P(G × U × T ≥ 100) 0,524
+
+GUT pessimista, equação 3 125 5, vermelho
+
+GUT esperada se os eixos andassem juntos 92,6 4, laranja
+
+48 60 64 75 80 100 125
+G × U × T
+
+0.0
+
+0.1
+
+0.2
+
+0.3
+
+0.4probabilidade
+média 90,2
+
+Figura 2. Distribuição de G × U × T no exemplo, colorida pela faixa de nível. A média fica no laranja, mas mais da metade
+da massa está no vermelho. Dado ilustrativo: distribuições do exemplo da documentação.
+
+B =     p   − y  
+N
+1
+ i= 1
+∑
+
+N
+ k
+∑ ( ik ik)
+2 (5)
+
+Triagem urbana calibrada Paper v0.2 · proposta para revisão
+
+Triagem urbana calibrada · Equipe ROT A Scale · v0.2 · 02/11/2026 ·  6
+
+Três leituras. Primeiro, a média esconde a forma: com média de 90,2 no laranja, há 52,4% de chance
+de o produto estar no vermelho, e a mediana já é 100. Segundo, a suposição de independência pesa
+pouco aqui: se os três eixos andassem juntos, a média subiria só para 92,6. Terceiro, o resultado fi-
+nal não depende da GUT: o sinal de água jorrando, acima de 0,8, já trava o piso em 5. A GUT importa
+nos casos sem sinal decisivo.
+
+Para onde vai a incerteza
+
+Para  ver  o  comportamento  da  regra  quando  o  classificador  sabe  menos,  misturamos  as  distribui-
+ções do exemplo com a uniforme, com peso crescente (Figura 3). [HIPÓTESE: a mistura com a uni-
+forme representa bem a perda de informação de uma foto ruim ou de um relato vago]
+
+0.0 0.2 0.4 0.6 0.8 1.0
+peso da distribuição uniforme (incerteza crescente)
+
+0
+
+20
+
+40
+
+60
+
+80
+
+100
+
+120G × U × T
+GUT esperada
+GUT pessimista (p90)
+
+Figura 3. GUT esperada e pessimista quando a incerteza cresce, sobre as faixas de nível. A esperada sai do laranja com
+peso  0,40;  a  pessimista  fica  no  vermelho  até  cerca  de  0,72  e,  na  uniforme,  ainda  marca  60,  nível  4.  Dado  ilustrativo,
+simulação determinística com as distribuições do exemplo.
+
+Na distribuição uniforme, o classificador não sabe nada, a GUT esperada é 27 (nível 2) e a pessimista
+é 60 (nível 4). Pela equação 4, um relato sem informação nenhuma, com confiança baixa, vira nível
+4 e vai para revisão humana. É o comportamento seguro que a literatura de Manchester pede, por-
+que a subtriagem é o erro caro (Parenti et al., 2014). O custo é que toda a incerteza do sistema de-
+semboca na fila do operador, e em cidade pequena essa fila é uma pessoa.
+
+Uma regra alternativa
+
+Em  vez  de  escolher  entre  média  e  percentil,  decidir  o  nível  pela  probabilidade  de  exceder  cada
+faixa, com limiar próprio por nível:
+
+em que   é o início da faixa do nível   e   é o limiar. Limiar baixo nos níveis altos (por exemplo
+) protege contra subtriagem; limiar alto nos níveis médios evita encher a fila. No exemplo,
+
+ daria nível 5 com  . Os limiares viram parâmetros da regra Lua, calibrá-
+
+veis com as correções do operador, e a predição conforme dá a garantia de cobertura que falta à ca-
+libração do fornecedor (Angelopoulos e Bates, 2021). [HIPÓTESE]
+
+5 Hipóteses e protocolo
+
+O piloto previsto tem 4 semanas internas e 8 abertas. Com poucas centenas de casos, cada métrica
+leva intervalo de Wilson, e só vira ADR o que passar.
+
+n = max{k : P (X ≥ a  ) ≥k π  }k (6)
+
+a  k k π  k
+π   =5 0,3
+P (X ≥ 100) = 0,52 π   =5 0,3
+
+Triagem urbana calibrada Paper v0.2 · proposta para revisão
+
+Triagem urbana calibrada · Equipe ROT A Scale · v0.2 · 02/11/2026 ·  7
+
+Primeira medida: o teste de campo alpha
+
+Antes do piloto, o protótipo v1 (captura, formulário, confirmação e mapa) vai a campo em Itamogi
+até 14/11. [DADO REAL: plano da SPEC v2, seção 08] O protocolo mínimo: pelo menos 10 relatos re-
+ais de categorias diferentes; latência gravada por etapa; um membro do time anota categoria, secre-
+taria  e  nível  sem  ver  a  saída  do  sistema;  um  caso  gravado  em  vídeo  do  começo  ao  fim;  nenhum
+rosto, placa ou dado pessoal. Com 10 casos, o acerto não tem valor estatístico, e o paper vai dizer
+isso. O que o teste alpha decide de verdade é H7: se a latência de fornecedor, de 70 a 500 ms no clas-
+sificador  [NÃO  CONFIRMADO],  se  confirma  dentro  de  uma  triagem  de  ponta  a  ponta  com  visão,
+RAG e regra.
+
+Tabela 4. Protocolo de cada hipótese. Limiares são propostas a calibrar com a prefeitura.
+
+H Pergunta Métrica Experimento mínimo Sucesso Descarte
+
+H1 A categoria sai certa
+sem o servidor
+corrigir?
+ Acerto de
+categoria com IC
+de Wilson
+ Amostra revisada às cegas
+pelo operador no piloto
+interno
+ Limite inferior do
+IC acima de 85% Limite superior
+abaixo de 75%
+
+H2 As probabilidades do
+classificador são
+calibradas no domínio
+urbano?
+ ECE e Brier
+contra a decisão
+do operador
+ Comparar com o modelo
+que só usa a frequência de
+cada categoria
+ Brier melhor que
+o da frequência e
+ECE abaixo de 0,05
+ Brier igual ou pior
+que o da
+frequência
+
+H3 O nível concorda com o
+operador e não rebaixa
+o crítico?
+ Kappa
+ponderado;
+sensibilidade nos
+níveis 4 e 5
+ Nível do sistema contra o
+do operador em toda
+ocorrência revisada
+ Kappa de 0,6 ou
+mais e
+sensibilidade de
+0,9 ou mais
+ Sensibilidade
+abaixo de 0,8
+
+H4 A regra por excedência
+(equação 6) reduz a
+revisão sem perder
+sensibilidade?
+ Parcela em
+revisão humana;
+sensibilidade nos
+níveis 4 e 5
+ Reprocessar as
+distribuições gravadas com
+as equações 4 e 6, sem
+tocar no atendimento
+ Revisão cai 20%
+ou mais,
+sensibilidade
+igual
+ Sensibilidade cai
+
+H5 Dá para relatar sem
+teclado em menos de
+30 s?
+ Mediana do
+tempo do relato;
+campos aceitos
+sem correção
+ Log do app no piloto aberto Mediana abaixo de
+30 s e 80% dos
+campos aceitos
+ Mediana acima de
+60 s
+
+H6 A tendência viva
+amplifica o viés de
+quem relata?
+ Parcela de
+chamados que
+sobem de nível
+só por número
+de relatos, por
+bairro
+ Comparar por bairro com a
+vistoria de campo de uma
+amostra
+ Nenhum bairro
+com subida só por
+volume acima de
+10%
+ Bairros com mais
+relato concentram
+as subidas sem
+necessidade maior
+na vistoria
+
+H7 A triagem completa
+cabe em 10 s no campo? Latência p50 e
+p95 por etapa
+(visão, Jev, RAG,
+Lua, funções) e
+total
+ Log de cada relato no teste
+alpha de Itamogi, até 14/11,
+com pelo menos 10 relatos
+ p95 total de 10 s ou
+menos p50 total acima de
+10 s
+
+6 Riscos e limites
+
+1. Sem  dado  de  campo.  Todo  número  da  Seção  4  sai  do  exemplo  da  documentação  ou  de
+simulação.  O  paper  propõe  e  formaliza;  não  demonstra.  O  teste  alpha  de  14/11  dá  a  primeira
+medida de latência, mas 10 casos não sustentam conclusão sobre acerto.
+
+2. Base de regras locais vazia. O RAG só é tão bom quanto a base de prazos da prefeitura. Sem ela,
+todo  chamado  sai  com  o  prazo  padrão  do  nível  e  a  marca  sem  regra  local.  Montar  a  base  é
+decisão aberta da SPEC v2, e o paper não mede o RAG até ela existir.
+
+3. Dependência de fornecedor. O classificador está em acesso antecipado, roda nos EUA e não tem
+avaliação independente publicada da calibração. O fallback com um LLM de saída estruturada
+
+Triagem urbana calibrada Paper v0.2 · proposta para revisão
+
+Triagem urbana calibrada · Equipe ROT A Scale · v0.2 · 02/11/2026 ·  8
+
+mantém o serviço, mas sem as mesmas garantias. H2 existe para medir isso no domínio urbano.
+
+4. Transferência  internacional  de  dado.  A  LGPD  exige  base  legal  e  cuidado  com  transferência
+internacional  (Brasil,  2018).  O  desenho  manda  só  a  descrição  estruturada,  sem  mídia,  nome,
+telefone  ou  localização  exata  da  pessoa;  o  encarregado  de  dados  da  prefeitura  precisa  validar
+isso antes do piloto aberto.
+
+5. Viés de relato. Prioridade que soma relatos herda a desigualdade de quem relata (Kontokosta e
+Hong,  2021).  A  tendência  recalculada  a  cada  relato  é  também  um  laço  de  realimentação:  mais
+relatos,  bairro  mais  vermelho,  mais  atenção,  possivelmente  mais  relatos.  Pela  condição  dos
+Desvios  v0.2,  o  laço  precisa  de  ganho  menor  que  1  e  de  teto  por  bairro  (Rota  Scale,  2026a).  H6
+mede isso.
+
+6. Independência dos eixos. A equação 1 supõe G, U e T independentes. No exemplo, a diferença
+para  o  caso  extremo  de  dependência  foi  pequena  (90,2  contra  92,6),  mas  isso  precisa  ser
+conferido nos dados do piloto.
+
+7. Faixas  e  prazos  herdados.  As  faixas  de  GUT  por  nível  e  os  tempos  máximos  vêm  de  proposta,
+não de dado de Itamogi. A prefeitura precisa validar antes de qualquer meta virar compromisso.
+
+8. Amostra pequena. Em município de 10 mil habitantes, o piloto terá poucas centenas de casos;
+os intervalos serão largos, e as hipóteses foram escritas com critério de descarte para não forçar
+conclusão.
+
+7 Conclusão
+
+A contribuição do MOGI não está em ter IA na zeladoria, e sim em tratar prioridade como uma dis-
+tribuição de probabilidade, com uma regra explícita, auditável e editável pela prefeitura em cima
+dela. O exemplo recalculado mostra por que a forma da distribuição importa mais que a média, e a
+simulação mostra o preço da regra pessimista: segurança contra subtriagem paga com fila de revi-
+são. A v0.2 fecha a ambiguidade do fluxo: cada decisão tem um dono, e o RAG passou de decisor a
+consulta com fonte. O passo seguinte é o teste de campo alpha, que mede a latência real, e depois o
+piloto, com as sete hipóteses da Tabela 4 e os limiares calibrados contra as decisões reais dos servi-
+dores de Itamogi.
+
+Referências
+
+Anthropic (2024). Building effective agents. Anthropic Engineering, 19/12/2024.
+https://www.anthropic.com/engineering/building-effective-agents
+
+Angelopoulos, A. N. e Bates, S. (2021). A gentle introduction to conformal prediction and distribution-free uncertainty
+quantification. arXiv:2107.07511. https://arxiv.org/abs/2107.07511
+
+Brasil (2018). Lei n. 13.709, de 14 de agosto de 2018, Lei Geral de Proteção de Dados Pessoais (LGPD).
+https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709.htm
+
+Brier, G. W. (1950). Verification of forecasts expressed in terms of probability. Monthly Weather Review, 78(1), p. 1-3.
+
+Cohen, J. (1968). Weighted kappa: nominal scale agreement with provision for scaled disagreement or partial credit.
+Psychological Bulletin, 70(4), p. 213-220.
+
+Guo, C., Pleiss, G., Sun, Y. e Weinberger, K. Q. (2017). On calibration of modern neural networks. Em: Proceedings of the
+34th International Conference on Machine Learning (ICML), PMLR 70, p. 1321-1330.
+
+IBGE (2025). Cidades e Estados: Itamogi (MG). Censo Demográfico 2022 e área territorial.
+https://www.ibge.gov.br/cidades-e-estados/mg/itamogi.html
+
+Ierusalimschy, R., de Figueiredo, L. H. e Celes, W. (2007). The evolution of Lua. Em: Proceedings of the Third ACM SIG-
+PLAN Conference on History of Programming Languages (HOPL III). https://doi.org/10.1145/1238844.1238846
+
+Kepner, C. H. e Tregoe, B. B. (1965). The rational manager: a systematic approach to problem solving and decision ma-
+king. Nova York: McGraw-Hill.
+
+Triagem urbana calibrada Paper v0.2 · proposta para revisão
+
+Triagem urbana calibrada · Equipe ROT A Scale · v0.2 · 02/11/2026 ·  9
+
+Kontokosta, C. E. e Hong, B. (2021). Bias in smart city governance: how socio-spatial disparities in 311 complaint beha-
+vior impact the fairness of data-driven decisions. Sustainable Cities and Society, 64, 102503.
+
+Mackway-Jones, K., Marsden, J. e Windle, J. (orgs.) (2014). Emergency triage: Manchester Triage Group. 3. ed. Chiches-
+ter: Wiley-Blackwell.
+
+MOGI (2026). Sistema MOGI: Monitoramento e Ocorrências com Gestão Inteligente. Arquitetura, SPEC, ADRs e SOPs.
+Equipe ROTA Scale, AKCIT Camp Sul 2026, documento interno de 01/11/2026; SPEC v2 com ADRs aceitos em lote,
+02/11/2026.
+
+Naeini, M. P., Cooper, G. F. e Hauskrecht, M. (2015). Obtaining well calibrated probabilities using Bayesian binning.
+Em: Proceedings of the Twenty-Ninth AAAI Conference on Artificial Intelligence, p. 2901-2907.
+
+Open311 (2012). GeoReport v2 specification. http://wiki.open311.org/GeoReport_v2
+
+Parenti, N., Reggiani, M. L. B., Iannone, P., Percudani, D. e Dowding, D. (2014). A systematic review on the validity and
+reliability of an emergency department triage scale, the Manchester Triage System. International Journal of Nur-
+sing Studies, 51(7), p. 1062-1069.
+
+Rota Scale (2026a). Margem de erro e desvios algorítmicos em ecossistemas agênticos modulares, recursivos e auto-se-
+melhantes. Whitepaper v0.2, 22/10/2026. dev_PAPERS.
+
+Rota Scale (2026b). Recuperação agêntica com verificação recursiva e cache semântico de fatos. Especificação técnica
+v0.1, 19/10/2026. dev_PAPERS.
+
+TypeSafe (2026). Introducing System One models and Jev. TypeSafe AI, 15/09/2026. https://typesafe.ai/blog/introducing-
+system-one-models-and-jev
+
+Em uma página
+
+1. O problema. Em cidade pequena, a zeladoria atende por ordem de chegada. Itamogi tem 10.770
+habitantes e equipe enxuta.
+
+2. O  método.  Foto,  voz  e  GPS  viram  descrição  estruturada;  um  classificador  tipado  devolve
+distribuições de G, U e T e sinais de risco; uma regra Lua da prefeitura decide o nível de 1 a 5,
+como na triagem de Manchester.
+
+3. O que o exemplo mostra. No cano estourado, a média dá laranja (90,2), mas 52% da massa está
+no vermelho; o sinal de água jorrando já trava o nível 5.
+
+4. O preço da segurança. Sob incerteza total, a regra pessimista ainda marca nível 4 e manda para
+revisão: protege contra subtriagem e enche a fila do operador.
+
+5. Um  dono  por  decisão.  O  classificador  escolhe  a  secretaria  entre  as  cadastradas;  o  RAG  só  traz
+prazo e regra local com fonte; a regra Lua decide o nível; toda ação é função tipada.
+
+6. A  proposta.  Decidir  o  nível  pela  probabilidade  de  exceder  cada  faixa,  com  limiar  por  nível,
+calibrado contra o servidor, e testar sete hipóteses, a primeira (latência) no teste alpha de 14/11,
+antes de virar decisão.
+
+Triagem urbana calibrada Paper v0.2 · proposta para revisão
+
+Triagem urbana calibrada · Equipe ROT A Scale · v0.2 · 02/11/2026 ·  10
