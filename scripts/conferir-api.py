@@ -189,6 +189,15 @@ st, lista = chamar('GET', '/ocorrencias', token=operador)
 por_protocolo = {o['protocolo']: o for o in lista}
 vias, agua = por_protocolo[rec['protocolo']], por_protocolo[rec_agua['protocolo']]
 confere('lista do operador traz as duas', vias['secretaria'] == 'Obras e vias' and agua['secretaria'] == 'Água e esgoto', (vias['secretaria'], agua['secretaria']))
+# Relato real (morador cadastrado, pelo app) nunca entra como simulado, e o
+# filtro ?demo= da lista separa a demonstração dos relatos reais.
+confere('relato real chega com demo = false', vias['demo'] is False and agua['demo'] is False, (vias['demo'], agua['demo']))
+st_so, so_demo = chamar('GET', '/ocorrencias?demo=so', token=operador)
+confere('?demo=so não traz relato real', st_so == 200 and not any(o['protocolo'] in (rec['protocolo'], rec_agua['protocolo']) for o in so_demo) and all(o['demo'] for o in so_demo), st_so)
+st_oc, reais = chamar('GET', '/ocorrencias?demo=ocultar', token=operador)
+confere('?demo=ocultar traz só relatos reais', st_oc == 200 and not any(o['demo'] for o in reais) and {rec['protocolo'], rec_agua['protocolo']} <= {o['protocolo'] for o in reais}, st_oc)
+st_in, todos = chamar('GET', '/ocorrencias?demo=incluir', token=operador)
+confere('?demo=incluir traz reais e simulados', st_in == 200 and len(todos) == len(reais) + len(so_demo), (len(todos), len(reais), len(so_demo)))
 
 for o in (vias, agua):
     if o['status'] in ('revisao', 'a_classificar'):

@@ -1,0 +1,11 @@
+Sistema MOGI
+Copyright 2026 ROTA, equipe ROTA Scale
+
+Este produto inclui software de terceiros sob licenças permissivas
+(MIT, BSD-3-Clause, ISC e Apache-2.0), entre eles Pigo (MIT), pgx (MIT),
+minio-go (Apache-2.0), h3-js (Apache-2.0), MapLibre GL JS (BSD-3-Clause),
+React e Expo (MIT).
+
+O nome "MOGI", os logotipos e as peças da pasta brand/ não são licenciados
+pela Apache-2.0 (ver seção 6 da licença) e continuam com todos os direitos
+reservados, salvo indicação em contrário em brand/README.md.

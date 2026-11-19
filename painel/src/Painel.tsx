@@ -273,6 +273,11 @@ export function Fila({
                       <span className="item-titulo">
                         {NOME_CATEGORIA[o.categoria] ?? 'Outros'}
                         {o.relatos > 1 && <span className="relatos">{o.relatos} relatos</span>}
+                        {o.demo && (
+                          <span className="simulado" title="Chamado de demonstração, não é relato real de morador">
+                            Simulado
+                          </span>
+                        )}
                       </span>
                       <span className="item-sub">{o.endereco ?? o.bairro ?? 'Ver no mapa'}</span>
                       <span className="item-selos">
@@ -685,6 +690,7 @@ export function Detalhe({
           </h2>
           <p className="protocolo">
             {nomeDoStatus(o.status)} · <span className="nobr">{o.protocolo}</span>
+            {o.demo && <span className="simulado"> Simulado, não é relato real</span>}
           </p>
         </div>
         <button type="button" className="botao-icone" onClick={aoFechar} aria-label="Fechar e voltar para a lista">

@@ -21,6 +21,14 @@ describe('preferências do painel', () => {
     expect(lerPreferencias((k) => caixa.get(k) ?? null)).toEqual(PADRAO)
   })
 
+  it('simulados da demo ficam desligados por padrão e só ligam com true', () => {
+    expect(PADRAO.simulados).toBe(false)
+    expect(lerPreferencias(() => JSON.stringify({ simulados: true })).simulados).toBe(true)
+    expect(lerPreferencias(() => JSON.stringify({ simulados: 'sim' })).simulados).toBe(false)
+    // Não vira atributo de html: só muda o que a lista pede ao servidor.
+    expect(Object.keys(atributos({ ...PADRAO, simulados: true }))).not.toContain('data-simulados')
+  })
+
   it('vira atributo de html só o que está ligado', () => {
     expect(atributos(PADRAO)).toEqual({ 'data-texto': null, 'data-contraste': null, 'data-movimento': null })
     expect(atributos({ ...PADRAO, altoContraste: true, poucoMovimento: true })).toEqual({

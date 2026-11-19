@@ -73,6 +73,10 @@ type Handlers struct {
 	// Morador devolve o id do cadastro do morador pelo token do pedido, ou
 	// vazio sem cadastro (ADR 0024). Nulo trata todo pedido como sem cadastro.
 	Morador func(*http.Request) string
+	// OcultarDemo esconde os chamados simulados da lista do painel quando o
+	// pedido não diz nada (?demo=). Ligado quando DEMO_CHAMADOS=0: a central
+	// vê só relatos reais e pede ?demo=incluir para ver a demonstração.
+	OcultarDemo bool
 
 	// vagas limita quantas fotos são abertas e borradas ao mesmo tempo, para
 	// uma rajada de envios não esgotar a memória do servidor.
@@ -591,7 +595,8 @@ func (h *Handlers) Listar(w http.ResponseWriter, r *http.Request) {
 	if u.Papel == auth.PapelCampo {
 		secretaria = u.Secretaria
 	}
-	lista, err := h.Repo.Listar(r.Context(), r.URL.Query().Get("status"), limite, secretaria)
+	lista, err := h.Repo.Listar(r.Context(), r.URL.Query().Get("status"), limite, secretaria,
+		LerFiltroDemo(r.URL.Query().Get("demo"), h.filtroDemoPadrao()))
 	if err != nil {
 		h.Log.Error("listar", "erro", err)
 		httpx.Erro(w, http.StatusInternalServerError, "falha ao listar")
@@ -601,6 +606,14 @@ func (h *Handlers) Listar(w http.ResponseWriter, r *http.Request) {
 		h.assinar(&lista[i])
 	}
 	httpx.JSON(w, http.StatusOK, lista)
+}
+
+// filtroDemoPadrao é o que vale quando o pedido não traz ?demo=.
+func (h *Handlers) filtroDemoPadrao() FiltroDemo {
+	if h.OcultarDemo {
+		return DemoOcultar
+	}
+	return DemoIncluir
 }
 
 // Buscar trata GET /ocorrencias/{id}, com os relatos agrupados e as etapas.
