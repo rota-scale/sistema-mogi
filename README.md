@@ -12,6 +12,7 @@
 ## Em 30 segundos
 - **O problema:** em cidade pequena, buraco, cano estourado e poste apagado chegam por telefone e WhatsApp, sem foto, sem endereço e sem ordem de urgência. O urgente se perde no meio do comum.
 - **O MOGI:** o morador aponta a câmera; a IA e uma regra da prefeitura dão a urgência de 1 a 5 com o motivo; a central confere, a equipe resolve com foto e o morador acompanha.
+- **Canais:** o morador vai poder relatar por um assistente no WhatsApp, sem baixar nada, porque é onde ele já está. O app do MOGI continua com mais funções para o morador e com os perfis de gestor, operador e equipe. O assistente de WhatsApp é próximo passo, ainda não está no protótipo.
 - **Piloto:** Itamogi-MG. Prazos e secretarias são proposta, a validar com a prefeitura.
 - **Versão atual:** v0.3.3 ([o que mudou](CHANGELOG.md)).
 
@@ -261,6 +262,16 @@ IA_CHAVE=...           # opcional: visão e reserva do Jev
 | `brand/` | brand kit |
 
 </details>
+
+## Próximos passos
+O que vem depois do hackathon, em ordem. Nada desta lista está pronto no protótipo de hoje.
+
+1. **Teste de campo em Itamogi** com relatos reais de moradores, para medir as linhas de base dos indicadores do [BMC](bmc/README.md) e calibrar a triagem ([plano do teste](docs/teste-de-campo-itamogi.md)).
+2. **Assistente do MOGI no WhatsApp.** A maior fricção para o morador é baixar um app. No WhatsApp ele manda foto, localização e uma frase, e o assistente faz as mesmas perguntas do app, abre o chamado na mesma triagem (IA, regra Lua da prefeitura e revisão humana nos níveis 4 e 5) e devolve o protocolo e a foto do conserto na própria conversa.
+3. **Divisão de papéis entre canais.** O WhatsApp é a porta de entrada rápida do morador. O app e o painel cobrem o resto: acompanhar todos os relatos, "Também vi", a central do operador, a rota e a prova da equipe, os indicadores e as regras do gestor.
+4. **Custo e contrato do WhatsApp.** Medir o custo por conversa da WhatsApp Business API e somar à estrutura de custos do BMC, que hoje só tem servidor e IA.
+5. **Modelo de negócio.** Validar com prefeituras e com as regras de contratação pública a assinatura por faixa de população, a taxa de implantação e o plano para consórcios. Os valores ainda são hipótese.
+6. **Consentimento do vídeo do prefeito** antes de publicar o material da reunião de 18/11.
 
 ## Documentação
 
