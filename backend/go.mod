@@ -3,7 +3,7 @@ module github.com/rota-scale/cidade-inteligente-akcit/backend
 go 1.26.0
 
 require (
-	github.com/anthropics/anthropic-sdk-go/v2 v2.9.0
+	github.com/anthropics/anthropic-sdk-go/v2 v2.12.0
 	github.com/coder/websocket v1.8.15
 	github.com/esimov/pigo v1.4.6
 	github.com/golang-jwt/jwt/v5 v5.3.1
