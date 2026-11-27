@@ -1,0 +1,226 @@
+<title>Sistema MOGI</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Urbanist:wght@500;700;900&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: uma coluna de leitura com faixas largas; o mapa de urgência 1 a 5 é a assinatura. */
+:root {
+  --creme: #F5F1E8;
+  --papel: #FFFDF7;
+  --cafezal: #1F4D2B;
+  --cafezal-fundo: #12301A;
+  --cereja: #B3261E;
+  --ipe: #E9B526;
+  --tinta: #1F4D2B;
+  --apoio: #5E5548;
+  --linha: #E4DCCB;
+  --fundo: var(--creme);
+  --cartao: var(--papel);
+  --n1: #3E7B3A; --n2: #7A9A2E; --n3: #E9B526; --n4: #D9731A; --n5: #B3261E;
+  --display: 'Urbanist', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --fundo: #101C13; --cartao: #17271B; --tinta: #EDE7D8; --apoio: #B9B09F; --linha: #2C4232; --ipe: #F0C24A; color-scheme: dark } }
+:root[data-theme="dark"] { --fundo: #101C13; --cartao: #17271B; --tinta: #EDE7D8; --apoio: #B9B09F; --linha: #2C4232; --ipe: #F0C24A; color-scheme: dark }
+
+* { box-sizing: border-box; }
+body { background: var(--fundo); color: var(--tinta); font: 500 1.0625rem/1.55 var(--display); }
+.faixa { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 3.5rem; }
+.miolo { max-width: 960px; margin: 0 auto; display: grid; gap: 1.5rem; }
+h1, h2, h3 { margin: 0; line-height: 1.1; text-wrap: balance; }
+h2 { font-size: clamp(1.6rem, 4vw, 2.2rem); font-weight: 900; }
+h3 { font-size: 1.15rem; font-weight: 700; }
+p { margin: 0; text-wrap: pretty; max-width: 65ch; }
+.rotulo { font: 500 0.75rem/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--apoio); }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--ipe); outline-offset: 3px; }
+
+.topo { background: var(--cafezal); color: #F5F1E8; margin-top: calc(-1 * env(safe-area-inset-top, 0px)); padding-top: calc(env(safe-area-inset-top, 0px) + 3.5rem); }
+.topo .rotulo { color: #CFE0C9; }
+.topo h1 { font-size: clamp(2.6rem, 9vw, 5rem); font-weight: 900; letter-spacing: -0.02em; }
+.topo h1 span { color: var(--ipe); }
+.topo p { font-size: 1.2rem; color: #E7EFE3; }
+.escala { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; max-width: 520px; }
+.escala div { border-radius: 10px; padding: 0.6rem 0.5rem; font: 700 0.85rem/1.2 var(--display); color: #fff; }
+.escala div b { display: block; font-size: 1.4rem; }
+.escala .e3 { color: #2A2108; }
+
+.passos { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 1rem; list-style: none; padding: 0; margin: 0; counter-reset: p; }
+.passos li { counter-increment: p; display: grid; gap: 0.35rem; align-content: start; }
+.passos li::before { content: counter(p); font: 900 1.6rem/1 var(--display); color: var(--cereja); }
+.passos li.decide::before { color: var(--ipe); }
+.passos p { color: var(--apoio); font-size: 0.98rem; }
+
+.duas { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; }
+.bloco { background: var(--cartao); border: 1px solid var(--linha); border-radius: 16px; padding: 1.25rem; display: grid; gap: 0.75rem; align-content: start; min-width: 0; }
+.bloco ul { margin: 0; padding-left: 1.1rem; display: grid; gap: 0.4rem; }
+.selo { justify-self: start; font: 700 0.75rem/1 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; padding: 0.4rem 0.6rem; border-radius: 999px; }
+.selo.hoje { background: var(--cafezal); color: #F5F1E8; }
+.selo.plano { background: var(--ipe); color: #2A2108; }
+
+.tabela { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 0.97rem; min-width: 560px; }
+th, td { text-align: left; padding: 0.7rem 0.6rem; border-bottom: 1px solid var(--linha); vertical-align: top; }
+th { font: 500 0.72rem/1.2 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--apoio); }
+td.num { font-variant-numeric: tabular-nums; font-weight: 700; white-space: nowrap; }
+
+.numeros { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+.numeros div { display: grid; gap: 0.25rem; }
+.numeros b { font-size: 1.7rem; font-weight: 900; font-variant-numeric: tabular-nums; }
+.numeros small { color: var(--apoio); font-size: 0.85rem; }
+
+.falta { background: #FCE8E6; color: #7D1711; border: 2px dashed var(--cereja); border-radius: 10px; padding: 0.6rem 0.8rem; font-weight: 700; }
+.rodape { border-top: 1px solid var(--linha); color: var(--apoio); font-size: 0.92rem; }
+@media (prefers-reduced-motion: no-preference) { a { transition: color .15s; } }
+</style>
+
+<header class="faixa topo">
+  <div class="miolo">
+    <span class="rotulo">Itamogi, MG · AKCIT Camp 2026, finalista da etapa Sul</span>
+    <h1>Sistema <span>MOGI</span></h1>
+    <p>Triagem de pronto-socorro para a rua. O morador fotografa o problema, a IA responde perguntas fechadas, a regra da prefeitura dá a urgência de 1 a 5 e uma pessoa confere o que é grave.</p>
+    <div class="escala" role="img" aria-label="Escala de urgência de 1 a 5">
+      <div style="background:var(--n1)"><b>1</b>Sem pressa</div>
+      <div style="background:var(--n2)"><b>2</b>Baixa</div>
+      <div class="e3" style="background:var(--n3)"><b>3</b>Média</div>
+      <div style="background:var(--n4)"><b>4</b>Alta</div>
+      <div style="background:var(--n5)"><b>5</b>Crítico</div>
+    </div>
+  </div>
+</header>
+
+<section class="faixa">
+  <div class="miolo">
+    <span class="rotulo">A dor</span>
+    <h2>Em cidade pequena, o urgente se perde no meio do comum.</h2>
+    <p>Buraco, cano estourado e poste apagado chegam por telefone, WhatsApp, rede social e balcão, sem foto, sem endereço e sem ordem de urgência. Muito vira papel. A equipe é pouca e sai para olhar antes de consertar, e o morador não sabe o que aconteceu.</p>
+    <div class="numeros">
+      <div><b>~230 h/mês</b><small>de servidor devolvidas com 400 pedidos por mês. Estimativa com hipóteses, a confirmar com a prefeitura.</small></div>
+      <div><b>R$ 0,0007</b><small>de IA por relato com foto. Medido pelo time em casos de teste.</small></div>
+      <div><b>10 de 11</b><small>casos no nível certo. Casos escritos pelo time, não relatos de Itamogi.</small></div>
+    </div>
+  </div>
+</section>
+
+<section class="faixa" style="background:var(--cartao)">
+  <div class="miolo">
+    <span class="rotulo">Como funciona</span>
+    <h2>Do relato à foto do conserto, ao vivo.</h2>
+    <ol class="passos">
+      <li><h3>Morador relata</h3><p>Abre o link, fotografa e envia. Rostos e placas são borrados e foto de dentro de casa é recusada.</p></li>
+      <li><h3>A IA responde</h3><p>Que problema é, tem água jorrando, quão grave. Só perguntas fechadas, com probabilidades.</p></li>
+      <li class="decide"><h3>A regra decide</h3><p>Uma regra em Lua, que o técnico da prefeitura lê e muda, dá o nível e o prazo.</p></li>
+      <li><h3>Uma pessoa confere</h3><p>Níveis 4 e 5 passam pela central antes de a equipe sair.</p></li>
+      <li><h3>A equipe resolve</h3><p>Vai pela rota, conserta e tira a foto do depois. O morador vê o resultado.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section class="faixa">
+  <div class="miolo">
+    <span class="rotulo">Inteligência artificial</span>
+    <h2>IA de decisão, não de conversa.</h2>
+    <p>O MOGI não é um chatbot. A IA responde perguntas fechadas e quem decide a prioridade é a regra escrita pela cidade. Por isso é barato, rápido e dá para explicar cada decisão.</p>
+    <div class="duas">
+      <div class="bloco">
+        <span class="selo hoje">Na demo hoje</span>
+        <ul>
+          <li>O Claude descreve a foto já borrada em campos estruturados.</li>
+          <li>O Jev, da TypeSafe, classifica com probabilidades. Cobra só a entrada e não gera texto.</li>
+          <li>A regra Lua da prefeitura dá o nível de 1 a 5.</li>
+          <li>Se um provedor cair, entra a reserva, depois um classificador local e, por último, uma pessoa.</li>
+        </ul>
+      </div>
+      <div class="bloco">
+        <span class="selo plano">Plano do piloto 2027</span>
+        <ul>
+          <li>Com relatos reais rotulados pela prefeitura, um encoder visual leve e aberto (SigLIP 2 ou DINOv3).</li>
+          <li>Um classificador pequeno sobre ele (LightGBM ou TabPFN), treinado sem GPU de LLM.</li>
+          <li>As mesmas regras Lua continuam decidindo.</li>
+          <li>Roda na própria instalação: a foto deixa de sair da cidade. Ainda não existe.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="faixa" style="background:var(--cartao)">
+  <div class="miolo">
+    <span class="rotulo">Onde roda</span>
+    <h2>Infraestrutura em três degraus.</h2>
+    <p>Começa pequeno e só sobe com volume ou contrato. Nada está contratado. Os valores são estimativas de lista ou referências a cotar, nunca fatura.</p>
+    <div class="tabela">
+      <table>
+        <thead><tr><th>Degrau</th><th>Escala</th><th>Como</th><th>Referência de custo</th></tr></thead>
+        <tbody>
+          <tr><td><strong>1. Piloto</strong></td><td>Itamogi, ~1.000 relatos/mês</td><td>Uma máquina com o sistema de hoje, na prefeitura ou em nuvem de entrada, com nobreak, máquina reserva e backup fora da prefeitura</td><td class="num">~R$ 363/mês na AWS</td></tr>
+          <tr><td><strong>2. Região</strong></td><td>1 a 5 cidades, até 20 mil relatos/mês</td><td>Provedor nacional ou AWS São Paulo, com banco separado, armazenamento de objetos e contêineres gerenciados</td><td class="num">~R$ 1.533/mês na AWS</td></tr>
+          <tr><td><strong>3. Escala</strong></td><td>Picos e muitas cidades</td><td>Fila de triagem, alta disponibilidade e GPU só se houver modelo próprio</td><td class="num">a cotar</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>Dados no exterior:</strong> a LGPD permite transferência internacional com mecanismo válido. A residência obrigatória no Brasil é regra federal, que a prefeitura pode pôr em contrato. Provedor nacional reduz a latência.</p>
+  </div>
+</section>
+
+<section class="faixa">
+  <div class="miolo">
+    <span class="rotulo">Privacidade e LGPD</span>
+    <h2>Privacidade desde a captura.</h2>
+    <div class="duas">
+      <div class="bloco">
+        <h3>O que o MOGI faz</h3>
+        <ul>
+          <li>Borra rostos e placas antes de qualquer pessoa ou IA ver a foto.</li>
+          <li>Recusa foto de dentro de casa e manda para conferência.</li>
+          <li>Tira CPF, telefone, e-mail e placa do texto.</li>
+          <li>Guarda o CPF cifrado e mascarado. Cada abertura do número completo fica registrada.</li>
+          <li>Apaga a foto original em 90 dias. O vídeo não tem som e só servidor logado vê.</li>
+          <li>O morador apaga a própria conta quando quiser.</li>
+        </ul>
+      </div>
+      <div class="bloco">
+        <h3>O que sai da instalação</h3>
+        <ul>
+          <li>Para a IA: a foto já borrada, o texto sem dados pessoais e o bairro.</li>
+          <li>Nunca: a foto original, a coordenada exata nem quem relatou.</li>
+        </ul>
+        <p class="falta">[FALTA: política de privacidade formal, encarregado de dados e termo com a prefeitura]</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="faixa" style="background:var(--cartao)">
+  <div class="miolo">
+    <span class="rotulo">Próximas etapas</span>
+    <h2>O que vem depois da final.</h2>
+    <div class="duas">
+      <div class="bloco">
+        <h3>Assistente no WhatsApp</h3>
+        <p>Foto, localização e uma frase pelo WhatsApp, sem baixar app, na mesma triagem. Na final mostramos uma tela simulada e rotulada como demonstração. Depois vêm o áudio, a conta oficial e o custo por conversa.</p>
+      </div>
+      <div class="bloco">
+        <h3>Teste de campo e piloto</h3>
+        <p>Moradores e servidores de Itamogi usando de verdade, para medir acerto, tempo e economia com dado real. Até lá, nenhum número aqui é de campo.</p>
+      </div>
+      <div class="bloco">
+        <h3>Reconhecimento de quem ajuda</h3>
+        <p>Reputação para o morador que relata bem, em desenho, sem premiar trote nem volume. Ainda não existe no sistema.</p>
+      </div>
+      <div class="bloco">
+        <h3>Como a prefeitura compra</h3>
+        <p>Licitação com contrato de operação, ou consórcio intermunicipal. As duas estão em aberto.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="faixa rodape">
+  <div class="miolo">
+    <p><strong>O que é real e o que é simulado:</strong> o sistema inteiro roda, com triagem ao vivo, borrão, tempo real e testes automatizados. São simulados os pinos de fundo do mapa, as fotos da demo, geradas por IA e marcadas como tal, e a tela do WhatsApp. O piloto em Itamogi é uma proposta.</p>
+    <p>Equipe ROTA Scale · código aberto, licença Apache-2.0: github.com/rota-scale/sistema-mogi</p>
+  </div>
+</footer>
