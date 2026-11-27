@@ -27,6 +27,7 @@ Monitoramento e Ocorrências com Gestão Inteligente, solução de cidade inteli
 - [pesquisa-solucoes-semelhantes.md](pesquisa-solucoes-semelhantes.md): referências de mercado e stack
 - [pesquisa-painel-web.md](pesquisa-painel-web.md): framework do painel
 - [decisoes-e-pendencias.md](decisoes-e-pendencias.md): decisões abertas, resolvidas e backlog
+- [research/](research/): knowledge graph P1 (pesquisas RTLG-9 e RTLG-10) com ranqueamento, hashtags e grafo de evidências acadêmicas e GovTech — consulta permanente para releases, pitch e BMC
 - [paper/](paper/) e [pdf/](pdf/): paper técnico e documento em PDF
 
 ## Como contribuir

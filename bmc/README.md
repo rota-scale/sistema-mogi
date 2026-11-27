@@ -38,3 +38,13 @@ Versão 2, de 15/11/2026, para o hackathon AKCIT de 21/11. Substitui o rascunho 
 | Confiabilidade | chamados que caíram em "a classificar", falhas por etapa | a medir | perto de zero |
 
 Os números de linha de base de 15/11 vêm de casos escritos pelo time; os reais virão do teste de campo em Itamogi. Fonte, data e amostra de cada número: [registro de evidências](../docs/evidencias.md).
+
+## Evidências acadêmicas e GovTech (P1, 27/11/2026)
+
+Consulta permanente para proposta de valor, recursos-chave, estrutura de custos e diferenciação (cidade pequena, decisão auditável em Lua, equidade territorial, revisão humana e LGPD na borda):
+
+- Hub com ranking, hashtags e grafo: [docs/research/README.md](../docs/research/README.md)
+- Matriz de diferenciação e falas da banca: [docs/research/P1-evidencias-ia-govtech-2026.md](../docs/research/P1-evidencias-ia-govtech-2026.md)
+- Benchmarks B2G (edital de Xexéu/PE, Recife, Singapura, Auto311): [docs/research/eixos/05-benchmarks-govtech-b2g.md](../docs/research/eixos/05-benchmarks-govtech-b2g.md)
+
+Este apontador não altera os valores do canvas. Os números de preço e custo continuam hipótese ou medição registrada em [docs/evidencias.md](../docs/evidencias.md).
