@@ -6,5 +6,6 @@ Página curta para quem escanear o QR dos slides na final do AKCIT (28/11/2026):
 - **QR code:** `qr-code.svg` (vetor, para o slide) e `qr-code.png`, apontando para o link acima.
 - **Antes da final:** o artifact nasce privado. O dono precisa compartilhar pelo menu Share para quem escanear conseguir abrir.
 - **Números:** só os do [registro de evidências](../../docs/evidencias.md), cada um com a natureza (medido pelo time ou estimativa). Nenhum número é de campo.
+- **Imagens:** `assets/` traz fotos de rua geradas por IA (Nano Banana 2.1, Higgsfield, 27/11/2026), marcadas como Gerada por IA na página, e duas capturas da tela simulada do WhatsApp. Nenhuma é foto de Itamogi.
 - **Marcador:** a política de privacidade formal aparece como [FALTA] até existir texto aprovado.
 - **Depois:** se o repositório ganhar GitHub Pages, a mesma página pode ir para lá e o QR é refeito para o endereço novo.
