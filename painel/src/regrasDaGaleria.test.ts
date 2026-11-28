@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { capaDoVideo, direcaoDoGesto, formatarDuracao, legendaDoRelato, montarGaleria, rotuloDoItem, vizinho } from './galeria'
+import { capaDoVideo, direcaoDoGesto, formatarDuracao, legendaDoRelato, montarGaleria, rotuloDoItem, vizinho } from './regrasDaGaleria'
 import type { Midia, Relato } from './tipos'
 
 // Hora local, para a legenda não depender do fuso de quem roda o teste.

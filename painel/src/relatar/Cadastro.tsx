@@ -20,8 +20,8 @@ import {
   temErro,
   TIPOS_DE_MORADOR,
   validarDocumento,
-} from './cadastro'
-import type { ErrosDoCadastro, Morador, TipoDeMorador } from './cadastro'
+} from './regrasDoCadastro'
+import type { ErrosDoCadastro, Morador, TipoDeMorador } from './regrasDoCadastro'
 import { buscarCep, buscarEndereco, cadastrar, entrar } from './conta'
 import CampoCidade from './CampoCidade'
 import { acharMunicipio, carregarMunicipios } from './municipios'

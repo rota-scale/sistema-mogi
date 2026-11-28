@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import './guia.css'
-import { chaveDoGuia, passosDoGuia } from './guia'
-import type { PapelDoGuia } from './guia'
+import { chaveDoGuia, passosDoGuia } from './regrasDoGuia'
+import type { PapelDoGuia } from './regrasDoGuia'
 
 interface Props {
   papel: PapelDoGuia

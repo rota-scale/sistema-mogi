@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, useSyncExternalStore, type RefObject } from 'react'
-import { alturasDaFolha, type Altura } from './folha'
+import { alturasDaFolha, type Altura } from './regrasDaFolha'
 
 // Até esta largura o painel é de celular: mapa em tela cheia e folha por cima.
 const CELULAR = '(max-width: 980px)'
