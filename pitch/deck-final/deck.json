@@ -1,0 +1,69 @@
+{
+  "v": 5,
+  "attachments": {},
+  "cover": "capa",
+  "createdOnFiles": {
+    "at": "2026-11-28T09:00:00Z",
+    "v": 1
+  },
+  "designSystems": [],
+  "faces": {
+    "jetbrains-mono": {
+      "family": "JetBrains Mono",
+      "href": "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@700&display=swap"
+    },
+    "urbanist": {
+      "family": "Urbanist",
+      "href": "https://fonts.googleapis.com/css2?family=Urbanist:wght@500;700;900&display=swap"
+    }
+  },
+  "format": {
+    "shared": [
+      "project/deck.css"
+    ],
+    "v": 1
+  },
+  "lists": "css",
+  "order": [
+    "capa",
+    "equipe",
+    "dor-fila",
+    "dor-agua",
+    "sem-triagem",
+    "solucao",
+    "ia",
+    "mercado",
+    "benchmark",
+    "receita",
+    "viabilidade",
+    "futuro",
+    "premissa",
+    "prefeito",
+    "evidencias",
+    "final"
+  ],
+  "sections": {
+    "s1": {
+      "description": "A pergunta e a dor",
+      "start": "capa"
+    },
+    "s2": {
+      "description": "Solução e agentes de IA",
+      "start": "solucao"
+    },
+    "s3": {
+      "description": "Mercado, benchmark e receita",
+      "start": "mercado"
+    },
+    "s4": {
+      "description": "Viabilidade, futuro e premissas",
+      "start": "viabilidade"
+    },
+    "s5": {
+      "before": null,
+      "description": "Pedido e slides de apoio",
+      "start": "prefeito"
+    }
+  },
+  "title": "MOGI · Pitch deck v2"
+}
