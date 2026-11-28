@@ -1,5 +1,17 @@
 # Pitch de 3 minutos: Sistema MOGI
 
+## Final de 28/11/2026
+
+Entregáveis da final do AKCIT Camp:
+
+- **Pitch de 5 minutos:** [mogi-pitch-final.pdf](mogi-pitch-final.pdf), 16 slides. João Russo abre e apresenta o time; Renan conduz o pitch. A fonte dos slides está em [deck-final/](deck-final/) (HTML e CSS; as imagens ficam no deck publicado).
+- **Página do pitch:** https://rota-scale.github.io/sistema-mogi/ (fonte em [landing/](landing/), publicada pelo branch `gh-pages`). É para onde o QR dos slides aponta. Tem o vídeo do sistema e o depoimento do prefeito de Itamogi.
+- **Vídeo do protótipo:** [brand/showcase/mogi-showcase.mp4](../brand/showcase/mogi-showcase.mp4), 85 segundos.
+
+Nos slides, os números medidos pelo time e as estimativas vêm do [registro de evidências](../docs/evidencias.md). A matriz GUT do slide Cenário atual usa valores de exemplo, e a economia de tempo do slide Evidências é estimativa com hipóteses ([economia de tempo](../docs/economia-de-tempo.md)).
+
+O roteiro abaixo é o do pitch de 3 minutos de 21/11 e fica como histórico.
+
 Versão de 16/11/2026 para a banca do hackathon AKCIT de 21/11. Quem fala cada bloco: Renan (produto e negócio) e João Russo (demo). Papéis em [docs/time.md](../docs/time.md). Cronometrar no ensaio; se passar de 3:00, cortar primeiro o bloco 2:20.
 
 ## Preparação da tela

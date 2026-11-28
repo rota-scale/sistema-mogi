@@ -7,6 +7,8 @@
 # Sistema MOGI
 **Monitoramento e Ocorrências com Gestão Inteligente.** Piloto de cidade inteligente em Itamogi-MG, time ROTA Scale, AKCIT Camp Sul 2026 (hackathon de 21/11/2026). O nome faz referência a Itamogi.
 
+**Final de 28/11/2026:** [pitch de 5 minutos em PDF](pitch/mogi-pitch-final.pdf) · [página do pitch, com os vídeos](https://rota-scale.github.io/sistema-mogi/) · [vídeo do protótipo](brand/showcase/mogi-showcase.mp4)
+
 **Para a banca:** [pitch](pitch/README.md) · [BMC e impacto](bmc/README.md) · [MOGI frente ao legado](docs/legado-vs-mogi.md) · [tempo economizado](docs/economia-de-tempo.md) · [fluxo do agente](docs/fluxo-do-agente.md) · [visão enterprise](docs/enterprise/README.md) · [checklist AKCIT](docs/checklist-akcit.md)
 
 ## Em 30 segundos
@@ -17,7 +19,7 @@
 - **Versão atual:** v0.3.3 ([o que mudou](CHANGELOG.md)).
 
 ## O que já foi validado
-Em 18/11/2026 o prefeito de Itamogi avaliou o protótipo em reunião. Gravamos um vídeo dele falando sobre o sistema. O material está com o time e só entra neste repositório com consentimento para publicação. Ainda não houve teste prático com morador. Esse teste é o próximo passo, com relatos reais feitos no município.
+Em 18/11/2026 o prefeito de Itamogi avaliou o protótipo em reunião. Gravamos um vídeo dele falando sobre o sistema, que está na [página do pitch](https://rota-scale.github.io/sistema-mogi/). Ainda não houve teste prático com morador. Esse teste é o próximo passo, com relatos reais feitos no município.
 
 Os números abaixo foram medidos pelo time em 15/11/2026, com casos escritos por nós, não em Itamogi. Não são resultado de campo. Fonte, data e amostra de cada um: [registro de evidências](docs/evidencias.md).
 

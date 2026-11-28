@@ -1,0 +1,84 @@
+/* Brand kit do MOGI (brand/README.md): Bauhaus/Kiosko, paleta terra, Urbanist Black, blocos retos. */
+:root {
+  --verde: #1F4D2B; --folha: #3E7B3A; --cereja: #B3261E; --cafe: #4A2C1D; --terra: #8C3B2A;
+  --ipe: #E9B526; --creme: #F5F1E8; --papel: #FBF8F1; --ceu: #3B6EA5; --apoio: #5E5548;
+  --n1: #3E7B3A; --n2: #7A9A2E; --n3: #E9B526; --n4: #D9731A; --n5: #B3261E;
+}
+body { font-family: 'Urbanist', Arial, sans-serif; color: #1F4D2B; }
+section { counter-increment: page; padding: 128px 128px 160px; background: #F5F1E8; color: #1F4D2B; display: flex; flex-direction: column; gap: 40px; font-family: 'Urbanist', Arial, sans-serif; }
+section.escuro { background: #1F4D2B; color: #F5F1E8; }
+section.papel { background: #FBF8F1; }
+
+.eyebrow { font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 24px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #B3261E; }
+section.escuro .eyebrow { color: #E9B526; }
+h1 { font-size: 120px; font-weight: 900; line-height: 1.0; letter-spacing: -2px; margin: 0; }
+h2 { font-size: 72px; font-weight: 900; line-height: 1.04; letter-spacing: -1px; margin: 0; }
+h3 { font-size: 44px; font-weight: 900; line-height: 1.08; margin: 0; }
+p { font-size: 32px; line-height: 1.3; margin: 0; }
+.cabeca { display: flex; flex-direction: column; gap: 6px; }
+.nota { font-size: 24px; color: #5E5548; line-height: 1.3; }
+section.escuro .nota { color: #CFE0C9; }
+.fonte { position: absolute; left: 128px; bottom: 64px; width: 1400px; font-size: 24px; color: #5E5548; }
+section.escuro .fonte { color: #CFE0C9; }
+.pagina { position: absolute; right: 128px; bottom: 64px; width: 120px; text-align: right; font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 24px; font-weight: 700; color: #8C3B2A; }
+.pagina::after { content: counter(page); }
+section.escuro .pagina { color: #E9B526; }
+
+/* Tópico curto no alto e a frase do slide como subtítulo de apoio */
+.apoio { font-size: 34px; font-weight: 700; line-height: 1.2; color: #5E5548; }
+section.escuro .apoio { color: #CFE0C9; }
+
+/* Moldura de iPhone para as telas */
+.fone { box-sizing: border-box; position: relative; padding: 8px; border-radius: 36px; background: #14130F; flex: none; }
+.fone .tela { position: relative; overflow: hidden; border-radius: 28px; background: #F5F1E8; }
+.fone .ilha { position: absolute; left: 50%; top: 16px; width: 60px; height: 16px; margin-left: -30px; border-radius: 8px; background: #14130F; }
+
+/* Blocos de cor chapada */
+.linha { display: flex; gap: 0; }
+.bloco { flex: 1; padding: 40px; display: flex; flex-direction: column; gap: 14px; }
+.bloco .num { font-size: 120px; font-weight: 900; line-height: 0.95; letter-spacing: -3px; }
+.bloco .num-m { font-size: 72px; font-weight: 900; line-height: 1; letter-spacing: -1px; }
+.bloco p { font-size: 28px; font-weight: 700; line-height: 1.25; }
+.bloco .rot { font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 24px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
+.b-verde { background: #1F4D2B; color: #F5F1E8; }
+.b-ipe { background: #E9B526; color: #4A2C1D; }
+.b-cereja { background: #B3261E; color: #F5F1E8; }
+.b-ceu { background: #3B6EA5; color: #F5F1E8; }
+.b-terra { background: #8C3B2A; color: #F5F1E8; }
+.b-folha { background: #3E7B3A; color: #F5F1E8; }
+.b-papel { background: #FBF8F1; color: #1F4D2B; }
+
+/* Passos numerados, como o cartão Como funciona da marca */
+.passos { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+.passo { display: flex; align-items: center; gap: 24px; padding: 28px; }
+.passo .bola { width: 84px; height: 84px; border-radius: 50%; background: #F5F1E8; color: #1F4D2B; display: flex; align-items: center; justify-content: center; font-size: 44px; font-weight: 900; flex: none; }
+.passo.b-ipe .bola { background: #4A2C1D; color: #E9B526; }
+.passo p { font-size: 32px; font-weight: 900; line-height: 1.1; }
+.passo .sub { font-size: 24px; font-weight: 700; margin-top: 6px; }
+
+/* Selos de status: o que roda hoje e o que é plano */
+.selo { display: inline-block; align-self: flex-start; padding: 8px 16px; font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 24px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+.s-hoje { background: #1F4D2B; color: #F5F1E8; }
+.s-plano { background: #F5F1E8; color: #3B6EA5; border: 3px dashed #3B6EA5; }
+.s-ia { background: #4A2C1D; color: #F5F1E8; }
+
+/* Celular */
+.celular { width: 300px; padding: 10px; border-radius: 40px; background: #14130F; display: flex; }
+.celular img { width: 280px; height: 606px; border-radius: 31px; object-fit: cover; }
+
+/* Benchmark em checklist: critério à esquerda e um desenho por linha com as seis marcas */
+.bm { display: flex; flex-direction: column; gap: 10px; }
+.bm-grupo { display: flex; gap: 3px; }
+.bm-rot { box-sizing: border-box; width: 210px; flex: none; display: flex; align-items: center; padding: 0 16px; }
+.bm-rot p { font-size: 26px; font-weight: 900; }
+.bm-linhas { flex: 1; display: flex; flex-direction: column; }
+.bm-linha { display: flex; align-items: stretch; }
+.bm-linha p { box-sizing: border-box; font-size: 24px; line-height: 1.25; padding: 8px 0; width: 168px; text-align: center; font-weight: 900; }
+.bm-linha .crit { width: 440px; text-align: left; padding-left: 14px; font-weight: 700; background: #FFFFFF; color: #1F4D2B; }
+.bm-linha .hd { background: #F5F1E8; color: #1F4D2B; }
+.bm-linha .hx { background: #E9B526; color: #4A2C1D; }
+.bm-linha .hm { background: #1F4D2B; color: #F5F1E8; }
+
+/* Motion contida: blocos entram em sequência */
+@keyframes sobe { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+.entra { animation: sobe 520ms cubic-bezier(.2,.7,.2,1) both; animation-delay: calc(var(--i, 0) * 110ms); }
