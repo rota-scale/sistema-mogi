@@ -1,6 +1,6 @@
 // Notificação do navegador e o que o alerta de chamado crítico guarda neste
 // aparelho. O som do alerta é o "critico" de sons.ts; a lógica que dá para
-// testar está em alerta.ts.
+// testar está em regrasDoAlerta.ts.
 
 export const CHAVE_NOTIFICACAO = 'mogi.alerta.notificacao'
 export const CHAVE_VISTOS = 'mogi.alerta.vistos'

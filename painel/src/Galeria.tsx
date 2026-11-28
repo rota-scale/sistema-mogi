@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState, type RefObject, type TouchEvent } from 'react'
 import { createPortal } from 'react-dom'
 import { abrirVideo, ErroDaApi } from './api'
-import { direcaoDoGesto, montarGaleria, rotuloDoItem, vizinho, type ItemGaleria } from './galeria'
+import { direcaoDoGesto, montarGaleria, rotuloDoItem, vizinho, type ItemGaleria } from './regrasDaGaleria'
 import { tocar } from './sons'
 import type { Ocorrencia } from './tipos'
 

@@ -1,5 +1,5 @@
-import { corpoDaEdicao, corpoDoCadastro, interpretarCadastro, interpretarEntrada, lerComunidade, lerMeusRelatos, lerMorador, somenteDigitos } from './cadastro'
-import type { Comunidade, EdicaoDoPerfil, FalhaDaEntrada, FalhaDoCadastro, FormularioDoCadastro, MeusRelatos, Morador } from './cadastro'
+import { corpoDaEdicao, corpoDoCadastro, interpretarCadastro, interpretarEntrada, lerComunidade, lerMeusRelatos, lerMorador, somenteDigitos } from './regrasDoCadastro'
+import type { Comunidade, EdicaoDoPerfil, FalhaDaEntrada, FalhaDoCadastro, FormularioDoCadastro, MeusRelatos, Morador } from './regrasDoCadastro'
 
 // Cadastro do morador no aparelho: só o token e o perfil já mascarado
 // (o documento completo nunca fica guardado aqui).

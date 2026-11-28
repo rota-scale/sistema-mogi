@@ -5,7 +5,7 @@ import { aoVivo, buscarCidade, entrar, Falha, listar, LoginRecusado, quemSou, sa
 import type { ErroDeLogin, EstadoConexao, UsuarioDeCampo } from './api'
 import './campo.css'
 import Guia from '../Guia'
-import { guiaVisto } from '../guia'
+import { guiaVisto } from '../regrasDoGuia'
 import { Chamado } from './Chamado'
 import { useAgora, useLocalizacao, useRota, useTituloEmFoco } from './ganchos'
 import { Lista } from './Lista'

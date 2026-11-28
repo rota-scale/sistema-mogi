@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { alturaAoSoltar, alturasDaFolha, proximaAltura } from './folha'
+import { alturaAoSoltar, alturasDaFolha, proximaAltura } from './regrasDaFolha'
 
 describe('folha deslizante', () => {
   it('calcula as três alturas no celular de 390 x 844', () => {

@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import type { TouchEvent } from 'react'
 import { tocar } from '../sons'
-import { SLIDES } from './tour'
-import type { Slide } from './tour'
+import { SLIDES } from './regrasDoTour'
+import type { Slide } from './regrasDoTour'
 
 interface Props {
   aoTerminar: () => void

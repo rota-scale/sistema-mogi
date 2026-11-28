@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { criticoParaConferir, lerVistos, marcarVistos, pendentesDoAlerta, semAviso, textoDoAlerta, tituloDaAba } from './alerta'
+import { criticoParaConferir, lerVistos, marcarVistos, pendentesDoAlerta, semAviso, textoDoAlerta, tituloDaAba } from './regrasDoAlerta'
 import type { Ocorrencia } from './tipos'
 
 function oc(p: Partial<Ocorrencia>): Ocorrencia {

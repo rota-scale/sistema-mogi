@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { lerVistos, lugarDoChamado, marcarVistos, pendentesDoAlerta, semAviso, tituloDaAba } from './alerta'
+import { lerVistos, lugarDoChamado, marcarVistos, pendentesDoAlerta, semAviso, tituloDaAba } from './regrasDoAlerta'
 import { CHAVE_VISTOS, guardar, lerGuardado, notificar } from './avisos'
 import { NOME_CATEGORIA } from './niveis'
 import { tocar } from './sons'

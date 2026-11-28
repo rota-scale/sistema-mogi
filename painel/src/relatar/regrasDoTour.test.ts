@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { avancar, concluiCom, contagem, etapaInicial, lerVistos, PASSOS, proximoVisivel, SLIDES, voltar } from './tour'
-import type { Alvo } from './tour'
+import { avancar, concluiCom, contagem, etapaInicial, lerVistos, PASSOS, proximoVisivel, SLIDES, voltar } from './regrasDoTour'
+import type { Alvo } from './regrasDoTour'
 
 const todos = new Set<Alvo>(['mapa', 'centralizar', 'camera', 'perfil'])
 const semCentralizar = new Set<Alvo>(['mapa', 'camera', 'perfil'])

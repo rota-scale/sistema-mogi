@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { juntarSugestao, sugestoesDoTipo } from './cadastro'
+import { juntarSugestao, sugestoesDoTipo } from './regrasDoCadastro'
 import { juntarFala, LIMITE_TEXTO, nomeCurto } from './logica'
 import type { Categoria } from './logica'
 import { IconeDoTipo, IconeEnviar, IconeMicrofone, IconeParar, IconeVoltar } from './pecas'

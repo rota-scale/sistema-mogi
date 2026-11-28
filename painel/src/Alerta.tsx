@@ -1,4 +1,4 @@
-import { textoDoAlerta } from './alerta'
+import { textoDoAlerta } from './regrasDoAlerta'
 import { Icone } from './icones'
 import type { Ocorrencia } from './tipos'
 

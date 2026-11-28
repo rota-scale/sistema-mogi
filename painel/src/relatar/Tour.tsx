@@ -1,8 +1,8 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { tocar } from '../sons'
 import { IconeFechar, IconeMao } from './pecas'
-import { anteriorVisivel, avancar, contagem, PASSOS, proximoVisivel, voltar } from './tour'
-import type { Alvo } from './tour'
+import { anteriorVisivel, avancar, contagem, PASSOS, proximoVisivel, voltar } from './regrasDoTour'
+import type { Alvo } from './regrasDoTour'
 
 interface Props {
   passo: number

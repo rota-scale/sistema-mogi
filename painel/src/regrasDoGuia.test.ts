@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { chaveDoGuia, guiaVisto, papelDoGuia, passosDoGuia } from './guia'
+import { chaveDoGuia, guiaVisto, papelDoGuia, passosDoGuia } from './regrasDoGuia'
 
 describe('guia da prefeitura', () => {
   it('operador vê a central sem a parte de gestão', () => {

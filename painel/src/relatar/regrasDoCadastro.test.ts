@@ -31,7 +31,7 @@ import {
   unirRelatos,
   validarCnpj,
   validarCpf,
-} from './cadastro'
+} from './regrasDoCadastro'
 import type { Recente } from './logica'
 import { acaoDoErro, codigoDoErro, depoisDaConfirmacao, interpretarConfirmacao, interpretarEnvio, lerConfig, mensagemDeErro } from './logica'
 

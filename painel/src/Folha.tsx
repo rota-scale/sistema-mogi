@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type CSSProperties, type PointerEvent as ToqueReact, type ReactNode } from 'react'
-import { alturaAoSoltar, NOME_DA_ACAO, ORDEM_DAS_ALTURAS, proximaAltura, type Altura } from './folha'
+import { alturaAoSoltar, NOME_DA_ACAO, ORDEM_DAS_ALTURAS, proximaAltura, type Altura } from './regrasDaFolha'
 
 // Menos que isto é toque, não arrasto.
 const FOLGA_DO_TOQUE = 6
