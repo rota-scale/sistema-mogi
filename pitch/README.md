@@ -46,3 +46,17 @@ Versão de 16/11/2026 para a banca do hackathon AKCIT de 21/11. Quem fala cada b
 2. **Jev fora do ar:** seguir ao vivo; a cadeia cai para a reserva ou o classificador local, e o detalhe do chamado mostra qual decidiu. Usar isso como prova do fallback.
 3. **Notebook falhou:** prints das telas no próprio slide, com a legenda "build de 15/11".
 4. Em qualquer caso, dados simulados aparecem marcados como simulados e imagens geradas por IA são chamadas assim.
+
+## Backup de evidências acadêmicas (consulta P1, 27/11/2026)
+
+Para perguntas da banca sobre “por que não só um LLM”, GovTech comparável, revisão humana, equidade territorial ou o que vem depois do Jev, use o pacote P1 — não o roteiro de 3 minutos:
+
+- Hub com ranking, hashtags e grafo: [docs/research/README.md](../docs/research/README.md)
+- Falas prontas e o que não dizer: [docs/research/P1-evidencias-ia-govtech-2026.md](../docs/research/P1-evidencias-ia-govtech-2026.md)
+
+Cuidados obrigatórios na banca:
+
+- Não atribuir nomes de papers (JEPA, SigLIP, DINOv3, TabPFN, Conformal) à mentoria do Állan. Ele falou da classe de modelos de decisão multimodais, na linha do Jev.
+- Não afirmar que o Jev multimodal já está em produção, nem que a TypeSafe faz fine-tune com dados do cliente.
+- Não citar Liquid Neural Networks, UrbanCLIP, GeoCLIP ou Grounding DINO em tempo real sem GPU como caminho do MOGI.
+- Não usar métricas de Recife, Singapura ou Auto311 como se fossem números do MOGI.

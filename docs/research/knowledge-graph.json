@@ -1,0 +1,2201 @@
+{
+  "meta": {
+    "title": "Sistema MOGI — Knowledge Graph P1 de evidências IA e GovTech",
+    "version": "2026-11-27",
+    "repo": "rota-scale/sistema-mogi",
+    "research_ids": [
+      "RTLG-9",
+      "RTLG-10"
+    ],
+    "language": "pt-BR",
+    "disclaimer": "Score MOGI (0–100) mede relevância e prioridade de consulta para o produto (camada de decisão não-LLM, cidade pequena, LGPD, pitch/BMC), não a qualidade acadêmica intrínseca da fonte. Nenhuma fonte, autor, ano, URL ou métrica foi inventada. Use apenas as URLs deste arquivo. Separe sempre: Em produção na demo vs Roadmap Piloto 2027 vs Benchmark externo vs Horizonte vs Descartado (hype).",
+    "scoring": {
+      "name": "Score MOGI",
+      "range": [
+        0,
+        100
+      ],
+      "criteria": [
+        "Adequação à camada de decisão com saída estruturada 1–5 (não geração de texto livre)",
+        "Viabilidade em cidade pequena: poucos dados, on-prem ou DC nacional, custo e LGPD",
+        "Impacto direto no pitch, no BMC ou na banca AKCIT",
+        "Maturidade da evidência já verificada",
+        "Encaixe com regras Lua, matriz GUT e agrupamento H3"
+      ],
+      "tiers": {
+        "P1-Critico": "85–100",
+        "P1-Alto": "60–84",
+        "P2-Horizonte": "40–59",
+        "Descartado": "0–20"
+      }
+    },
+    "status_enum": [
+      "Em produção na demo",
+      "Roadmap Piloto 2027",
+      "Benchmark externo",
+      "Horizonte",
+      "Descartado (hype)"
+    ],
+    "type_enum": [
+      "official_docs",
+      "paper",
+      "dataset",
+      "benchmark",
+      "eixo",
+      "mogi_module"
+    ],
+    "tags": [
+      "#nao-llm",
+      "#modelo-decisao",
+      "#neuro-simbolico",
+      "#lua-regras",
+      "#conformal-prediction",
+      "#revisao-humana-4-5",
+      "#geoai-h3",
+      "#equidade-territorial",
+      "#edge-vision",
+      "#lgpd-borda",
+      "#dataset-br",
+      "#few-shot-tabular",
+      "#govtech-b2g",
+      "#edital-pe",
+      "#world-model",
+      "#ssm-vision",
+      "#piloto-2027",
+      "#banca-akcit",
+      "#descartado-hype"
+    ]
+  },
+  "nodes": [
+    {
+      "id": "eixo-01-incerteza-conformal",
+      "title": "Eixo 01 — Incerteza e revisão humana (Conformal Prediction)",
+      "type": "eixo",
+      "tier": "P1-Critico",
+      "rank": null,
+      "rank_score": 91,
+      "region": "EUA (Berkeley/Stanford e correlatos)",
+      "year": null,
+      "status": "Roadmap Piloto 2027",
+      "url": "eixos/01-incerteza-conformal.md",
+      "tags": [
+        "#conformal-prediction",
+        "#revisao-humana-4-5",
+        "#piloto-2027",
+        "#banca-akcit"
+      ],
+      "eixo": "01-incerteza-conformal",
+      "notes": "Calibração estatística da escala GUT 1–5 e roteamento de casos ambíguos ou críticos (níveis 4 e 5) para revisão humana."
+    },
+    {
+      "id": "eixo-02-modelos-decisao",
+      "title": "Eixo 02 — Modelos de decisão e encoders não-LLM",
+      "type": "eixo",
+      "tier": "P1-Critico",
+      "rank": null,
+      "rank_score": 90,
+      "region": "EUA / China / Europa",
+      "year": null,
+      "status": "Em produção na demo",
+      "url": "eixos/02-modelos-decisao-encoders-nao-llm.md",
+      "tags": [
+        "#nao-llm",
+        "#modelo-decisao",
+        "#piloto-2027"
+      ],
+      "eixo": "02-modelos-decisao-encoders-nao-llm",
+      "notes": "Hoje: Jev (texto) como classificador tipado. Piloto 2027: encoders visuais leves + classificador tabular, sem treinar LLM. Imagem no Jev permanece experimental."
+    },
+    {
+      "id": "eixo-03-edge-privacidade",
+      "title": "Eixo 03 — Visão na borda, privacidade e dados brasileiros",
+      "type": "eixo",
+      "tier": "P1-Alto",
+      "rank": null,
+      "rank_score": 81,
+      "region": "EUA / Brasil",
+      "year": null,
+      "status": "Roadmap Piloto 2027",
+      "url": "eixos/03-edge-privacidade-dados-br.md",
+      "tags": [
+        "#edge-vision",
+        "#lgpd-borda",
+        "#dataset-br",
+        "#piloto-2027"
+      ],
+      "eixo": "03-edge-privacidade-dados-br",
+      "notes": "Filtro indoor e borrão de rostos/placas antes do upload; datasets BR-AsPavDam e RDD2022; rotulagem programática com Snorkel. Licença do EgoBlur pendente de checagem antes de produção."
+    },
+    {
+      "id": "eixo-04-neuro-simbolico-geoai",
+      "title": "Eixo 04 — Neuro-simbólico, GeoAI H3 e equidade territorial",
+      "type": "eixo",
+      "tier": "P1-Critico",
+      "rank": null,
+      "rank_score": 94,
+      "region": "EUA / Canadá / Europa (Polônia)",
+      "year": null,
+      "status": "Roadmap Piloto 2027",
+      "url": "eixos/04-neuro-simbolico-geoai-equidade.md",
+      "tags": [
+        "#neuro-simbolico",
+        "#lua-regras",
+        "#geoai-h3",
+        "#equidade-territorial"
+      ],
+      "eixo": "04-neuro-simbolico-geoai-equidade",
+      "notes": "Percepção neural + regras Lua auditáveis; embeddings H3; correção de viés de bairros que reportam mais."
+    },
+    {
+      "id": "eixo-05-benchmarks-govtech",
+      "title": "Eixo 05 — Benchmarks GovTech e B2G",
+      "type": "eixo",
+      "tier": "P1-Critico",
+      "rank": null,
+      "rank_score": 100,
+      "region": "Brasil / Singapura / EUA",
+      "year": null,
+      "status": "Benchmark externo",
+      "url": "eixos/05-benchmarks-govtech-b2g.md",
+      "tags": [
+        "#govtech-b2g",
+        "#edital-pe",
+        "#banca-akcit"
+      ],
+      "eixo": "05-benchmarks-govtech-b2g",
+      "notes": "Editais e sistemas reais que validam a dor e o escopo do MOGI para cidade pequena."
+    },
+    {
+      "id": "eixo-06-horizonte-hype",
+      "title": "Eixo 06 — Horizonte (world models / SSM) e hype descartado",
+      "type": "eixo",
+      "tier": "P2-Horizonte",
+      "rank": null,
+      "rank_score": 58,
+      "region": "EUA / global",
+      "year": null,
+      "status": "Horizonte",
+      "url": "eixos/06-horizonte-e-hype-descartado.md",
+      "tags": [
+        "#world-model",
+        "#ssm-vision",
+        "#descartado-hype"
+      ],
+      "eixo": "06-horizonte-e-hype-descartado",
+      "notes": "Família JEPA e backbones SSM só entram se o MOGI evoluir para vídeo ou inferência local de alta resolução. Liquid NN, UrbanCLIP, GeoCLIP e Grounding DINO em tempo real sem GPU estão descartados."
+    },
+    {
+      "id": "mod-app-morador",
+      "title": "App Morador",
+      "type": "mogi_module",
+      "tier": null,
+      "rank": null,
+      "rank_score": null,
+      "region": "Brasil (Itamogi-MG)",
+      "year": null,
+      "status": "Em produção na demo",
+      "url": null,
+      "tags": [
+        "#banca-akcit"
+      ],
+      "notes": "Captura de foto/vídeo, GPS e relato do morador."
+    },
+    {
+      "id": "mod-filtro-borda-lgpd",
+      "title": "Filtro Borda / LGPD",
+      "type": "mogi_module",
+      "tier": null,
+      "rank": null,
+      "rank_score": null,
+      "region": "Brasil",
+      "year": null,
+      "status": "Em produção na demo",
+      "url": null,
+      "tags": [
+        "#lgpd-borda"
+      ],
+      "notes": "Hoje: borrão de rostos/placas no fluxo documentado. Roadmap: filtro indoor e borrão na borda, antes do upload."
+    },
+    {
+      "id": "mod-visao-classificador",
+      "title": "Visão / Classificador",
+      "type": "mogi_module",
+      "tier": null,
+      "rank": null,
+      "rank_score": null,
+      "region": "Brasil / EUA (TypeSafe)",
+      "year": null,
+      "status": "Em produção na demo",
+      "url": null,
+      "tags": [
+        "#modelo-decisao",
+        "#nao-llm"
+      ],
+      "notes": "Demo: descritor de mídia + Jev em texto (imagem no Jev é experimental). Piloto 2027: encoder visual leve + cabeça tabular."
+    },
+    {
+      "id": "mod-regras-lua-gut",
+      "title": "Regras Lua + GUT 1–5",
+      "type": "mogi_module",
+      "tier": null,
+      "rank": null,
+      "rank_score": null,
+      "region": "Brasil",
+      "year": null,
+      "status": "Em produção na demo",
+      "url": null,
+      "tags": [
+        "#lua-regras",
+        "#neuro-simbolico"
+      ],
+      "notes": "Decisão final auditável da prefeitura (gopher-lua), matriz GUT 1–5."
+    },
+    {
+      "id": "mod-revisao-humana-4-5",
+      "title": "Revisão Humana 4–5",
+      "type": "mogi_module",
+      "tier": null,
+      "rank": null,
+      "rank_score": null,
+      "region": "Brasil",
+      "year": null,
+      "status": "Em produção na demo",
+      "url": null,
+      "tags": [
+        "#revisao-humana-4-5"
+      ],
+      "notes": "Níveis 4 e 5 já exigem conferência humana. Roadmap: calibração conformal para decidir o que sobe automaticamente."
+    },
+    {
+      "id": "mod-postgis-h3",
+      "title": "PostGIS + H3",
+      "type": "mogi_module",
+      "tier": null,
+      "rank": null,
+      "rank_score": null,
+      "region": "Brasil",
+      "year": null,
+      "status": "Em produção na demo",
+      "url": null,
+      "tags": [
+        "#geoai-h3",
+        "#equidade-territorial"
+      ],
+      "notes": "Agrupamento espacial de relatos repetidos. Roadmap: embeddings Hex2Vec e regra de equidade na nota de Tendência."
+    },
+    {
+      "id": "mod-whatsapp",
+      "title": "WhatsApp",
+      "type": "mogi_module",
+      "tier": null,
+      "rank": null,
+      "rank_score": null,
+      "region": "Brasil",
+      "year": null,
+      "status": "Roadmap Piloto 2027",
+      "url": null,
+      "tags": [
+        "#govtech-b2g",
+        "#banca-akcit"
+      ],
+      "notes": "Canal previsto/demonstrável; não tratar como WhatsApp em produção na demo sem o rótulo adequado."
+    },
+    {
+      "id": "mod-bmc-b2g",
+      "title": "BMC / B2G",
+      "type": "mogi_module",
+      "tier": null,
+      "rank": null,
+      "rank_score": null,
+      "region": "Brasil",
+      "year": null,
+      "status": "Benchmark externo",
+      "url": "../../bmc/README.md",
+      "tags": [
+        "#govtech-b2g",
+        "#banca-akcit",
+        "#edital-pe"
+      ],
+      "notes": "Proposta de valor, recursos-chave e custos para prefeituras pequenas e consórcios."
+    },
+    {
+      "id": "typesafe-system-one",
+      "title": "TypeSafe System One",
+      "type": "official_docs",
+      "tier": "P1-Critico",
+      "rank": 8,
+      "rank_score": 90,
+      "region": "EUA",
+      "year": 2026,
+      "status": "Em produção na demo",
+      "url": "https://docs.typesafe.ai/concepts/system-one",
+      "tags": [
+        "#modelo-decisao",
+        "#nao-llm",
+        "#banca-akcit"
+      ],
+      "eixo": "02-modelos-decisao-encoders-nao-llm",
+      "authors_or_org": "TypeSafe",
+      "notes": "Documentação oficial do System One: modelos de decisão tipada, não geradores de texto livre. Motor atual da demo no modo texto."
+    },
+    {
+      "id": "typesafe-jev-1-14",
+      "title": "Jev 1.14 (blog TypeSafe)",
+      "type": "official_docs",
+      "tier": "P1-Critico",
+      "rank": 8,
+      "rank_score": 90,
+      "region": "EUA",
+      "year": 2026,
+      "status": "Em produção na demo",
+      "url": "https://typesafe.ai/blog/jev-1-14",
+      "tags": [
+        "#modelo-decisao",
+        "#nao-llm"
+      ],
+      "eixo": "02-modelos-decisao-encoders-nao-llm",
+      "authors_or_org": "TypeSafe",
+      "notes": "Anúncio oficial do Jev 1.14. Usar só fatos desta página e das docs oficiais."
+    },
+    {
+      "id": "typesafe-jev-models",
+      "title": "TypeSafe Models e pricing",
+      "type": "official_docs",
+      "tier": "P1-Critico",
+      "rank": 8,
+      "rank_score": 90,
+      "region": "EUA",
+      "year": 2026,
+      "status": "Em produção na demo",
+      "url": "https://docs.typesafe.ai/models",
+      "tags": [
+        "#modelo-decisao",
+        "#nao-llm"
+      ],
+      "eixo": "02-modelos-decisao-encoders-nao-llm",
+      "authors_or_org": "TypeSafe",
+      "notes": "Preço oficial verificado: entrada US$ 0,042 / milhão de tokens, saída grátis. Sem oferta documentada de fine-tune com dados do cliente."
+    },
+    {
+      "id": "typesafe-jev-images",
+      "title": "TypeSafe Jev — suporte a imagens",
+      "type": "official_docs",
+      "tier": "P1-Alto",
+      "rank": 29,
+      "rank_score": 69,
+      "region": "EUA",
+      "year": 2026,
+      "status": "Em produção na demo",
+      "url": "https://docs.typesafe.ai/images",
+      "tags": [
+        "#modelo-decisao",
+        "#nao-llm"
+      ],
+      "eixo": "02-modelos-decisao-encoders-nao-llm",
+      "authors_or_org": "TypeSafe",
+      "notes": "Suporte a PNG/JPEG documentado como experimental (header TypeSafe-Danger-Zone-Images). A própria TypeSafe alerta que os modelos ainda performam pior em multimodalidade do que em texto puro. Não afirmar que Jev multimodal está em produção."
+    },
+    {
+      "id": "desafio-xexeu-pe-2026",
+      "title": "Desafio Plataforma Inteligente de Zeladoria Urbana — Prefeitura de Xexéu/PE",
+      "type": "benchmark",
+      "tier": "P1-Critico",
+      "rank": 1,
+      "rank_score": 100,
+      "region": "Brasil (Pernambuco)",
+      "year": 2026,
+      "date": "2026-07-31",
+      "status": "Benchmark externo",
+      "url": "https://desafios.pe.gov.br/portal/home/getchallengedocument/337",
+      "tags": [
+        "#edital-pe",
+        "#govtech-b2g",
+        "#banca-akcit",
+        "#lgpd-borda"
+      ],
+      "eixo": "05-benchmarks-govtech-b2g",
+      "authors_or_org": "Governo de Pernambuco / Prefeitura de Xexéu",
+      "notes": "Edital de 31/07/2026 pede foto ou vídeo obrigatórios na abertura e no fechamento, agrupamento de relatos repetidos elevando prioridade, prioridade automática, WhatsApp e LGPD com borrão de rostos/placas e retenção com prazo, sem expor CPF/nome no painel público."
+    },
+    {
+      "id": "novo-conecta-recife",
+      "title": "Novo Conecta (Recife / Emprel)",
+      "type": "benchmark",
+      "tier": "P1-Critico",
+      "rank": 2,
+      "rank_score": 97,
+      "region": "Brasil (Pernambuco)",
+      "year": null,
+      "status": "Benchmark externo",
+      "url": "https://solucoes.emprel.gov.br/recife-lanca-novo-conecta-com-ia-servicos-personalizados-e-foco-em-inclusao/",
+      "tags": [
+        "#govtech-b2g",
+        "#banca-akcit"
+      ],
+      "eixo": "05-benchmarks-govtech-b2g",
+      "authors_or_org": "Prefeitura do Recife / Emprel",
+      "notes": "Capital com app de zeladoria que aceita foto com IA para buraco. Evidência pública: mais de 2 milhões de downloads e mais de 500 mil no Conecta Zap. Benchmark de metrópole, não de cidade pequena."
+    },
+    {
+      "id": "cmu-darpa-triage",
+      "title": "Multimodal Bayesian Network for Autonomous Triage (CMU / DARPA Triage Challenge)",
+      "type": "paper",
+      "tier": "P1-Critico",
+      "rank": 3,
+      "rank_score": 95,
+      "region": "EUA / Polônia (CMU / AGH)",
+      "year": 2025,
+      "status": "Roadmap Piloto 2027",
+      "url": "https://arxiv.org/abs/2512.18908",
+      "tags": [
+        "#neuro-simbolico",
+        "#lua-regras",
+        "#modelo-decisao",
+        "#banca-akcit",
+        "#piloto-2027"
+      ],
+      "eixo": "04-neuro-simbolico-geoai-equidade",
+      "authors_or_org": "CMU / AGH (DARPA Triage Challenge)",
+      "notes": "Modelos visuais alimentando regras de especialistas elevaram a acurácia de triagem de 14% (só visão) para 53%, e a cobertura diagnóstica de 31% para 95%."
+    },
+    {
+      "id": "logicity",
+      "title": "LogiCity",
+      "type": "paper",
+      "tier": "P1-Critico",
+      "rank": 4,
+      "rank_score": 94,
+      "region": "EUA / Canadá (CMU / University of Toronto)",
+      "year": 2024,
+      "status": "Roadmap Piloto 2027",
+      "url": "https://arxiv.org/abs/2411.00773",
+      "tags": [
+        "#neuro-simbolico",
+        "#lua-regras",
+        "#banca-akcit"
+      ],
+      "eixo": "04-neuro-simbolico-geoai-equidade",
+      "authors_or_org": "CMU / University of Toronto",
+      "notes": "Mostra ganho de arquiteturas neuro-simbólicas em raciocínio urbano abstrato com regras lógicas."
+    },
+    {
+      "id": "cornell-311-2023",
+      "title": "Underreporting e viés socioeconômico em relatos 311 (Cornell Tech, Nature Computational Science)",
+      "type": "paper",
+      "tier": "P1-Critico",
+      "rank": 5,
+      "rank_score": 93,
+      "region": "EUA (Cornell Tech)",
+      "year": 2023,
+      "status": "Benchmark externo",
+      "url": "https://www.nature.com/articles/s43588-023-00572-6",
+      "tags": [
+        "#equidade-territorial",
+        "#geoai-h3",
+        "#lua-regras",
+        "#banca-akcit"
+      ],
+      "eixo": "04-neuro-simbolico-geoai-equidade",
+      "authors_or_org": "Cornell Tech",
+      "notes": "Usa relatos repetidos de 311 para medir demora e urgência, e documenta o risco de bairros de renda mais alta reportarem mais. Informa a regra auditável de equidade na nota de Tendência."
+    },
+    {
+      "id": "oneservice-singapore",
+      "title": "OneService chatbot (GovTech Singapura)",
+      "type": "benchmark",
+      "tier": "P1-Critico",
+      "rank": 6,
+      "rank_score": 92,
+      "region": "Singapura",
+      "year": null,
+      "status": "Benchmark externo",
+      "url": "https://www.tech.gov.sg/technews/developing-the-one-service-chatbot/",
+      "tags": [
+        "#govtech-b2g",
+        "#banca-akcit"
+      ],
+      "eixo": "05-benchmarks-govtech-b2g",
+      "authors_or_org": "GovTech Singapore",
+      "notes": "Canal WhatsApp/Telegram com 160 mil casos; 80% de acerto de tipo de caso e 85% de órgão responsável. Lição prática: a foto ajudou mais no roteamento do que no tipo de caso."
+    },
+    {
+      "id": "conformal-ordinal",
+      "title": "Conformal Ordinal",
+      "type": "paper",
+      "tier": "P1-Critico",
+      "rank": 7,
+      "rank_score": 91,
+      "region": "Internacional",
+      "year": 2024,
+      "status": "Roadmap Piloto 2027",
+      "url": "https://arxiv.org/abs/2404.16610",
+      "tags": [
+        "#conformal-prediction",
+        "#revisao-humana-4-5",
+        "#piloto-2027",
+        "#banca-akcit"
+      ],
+      "eixo": "01-incerteza-conformal",
+      "notes": "Calibração conformal para escalas ordinais (encaixa na GUT 1–5). Com cerca de 500 relatos rotulados, devolve um conjunto de notas possíveis com garantia estatística, podendo pesar mais o erro no nível 5."
+    },
+    {
+      "id": "berkeley-mit-cornell-2025",
+      "title": "Inspeção urbana / 311 (Berkeley / MIT / Cornell)",
+      "type": "paper",
+      "tier": "P1-Critico",
+      "rank": 9,
+      "rank_score": 89,
+      "region": "EUA (Berkeley / MIT / Cornell)",
+      "year": 2025,
+      "status": "Benchmark externo",
+      "url": "https://arxiv.org/abs/2506.08740",
+      "tags": [
+        "#equidade-territorial",
+        "#geoai-h3",
+        "#lua-regras",
+        "#banca-akcit"
+      ],
+      "eixo": "04-neuro-simbolico-geoai-equidade",
+      "authors_or_org": "Berkeley / MIT / Cornell",
+      "notes": "Complementa a evidência de 2023 sobre relatos 311, demora, urgência e viés territorial. Informa a compensação de equidade em Lua."
+    },
+    {
+      "id": "conformal-hitl",
+      "title": "Conformal Prediction com human-in-the-loop",
+      "type": "paper",
+      "tier": "P1-Critico",
+      "rank": 10,
+      "rank_score": 88,
+      "region": "Internacional",
+      "year": 2024,
+      "status": "Roadmap Piloto 2027",
+      "url": "https://arxiv.org/abs/2401.13744",
+      "tags": [
+        "#conformal-prediction",
+        "#revisao-humana-4-5",
+        "#piloto-2027"
+      ],
+      "eixo": "01-incerteza-conformal",
+      "notes": "Estudo controlado: humanos decidem melhor quando recebem os conjuntos de predição conformal, e não um único rótulo pontual."
+    },
+    {
+      "id": "conformal-selective-routing",
+      "title": "Roteamento seletivo por incerteza conformal",
+      "type": "paper",
+      "tier": "P1-Critico",
+      "rank": 11,
+      "rank_score": 87,
+      "region": "Internacional",
+      "year": 2025,
+      "status": "Roadmap Piloto 2027",
+      "url": "https://arxiv.org/abs/2509.12573",
+      "tags": [
+        "#conformal-prediction",
+        "#revisao-humana-4-5",
+        "#piloto-2027"
+      ],
+      "eixo": "01-incerteza-conformal",
+      "notes": "O sistema pode rotear automaticamente casos ambíguos para o revisor humano certo."
+    },
+    {
+      "id": "conformal-risk-control",
+      "title": "Conformal Risk Control (ICLR 2024)",
+      "type": "paper",
+      "tier": "P1-Critico",
+      "rank": 12,
+      "rank_score": 86,
+      "region": "EUA",
+      "year": 2024,
+      "status": "Roadmap Piloto 2027",
+      "url": "https://arxiv.org/abs/2208.02814",
+      "tags": [
+        "#conformal-prediction",
+        "#revisao-humana-4-5",
+        "#piloto-2027"
+      ],
+      "eixo": "01-incerteza-conformal",
+      "notes": "Controla um risco esperado (não só cobertura) na saída conformal. Útil para penalizar mais o erro em ocorrências de nível 5."
+    },
+    {
+      "id": "hex2vec",
+      "title": "Hex2Vec (H3 + OpenStreetMap)",
+      "type": "paper",
+      "tier": "P1-Critico",
+      "rank": 13,
+      "rank_score": 85,
+      "region": "Polônia (Kraina AI)",
+      "year": 2021,
+      "status": "Roadmap Piloto 2027",
+      "url": "https://arxiv.org/abs/2111.00970",
+      "tags": [
+        "#geoai-h3",
+        "#equidade-territorial",
+        "#piloto-2027"
+      ],
+      "eixo": "04-neuro-simbolico-geoai-equidade",
+      "authors_or_org": "Kraina AI",
+      "notes": "Cria embeddings de cada hexágono H3 a partir do OpenStreetMap. Biblioteca referida: srai."
+    },
+    {
+      "id": "conformal-prediction",
+      "title": "A Gentle Introduction to Conformal Prediction (Angelopoulos & Bates)",
+      "type": "paper",
+      "tier": "P1-Alto",
+      "rank": 14,
+      "rank_score": 84,
+      "region": "EUA (Berkeley / correlatos)",
+      "year": null,
+      "status": "Roadmap Piloto 2027",
+      "url": "https://arxiv.org/abs/2107.07511",
+      "tags": [
+        "#conformal-prediction",
+        "#revisao-humana-4-5",
+        "#piloto-2027"
+      ],
+      "eixo": "01-incerteza-conformal",
+      "authors_or_org": "Angelopoulos & Bates",
+      "notes": "Texto de referência do método. Permite calibrar qualquer classificador (inclusive o atual) com um conjunto de calibração rotulado."
+    },
+    {
+      "id": "siglip2",
+      "title": "SigLIP 2",
+      "type": "paper",
+      "tier": "P1-Alto",
+      "rank": 15,
+      "rank_score": 83,
+      "region": "EUA / Reino Unido (Google DeepMind)",
+      "year": 2025,
+      "status": "Roadmap Piloto 2027",
+      "url": "https://arxiv.org/abs/2502.14786",
+      "tags": [
+        "#nao-llm",
+        "#edge-vision",
+        "#modelo-decisao",
+        "#piloto-2027"
+      ],
+      "eixo": "02-modelos-decisao-encoders-nao-llm",
+      "authors_or_org": "Google DeepMind",
+      "notes": "Encoder vision-language contrastivo com checkpoints abertos multilíngues a partir de ViT-B 86M, cabe em inferência local enxuta. Candidato a substituir o captioner externo no piloto."
+    },
+    {
+      "id": "dinov3",
+      "title": "DINOv3",
+      "type": "paper",
+      "tier": "P1-Alto",
+      "rank": 16,
+      "rank_score": 82,
+      "region": "EUA / França (Meta FAIR)",
+      "year": 2025,
+      "status": "Roadmap Piloto 2027",
+      "url": "https://arxiv.org/abs/2508.10104",
+      "tags": [
+        "#nao-llm",
+        "#edge-vision",
+        "#piloto-2027"
+      ],
+      "eixo": "02-modelos-decisao-encoders-nao-llm",
+      "authors_or_org": "Meta FAIR",
+      "notes": "Backbone visual auto-supervisionado forte em features densas e imagens urbanas/aéreas, com variantes destiladas leves."
+    },
+    {
+      "id": "mobileclip2",
+      "title": "MobileCLIP2",
+      "type": "paper",
+      "tier": "P1-Alto",
+      "rank": 17,
+      "rank_score": 81,
+      "region": "EUA (Apple)",
+      "year": 2025,
+      "status": "Roadmap Piloto 2027",
+      "url": "https://arxiv.org/abs/2508.20691",
+      "tags": [
+        "#edge-vision",
+        "#lgpd-borda",
+        "#piloto-2027"
+      ],
+      "eixo": "03-edge-privacidade-dados-br",
+      "authors_or_org": "Apple",
+      "notes": "Empata com SigLIP-SO400M sendo cerca de 2× menor; latência publicada de 3 a 15 ms em iPhone. Candidato a filtro indoor/outdoor no aparelho, antes do upload."
+    },
+    {
+      "id": "tabpfn-25",
+      "title": "TabPFN-2.5",
+      "type": "paper",
+      "tier": "P1-Alto",
+      "rank": 18,
+      "rank_score": 80,
+      "region": "Europa (Prior Labs)",
+      "year": 2025,
+      "status": "Roadmap Piloto 2027",
+      "url": "https://arxiv.org/abs/2511.08667",
+      "tags": [
+        "#few-shot-tabular",
+        "#nao-llm",
+        "#modelo-decisao",
+        "#piloto-2027"
+      ],
+      "eixo": "02-modelos-decisao-encoders-nao-llm",
+      "authors_or_org": "Prior Labs",
+      "notes": "Modelo fundacional tabular para regimes de poucos dados (porte do piloto em Itamogi, até cerca de 10 mil linhas). Ano da família: 2025/2026."
+    },
+    {
+      "id": "tabpfn-v2",
+      "title": "TabPFN v2 (Nature 2025)",
+      "type": "paper",
+      "tier": "P1-Alto",
+      "rank": 19,
+      "rank_score": 79,
+      "region": "Europa",
+      "year": 2025,
+      "status": "Roadmap Piloto 2027",
+      "url": "https://www.nature.com/articles/s41586-024-08328-6",
+      "tags": [
+        "#few-shot-tabular",
+        "#nao-llm",
+        "#modelo-decisao",
+        "#piloto-2027"
+      ],
+      "eixo": "02-modelos-decisao-encoders-nao-llm",
+      "notes": "Artigo na Nature (janeiro de 2025). Classificador tabular few-shot, adequado a centenas ou poucos milhares de ocorrências rotuladas."
+    },
+    {
+      "id": "places365",
+      "title": "Places365 (MIT)",
+      "type": "dataset",
+      "tier": "P1-Alto",
+      "rank": 20,
+      "rank_score": 78,
+      "region": "EUA (MIT CSAIL)",
+      "year": null,
+      "status": "Roadmap Piloto 2027",
+      "url": "https://github.com/CSAILVision/places365",
+      "tags": [
+        "#edge-vision",
+        "#lgpd-borda",
+        "#piloto-2027"
+      ],
+      "eixo": "03-edge-privacidade-dados-br",
+      "authors_or_org": "MIT CSAIL",
+      "notes": "Taxonomia e modelos de cenas indoor/outdoor. Combinado a um encoder leve, permite barrar foto doméstica antes do upload."
+    },
+    {
+      "id": "auto311",
+      "title": "Auto311 (Vanderbilt / Nashville)",
+      "type": "paper",
+      "tier": "P1-Alto",
+      "rank": 21,
+      "rank_score": 77,
+      "region": "EUA (Tennessee)",
+      "year": 2023,
+      "status": "Benchmark externo",
+      "url": "https://arxiv.org/abs/2312.14185",
+      "tags": [
+        "#govtech-b2g",
+        "#modelo-decisao",
+        "#banca-akcit"
+      ],
+      "eixo": "05-benchmarks-govtech-b2g",
+      "authors_or_org": "Vanderbilt / Nashville",
+      "notes": "Roteamento de chamados não emergenciais por confiança, com F1 de 92,54% no estudo."
+    },
+    {
+      "id": "br-aspavdam",
+      "title": "BR-AsPavDam (Cascavel-PR, classes DNIT, CC-BY 4.0)",
+      "type": "dataset",
+      "tier": "P1-Alto",
+      "rank": 22,
+      "rank_score": 76,
+      "region": "Brasil (Paraná)",
+      "year": null,
+      "status": "Roadmap Piloto 2027",
+      "url": "https://doi.org/10.5281/zenodo.16291115",
+      "tags": [
+        "#dataset-br",
+        "#piloto-2027",
+        "#edge-vision"
+      ],
+      "eixo": "03-edge-privacidade-dados-br",
+      "authors_or_org": "Cascavel-PR / classes DNIT",
+      "notes": "Dataset brasileiro aberto de dano viário: 2.167 imagens, classes do DNIT, licença CC-BY 4.0. Ponto de partida para pré-treino/adaptação antes dos dados reais de Itamogi."
+    },
+    {
+      "id": "tabicl",
+      "title": "TabICL",
+      "type": "paper",
+      "tier": "P1-Alto",
+      "rank": 23,
+      "rank_score": 75,
+      "region": "França (Inria)",
+      "year": 2025,
+      "status": "Roadmap Piloto 2027",
+      "url": "https://arxiv.org/abs/2502.05564",
+      "tags": [
+        "#few-shot-tabular",
+        "#nao-llm",
+        "#piloto-2027"
+      ],
+      "eixo": "02-modelos-decisao-encoders-nao-llm",
+      "authors_or_org": "Inria",
+      "notes": "Classificador tabular in-context, complementar ao TabPFN em regime de poucos dados."
+    },
+    {
+      "id": "mobileclip",
+      "title": "MobileCLIP (Apple, CVPR 2024)",
+      "type": "paper",
+      "tier": "P1-Alto",
+      "rank": 24,
+      "rank_score": 74,
+      "region": "EUA (Apple)",
+      "year": 2024,
+      "status": "Roadmap Piloto 2027",
+      "url": "https://arxiv.org/abs/2311.17049",
+      "tags": [
+        "#edge-vision",
+        "#lgpd-borda",
+        "#piloto-2027"
+      ],
+      "eixo": "03-edge-privacidade-dados-br",
+      "authors_or_org": "Apple",
+      "notes": "Antecessor do MobileCLIP2. Encoder multimodal eficiente para dispositivo móvel."
+    },
+    {
+      "id": "rdd2022",
+      "title": "RDD2022",
+      "type": "dataset",
+      "tier": "P1-Alto",
+      "rank": 25,
+      "rank_score": 73,
+      "region": "Internacional (6 países)",
+      "year": 2022,
+      "status": "Roadmap Piloto 2027",
+      "url": "https://arxiv.org/abs/2209.08538",
+      "tags": [
+        "#dataset-br",
+        "#piloto-2027",
+        "#edge-vision"
+      ],
+      "eixo": "03-edge-privacidade-dados-br",
+      "notes": "47.420 imagens de dano viário de 6 países. Complementar ao BR-AsPavDam (que traz classes DNIT e contexto brasileiro)."
+    },
+    {
+      "id": "egoblur",
+      "title": "EgoBlur (Meta)",
+      "type": "paper",
+      "tier": "P1-Alto",
+      "rank": 26,
+      "rank_score": 72,
+      "region": "EUA (Meta)",
+      "year": 2023,
+      "status": "Roadmap Piloto 2027",
+      "url": "https://arxiv.org/abs/2308.13093",
+      "tags": [
+        "#lgpd-borda",
+        "#piloto-2027"
+      ],
+      "eixo": "03-edge-privacidade-dados-br",
+      "authors_or_org": "Meta",
+      "notes": "Borrão de rostos e placas, com mais de 90% de acerto em rostos no estudo. Licença pendente de checagem antes de qualquer uso em produção."
+    },
+    {
+      "id": "snorkel",
+      "title": "Snorkel (Stanford)",
+      "type": "paper",
+      "tier": "P1-Alto",
+      "rank": 27,
+      "rank_score": 71,
+      "region": "EUA (Stanford)",
+      "year": 2017,
+      "status": "Roadmap Piloto 2027",
+      "url": "https://arxiv.org/abs/1711.10160",
+      "tags": [
+        "#dataset-br",
+        "#piloto-2027",
+        "#few-shot-tabular"
+      ],
+      "eixo": "03-edge-privacidade-dados-br",
+      "authors_or_org": "Stanford",
+      "notes": "Rotulagem programática (funções de rotulagem) para acelerar o dataset inicial de Itamogi com regras da prefeitura, antes da revisão humana."
+    },
+    {
+      "id": "modernbert",
+      "title": "ModernBERT",
+      "type": "paper",
+      "tier": "P1-Alto",
+      "rank": 28,
+      "rank_score": 70,
+      "region": "Internacional (Answer.AI / LightOn)",
+      "year": 2024,
+      "status": "Roadmap Piloto 2027",
+      "url": "https://arxiv.org/abs/2412.13663",
+      "tags": [
+        "#nao-llm",
+        "#modelo-decisao",
+        "#piloto-2027"
+      ],
+      "eixo": "02-modelos-decisao-encoders-nao-llm",
+      "authors_or_org": "Answer.AI / LightOn",
+      "notes": "Encoder-only eficiente para texto e metadados do relato, sem decoder generativo."
+    },
+    {
+      "id": "rtdetrv2",
+      "title": "RT-DETRv2 (Baidu)",
+      "type": "paper",
+      "tier": "P1-Alto",
+      "rank": 30,
+      "rank_score": 68,
+      "region": "China (Baidu)",
+      "year": 2024,
+      "status": "Roadmap Piloto 2027",
+      "url": "https://arxiv.org/abs/2407.17140",
+      "tags": [
+        "#nao-llm",
+        "#edge-vision",
+        "#piloto-2027"
+      ],
+      "eixo": "02-modelos-decisao-encoders-nao-llm",
+      "authors_or_org": "Baidu",
+      "notes": "Detector visual em tempo real, sem LLM. Números de FPS publicados são em GPU, não em CPU — não citar como desempenho no celular ou no servidor enxuto do piloto."
+    },
+    {
+      "id": "yolo-world",
+      "title": "YOLO-World (Tencent, CVPR 2024)",
+      "type": "paper",
+      "tier": "P1-Alto",
+      "rank": 31,
+      "rank_score": 66,
+      "region": "China (Tencent)",
+      "year": 2024,
+      "status": "Roadmap Piloto 2027",
+      "url": "https://arxiv.org/abs/2401.17270",
+      "tags": [
+        "#nao-llm",
+        "#edge-vision",
+        "#piloto-2027"
+      ],
+      "eixo": "02-modelos-decisao-encoders-nao-llm",
+      "authors_or_org": "Tencent",
+      "notes": "Detector open-vocabulary. Mesmo aviso: FPS publicado em GPU."
+    },
+    {
+      "id": "yoloe",
+      "title": "YOLOE (Tsinghua, ICCV 2025)",
+      "type": "paper",
+      "tier": "P1-Alto",
+      "rank": 32,
+      "rank_score": 64,
+      "region": "China (Tsinghua)",
+      "year": 2025,
+      "status": "Roadmap Piloto 2027",
+      "url": "https://arxiv.org/abs/2503.07465",
+      "tags": [
+        "#nao-llm",
+        "#edge-vision",
+        "#piloto-2027"
+      ],
+      "eixo": "02-modelos-decisao-encoders-nao-llm",
+      "authors_or_org": "Tsinghua",
+      "notes": "Detector visual recente da linha YOLO, sem LLM. FPS publicado não deve ser extrapolado para CPU do piloto."
+    },
+    {
+      "id": "vjepa2",
+      "title": "V-JEPA 2",
+      "type": "paper",
+      "tier": "P2-Horizonte",
+      "rank": 33,
+      "rank_score": 58,
+      "region": "EUA (Meta FAIR)",
+      "year": 2025,
+      "status": "Horizonte",
+      "url": "https://arxiv.org/abs/2506.09985",
+      "tags": [
+        "#world-model",
+        "#nao-llm"
+      ],
+      "eixo": "06-horizonte-e-hype-descartado",
+      "authors_or_org": "Meta FAIR",
+      "notes": "World model não-generativo em vídeo. Só entra no MOGI se houver evolução para vídeo ou dinâmica temporal de ocorrências. Não é plano do piloto 2027."
+    },
+    {
+      "id": "vjepa",
+      "title": "V-JEPA",
+      "type": "paper",
+      "tier": "P2-Horizonte",
+      "rank": 34,
+      "rank_score": 54,
+      "region": "EUA / França (Meta FAIR / Inria)",
+      "year": 2024,
+      "status": "Horizonte",
+      "url": "https://arxiv.org/abs/2404.08471",
+      "tags": [
+        "#world-model",
+        "#nao-llm"
+      ],
+      "eixo": "06-horizonte-e-hype-descartado",
+      "authors_or_org": "Meta FAIR / Inria",
+      "notes": "Antecessor do V-JEPA 2. Previsão no espaço latente, sem gerar pixels nem tokens."
+    },
+    {
+      "id": "ijepa",
+      "title": "I-JEPA",
+      "type": "paper",
+      "tier": "P2-Horizonte",
+      "rank": 35,
+      "rank_score": 50,
+      "region": "EUA (Meta FAIR)",
+      "year": 2023,
+      "status": "Horizonte",
+      "url": "https://arxiv.org/abs/2301.08243",
+      "tags": [
+        "#world-model",
+        "#nao-llm"
+      ],
+      "eixo": "06-horizonte-e-hype-descartado",
+      "authors_or_org": "Meta FAIR",
+      "notes": "CVPR 2023. Base da família JEPA em imagem. Não gera tokens nem pixels; aprende representações no espaço latente."
+    },
+    {
+      "id": "m3jepa",
+      "title": "M3-JEPA",
+      "type": "paper",
+      "tier": "P2-Horizonte",
+      "rank": 36,
+      "rank_score": 48,
+      "region": "Internacional",
+      "year": 2024,
+      "status": "Horizonte",
+      "url": "https://arxiv.org/abs/2409.05929",
+      "tags": [
+        "#world-model",
+        "#nao-llm"
+      ],
+      "eixo": "06-horizonte-e-hype-descartado",
+      "notes": "Extensão multimodal no espaço latente (texto+imagem). Horizonte, não piloto."
+    },
+    {
+      "id": "tijepa",
+      "title": "TI-JEPA",
+      "type": "paper",
+      "tier": "P2-Horizonte",
+      "rank": 37,
+      "rank_score": 46,
+      "region": "Internacional",
+      "year": 2025,
+      "status": "Horizonte",
+      "url": "https://arxiv.org/abs/2503.06380",
+      "tags": [
+        "#world-model",
+        "#nao-llm"
+      ],
+      "eixo": "06-horizonte-e-hype-descartado",
+      "notes": "Extensão texto+imagem no espaço latente. Horizonte, não piloto."
+    },
+    {
+      "id": "vmamba",
+      "title": "VMamba",
+      "type": "paper",
+      "tier": "P2-Horizonte",
+      "rank": 38,
+      "rank_score": 44,
+      "region": "Internacional",
+      "year": 2024,
+      "status": "Horizonte",
+      "url": "https://arxiv.org/abs/2401.10166",
+      "tags": [
+        "#ssm-vision",
+        "#nao-llm"
+      ],
+      "eixo": "06-horizonte-e-hype-descartado",
+      "notes": "Backbone visual State Space Model, potencialmente mais barato em alta resolução. Só faz sentido se o MOGI rodar inferência local ou em DC nacional no médio prazo."
+    },
+    {
+      "id": "mambavision",
+      "title": "MambaVision",
+      "type": "paper",
+      "tier": "P2-Horizonte",
+      "rank": 39,
+      "rank_score": 42,
+      "region": "EUA (NVIDIA)",
+      "year": 2024,
+      "status": "Horizonte",
+      "url": "https://arxiv.org/abs/2407.08083",
+      "tags": [
+        "#ssm-vision",
+        "#nao-llm"
+      ],
+      "eixo": "06-horizonte-e-hype-descartado",
+      "authors_or_org": "NVIDIA",
+      "notes": "Backbone SSM para visão. Horizonte de infra, não substituto do classificador atual."
+    },
+    {
+      "id": "grounding-dino",
+      "title": "Grounding DINO (IDEA Research)",
+      "type": "paper",
+      "tier": "Descartado",
+      "rank": 40,
+      "rank_score": 18,
+      "region": "Internacional (IDEA Research)",
+      "year": 2023,
+      "status": "Descartado (hype)",
+      "url": "https://arxiv.org/abs/2303.05499",
+      "tags": [
+        "#descartado-hype",
+        "#edge-vision"
+      ],
+      "eixo": "06-horizonte-e-hype-descartado",
+      "authors_or_org": "IDEA Research",
+      "notes": "Detector open-set documentado como referência da família. O uso em tempo real sem GPU está descartado para o MOGI. Não citar como solução do piloto."
+    },
+    {
+      "id": "urbanclip",
+      "title": "UrbanCLIP",
+      "type": "paper",
+      "tier": "Descartado",
+      "rank": 41,
+      "rank_score": 12,
+      "region": "Internacional",
+      "year": 2023,
+      "status": "Descartado (hype)",
+      "url": "https://arxiv.org/abs/2310.18340",
+      "tags": [
+        "#descartado-hype"
+      ],
+      "eixo": "06-horizonte-e-hype-descartado",
+      "notes": "Foco em satélite + LLM em megacidades. Fora do recorte de cidade pequena, foto de rua e decisão não-LLM do MOGI."
+    },
+    {
+      "id": "geoclip",
+      "title": "GeoCLIP",
+      "type": "paper",
+      "tier": "Descartado",
+      "rank": 42,
+      "rank_score": 10,
+      "region": "Internacional",
+      "year": 2023,
+      "status": "Descartado (hype)",
+      "url": "https://arxiv.org/abs/2309.16020",
+      "tags": [
+        "#descartado-hype"
+      ],
+      "eixo": "06-horizonte-e-hype-descartado",
+      "notes": "Localiza foto sem GPS. O MOGI já recebe GPS do aparelho; não resolve a dor de priorização."
+    },
+    {
+      "id": "liquid-neural-networks",
+      "title": "Liquid Neural Networks",
+      "type": "paper",
+      "tier": "Descartado",
+      "rank": 43,
+      "rank_score": 8,
+      "region": "EUA (MIT e correlatos)",
+      "year": 2020,
+      "status": "Descartado (hype)",
+      "url": "https://arxiv.org/abs/2006.04439",
+      "tags": [
+        "#descartado-hype"
+      ],
+      "eixo": "06-horizonte-e-hype-descartado",
+      "notes": "Família voltada a séries temporais, não a classificação de imagem urbana com saída GUT 1–5. Não citar como solução do MOGI."
+    }
+  ],
+  "edges": [
+    {
+      "source": "eixo-01-incerteza-conformal",
+      "target": "mod-revisao-humana-4-5",
+      "relation": "informa",
+      "weight": 1.0
+    },
+    {
+      "source": "eixo-01-incerteza-conformal",
+      "target": "mod-regras-lua-gut",
+      "relation": "informa",
+      "weight": 0.7
+    },
+    {
+      "source": "eixo-02-modelos-decisao",
+      "target": "mod-visao-classificador",
+      "relation": "informa",
+      "weight": 1.0
+    },
+    {
+      "source": "eixo-02-modelos-decisao",
+      "target": "mod-regras-lua-gut",
+      "relation": "informa",
+      "weight": 0.6
+    },
+    {
+      "source": "eixo-03-edge-privacidade",
+      "target": "mod-filtro-borda-lgpd",
+      "relation": "informa",
+      "weight": 1.0
+    },
+    {
+      "source": "eixo-03-edge-privacidade",
+      "target": "mod-app-morador",
+      "relation": "informa",
+      "weight": 0.8
+    },
+    {
+      "source": "eixo-03-edge-privacidade",
+      "target": "mod-visao-classificador",
+      "relation": "informa",
+      "weight": 0.6
+    },
+    {
+      "source": "eixo-04-neuro-simbolico-geoai",
+      "target": "mod-regras-lua-gut",
+      "relation": "informa",
+      "weight": 1.0
+    },
+    {
+      "source": "eixo-04-neuro-simbolico-geoai",
+      "target": "mod-postgis-h3",
+      "relation": "informa",
+      "weight": 1.0
+    },
+    {
+      "source": "eixo-04-neuro-simbolico-geoai",
+      "target": "mod-revisao-humana-4-5",
+      "relation": "informa",
+      "weight": 0.5
+    },
+    {
+      "source": "eixo-05-benchmarks-govtech",
+      "target": "mod-bmc-b2g",
+      "relation": "valida",
+      "weight": 1.0
+    },
+    {
+      "source": "eixo-05-benchmarks-govtech",
+      "target": "mod-whatsapp",
+      "relation": "valida",
+      "weight": 0.8
+    },
+    {
+      "source": "eixo-05-benchmarks-govtech",
+      "target": "mod-app-morador",
+      "relation": "valida",
+      "weight": 0.7
+    },
+    {
+      "source": "eixo-05-benchmarks-govtech",
+      "target": "mod-filtro-borda-lgpd",
+      "relation": "valida",
+      "weight": 0.6
+    },
+    {
+      "source": "eixo-06-horizonte-hype",
+      "target": "mod-visao-classificador",
+      "relation": "horizonte_de",
+      "weight": 0.4
+    },
+    {
+      "source": "typesafe-system-one",
+      "target": "eixo-02-modelos-decisao",
+      "relation": "pertence_a",
+      "weight": 1.0
+    },
+    {
+      "source": "typesafe-jev-1-14",
+      "target": "eixo-02-modelos-decisao",
+      "relation": "pertence_a",
+      "weight": 1.0
+    },
+    {
+      "source": "typesafe-jev-models",
+      "target": "eixo-02-modelos-decisao",
+      "relation": "pertence_a",
+      "weight": 1.0
+    },
+    {
+      "source": "typesafe-jev-images",
+      "target": "eixo-02-modelos-decisao",
+      "relation": "pertence_a",
+      "weight": 1.0
+    },
+    {
+      "source": "typesafe-jev-1-14",
+      "target": "typesafe-system-one",
+      "relation": "documenta",
+      "weight": 1.0
+    },
+    {
+      "source": "typesafe-jev-models",
+      "target": "typesafe-system-one",
+      "relation": "documenta",
+      "weight": 1.0
+    },
+    {
+      "source": "typesafe-jev-images",
+      "target": "typesafe-system-one",
+      "relation": "qualifica",
+      "weight": 1.0,
+      "note": "Suporte a imagem é experimental; não tratar como produção."
+    },
+    {
+      "source": "typesafe-system-one",
+      "target": "mod-visao-classificador",
+      "relation": "usado_na_demo",
+      "weight": 1.0,
+      "note": "Classificação tipada em texto na demo atual."
+    },
+    {
+      "source": "typesafe-system-one",
+      "target": "mod-regras-lua-gut",
+      "relation": "alimenta",
+      "weight": 0.8
+    },
+    {
+      "source": "siglip2",
+      "target": "typesafe-system-one",
+      "relation": "alternativa_de_evolucao",
+      "weight": 0.7,
+      "note": "Encoder visual próprio no piloto, sem fine-tune do Jev e sem captioner externo."
+    },
+    {
+      "source": "dinov3",
+      "target": "typesafe-system-one",
+      "relation": "alternativa_de_evolucao",
+      "weight": 0.6
+    },
+    {
+      "source": "conformal-prediction",
+      "target": "eixo-01-incerteza-conformal",
+      "relation": "pertence_a",
+      "weight": 1.0
+    },
+    {
+      "source": "conformal-risk-control",
+      "target": "eixo-01-incerteza-conformal",
+      "relation": "pertence_a",
+      "weight": 1.0
+    },
+    {
+      "source": "conformal-ordinal",
+      "target": "eixo-01-incerteza-conformal",
+      "relation": "pertence_a",
+      "weight": 1.0
+    },
+    {
+      "source": "conformal-hitl",
+      "target": "eixo-01-incerteza-conformal",
+      "relation": "pertence_a",
+      "weight": 1.0
+    },
+    {
+      "source": "conformal-selective-routing",
+      "target": "eixo-01-incerteza-conformal",
+      "relation": "pertence_a",
+      "weight": 1.0
+    },
+    {
+      "source": "conformal-prediction",
+      "target": "conformal-risk-control",
+      "relation": "precede",
+      "weight": 0.9
+    },
+    {
+      "source": "conformal-prediction",
+      "target": "conformal-ordinal",
+      "relation": "precede",
+      "weight": 0.9
+    },
+    {
+      "source": "conformal-ordinal",
+      "target": "mod-revisao-humana-4-5",
+      "relation": "informa",
+      "weight": 1.0
+    },
+    {
+      "source": "conformal-ordinal",
+      "target": "mod-regras-lua-gut",
+      "relation": "informa",
+      "weight": 0.6
+    },
+    {
+      "source": "conformal-risk-control",
+      "target": "mod-revisao-humana-4-5",
+      "relation": "informa",
+      "weight": 0.8
+    },
+    {
+      "source": "conformal-hitl",
+      "target": "mod-revisao-humana-4-5",
+      "relation": "informa",
+      "weight": 1.0
+    },
+    {
+      "source": "conformal-selective-routing",
+      "target": "mod-revisao-humana-4-5",
+      "relation": "informa",
+      "weight": 1.0
+    },
+    {
+      "source": "conformal-ordinal",
+      "target": "conformal-hitl",
+      "relation": "complementa",
+      "weight": 0.8
+    },
+    {
+      "source": "conformal-hitl",
+      "target": "conformal-selective-routing",
+      "relation": "complementa",
+      "weight": 0.8
+    },
+    {
+      "source": "siglip2",
+      "target": "eixo-02-modelos-decisao",
+      "relation": "pertence_a",
+      "weight": 1.0
+    },
+    {
+      "source": "dinov3",
+      "target": "eixo-02-modelos-decisao",
+      "relation": "pertence_a",
+      "weight": 1.0
+    },
+    {
+      "source": "modernbert",
+      "target": "eixo-02-modelos-decisao",
+      "relation": "pertence_a",
+      "weight": 1.0
+    },
+    {
+      "source": "tabpfn-v2",
+      "target": "eixo-02-modelos-decisao",
+      "relation": "pertence_a",
+      "weight": 1.0
+    },
+    {
+      "source": "tabicl",
+      "target": "eixo-02-modelos-decisao",
+      "relation": "pertence_a",
+      "weight": 1.0
+    },
+    {
+      "source": "tabpfn-25",
+      "target": "eixo-02-modelos-decisao",
+      "relation": "pertence_a",
+      "weight": 1.0
+    },
+    {
+      "source": "rtdetrv2",
+      "target": "eixo-02-modelos-decisao",
+      "relation": "pertence_a",
+      "weight": 1.0
+    },
+    {
+      "source": "yolo-world",
+      "target": "eixo-02-modelos-decisao",
+      "relation": "pertence_a",
+      "weight": 1.0
+    },
+    {
+      "source": "yoloe",
+      "target": "eixo-02-modelos-decisao",
+      "relation": "pertence_a",
+      "weight": 1.0
+    },
+    {
+      "source": "siglip2",
+      "target": "mod-visao-classificador",
+      "relation": "candidato_piloto",
+      "weight": 1.0
+    },
+    {
+      "source": "dinov3",
+      "target": "mod-visao-classificador",
+      "relation": "candidato_piloto",
+      "weight": 0.9
+    },
+    {
+      "source": "modernbert",
+      "target": "mod-visao-classificador",
+      "relation": "candidato_piloto",
+      "weight": 0.6
+    },
+    {
+      "source": "tabpfn-v2",
+      "target": "tabpfn-25",
+      "relation": "precede",
+      "weight": 0.9
+    },
+    {
+      "source": "tabicl",
+      "target": "tabpfn-v2",
+      "relation": "complementa",
+      "weight": 0.7
+    },
+    {
+      "source": "tabpfn-25",
+      "target": "mod-visao-classificador",
+      "relation": "candidato_piloto",
+      "weight": 0.9
+    },
+    {
+      "source": "tabpfn-v2",
+      "target": "mod-visao-classificador",
+      "relation": "candidato_piloto",
+      "weight": 0.8
+    },
+    {
+      "source": "tabicl",
+      "target": "mod-visao-classificador",
+      "relation": "candidato_piloto",
+      "weight": 0.6
+    },
+    {
+      "source": "siglip2",
+      "target": "tabpfn-25",
+      "relation": "alimenta",
+      "weight": 0.8,
+      "note": "Padrão late fusion: embedding visual + tabular/H3/histórico → cabeça de decisão."
+    },
+    {
+      "source": "dinov3",
+      "target": "tabpfn-25",
+      "relation": "alimenta",
+      "weight": 0.7
+    },
+    {
+      "source": "rtdetrv2",
+      "target": "mod-visao-classificador",
+      "relation": "candidato_piloto",
+      "weight": 0.4
+    },
+    {
+      "source": "yolo-world",
+      "target": "rtdetrv2",
+      "relation": "alternativa_a",
+      "weight": 0.5
+    },
+    {
+      "source": "yoloe",
+      "target": "yolo-world",
+      "relation": "alternativa_a",
+      "weight": 0.5
+    },
+    {
+      "source": "mobileclip",
+      "target": "eixo-03-edge-privacidade",
+      "relation": "pertence_a",
+      "weight": 1.0
+    },
+    {
+      "source": "mobileclip2",
+      "target": "eixo-03-edge-privacidade",
+      "relation": "pertence_a",
+      "weight": 1.0
+    },
+    {
+      "source": "places365",
+      "target": "eixo-03-edge-privacidade",
+      "relation": "pertence_a",
+      "weight": 1.0
+    },
+    {
+      "source": "egoblur",
+      "target": "eixo-03-edge-privacidade",
+      "relation": "pertence_a",
+      "weight": 1.0
+    },
+    {
+      "source": "snorkel",
+      "target": "eixo-03-edge-privacidade",
+      "relation": "pertence_a",
+      "weight": 1.0
+    },
+    {
+      "source": "br-aspavdam",
+      "target": "eixo-03-edge-privacidade",
+      "relation": "pertence_a",
+      "weight": 1.0
+    },
+    {
+      "source": "rdd2022",
+      "target": "eixo-03-edge-privacidade",
+      "relation": "pertence_a",
+      "weight": 1.0
+    },
+    {
+      "source": "mobileclip",
+      "target": "mobileclip2",
+      "relation": "precede",
+      "weight": 1.0
+    },
+    {
+      "source": "mobileclip2",
+      "target": "places365",
+      "relation": "complementa",
+      "weight": 0.9,
+      "note": "Encoder no aparelho + taxonomia indoor/outdoor."
+    },
+    {
+      "source": "mobileclip2",
+      "target": "mod-filtro-borda-lgpd",
+      "relation": "candidato_piloto",
+      "weight": 1.0
+    },
+    {
+      "source": "mobileclip2",
+      "target": "mod-app-morador",
+      "relation": "candidato_piloto",
+      "weight": 0.8
+    },
+    {
+      "source": "places365",
+      "target": "mod-filtro-borda-lgpd",
+      "relation": "candidato_piloto",
+      "weight": 0.8
+    },
+    {
+      "source": "egoblur",
+      "target": "mod-filtro-borda-lgpd",
+      "relation": "candidato_piloto",
+      "weight": 0.7,
+      "note": "Licença pendente de checagem antes de produção."
+    },
+    {
+      "source": "snorkel",
+      "target": "br-aspavdam",
+      "relation": "acelera_rotulagem_de",
+      "weight": 0.6
+    },
+    {
+      "source": "snorkel",
+      "target": "mod-visao-classificador",
+      "relation": "apoia_treino",
+      "weight": 0.6
+    },
+    {
+      "source": "br-aspavdam",
+      "target": "rdd2022",
+      "relation": "complementa",
+      "weight": 0.8
+    },
+    {
+      "source": "br-aspavdam",
+      "target": "mod-visao-classificador",
+      "relation": "apoia_treino",
+      "weight": 0.8
+    },
+    {
+      "source": "rdd2022",
+      "target": "mod-visao-classificador",
+      "relation": "apoia_treino",
+      "weight": 0.5
+    },
+    {
+      "source": "logicity",
+      "target": "eixo-04-neuro-simbolico-geoai",
+      "relation": "pertence_a",
+      "weight": 1.0
+    },
+    {
+      "source": "cmu-darpa-triage",
+      "target": "eixo-04-neuro-simbolico-geoai",
+      "relation": "pertence_a",
+      "weight": 1.0
+    },
+    {
+      "source": "hex2vec",
+      "target": "eixo-04-neuro-simbolico-geoai",
+      "relation": "pertence_a",
+      "weight": 1.0
+    },
+    {
+      "source": "cornell-311-2023",
+      "target": "eixo-04-neuro-simbolico-geoai",
+      "relation": "pertence_a",
+      "weight": 1.0
+    },
+    {
+      "source": "berkeley-mit-cornell-2025",
+      "target": "eixo-04-neuro-simbolico-geoai",
+      "relation": "pertence_a",
+      "weight": 1.0
+    },
+    {
+      "source": "logicity",
+      "target": "mod-regras-lua-gut",
+      "relation": "informa",
+      "weight": 1.0
+    },
+    {
+      "source": "cmu-darpa-triage",
+      "target": "mod-regras-lua-gut",
+      "relation": "informa",
+      "weight": 1.0
+    },
+    {
+      "source": "cmu-darpa-triage",
+      "target": "mod-visao-classificador",
+      "relation": "informa",
+      "weight": 0.7
+    },
+    {
+      "source": "logicity",
+      "target": "cmu-darpa-triage",
+      "relation": "complementa",
+      "weight": 0.7
+    },
+    {
+      "source": "hex2vec",
+      "target": "mod-postgis-h3",
+      "relation": "candidato_piloto",
+      "weight": 1.0
+    },
+    {
+      "source": "cornell-311-2023",
+      "target": "berkeley-mit-cornell-2025",
+      "relation": "complementa",
+      "weight": 0.9
+    },
+    {
+      "source": "cornell-311-2023",
+      "target": "mod-regras-lua-gut",
+      "relation": "alerta",
+      "weight": 1.0,
+      "note": "Relatos repetidos medem urgência, mas favorecem bairros que reportam mais."
+    },
+    {
+      "source": "cornell-311-2023",
+      "target": "mod-postgis-h3",
+      "relation": "alerta",
+      "weight": 0.8
+    },
+    {
+      "source": "berkeley-mit-cornell-2025",
+      "target": "mod-regras-lua-gut",
+      "relation": "alerta",
+      "weight": 0.9
+    },
+    {
+      "source": "berkeley-mit-cornell-2025",
+      "target": "mod-postgis-h3",
+      "relation": "alerta",
+      "weight": 0.8
+    },
+    {
+      "source": "hex2vec",
+      "target": "cornell-311-2023",
+      "relation": "apoia_mitigacao_de",
+      "weight": 0.6
+    },
+    {
+      "source": "desafio-xexeu-pe-2026",
+      "target": "eixo-05-benchmarks-govtech",
+      "relation": "pertence_a",
+      "weight": 1.0
+    },
+    {
+      "source": "novo-conecta-recife",
+      "target": "eixo-05-benchmarks-govtech",
+      "relation": "pertence_a",
+      "weight": 1.0
+    },
+    {
+      "source": "oneservice-singapore",
+      "target": "eixo-05-benchmarks-govtech",
+      "relation": "pertence_a",
+      "weight": 1.0
+    },
+    {
+      "source": "auto311",
+      "target": "eixo-05-benchmarks-govtech",
+      "relation": "pertence_a",
+      "weight": 1.0
+    },
+    {
+      "source": "desafio-xexeu-pe-2026",
+      "target": "mod-bmc-b2g",
+      "relation": "valida",
+      "weight": 1.0
+    },
+    {
+      "source": "desafio-xexeu-pe-2026",
+      "target": "mod-app-morador",
+      "relation": "valida",
+      "weight": 0.8
+    },
+    {
+      "source": "desafio-xexeu-pe-2026",
+      "target": "mod-whatsapp",
+      "relation": "valida",
+      "weight": 0.8
+    },
+    {
+      "source": "desafio-xexeu-pe-2026",
+      "target": "mod-filtro-borda-lgpd",
+      "relation": "valida",
+      "weight": 0.8
+    },
+    {
+      "source": "desafio-xexeu-pe-2026",
+      "target": "mod-regras-lua-gut",
+      "relation": "valida",
+      "weight": 0.7
+    },
+    {
+      "source": "desafio-xexeu-pe-2026",
+      "target": "mod-postgis-h3",
+      "relation": "valida",
+      "weight": 0.7,
+      "note": "Agrupamento de relatos repetidos elevando prioridade."
+    },
+    {
+      "source": "novo-conecta-recife",
+      "target": "mod-bmc-b2g",
+      "relation": "valida",
+      "weight": 0.9
+    },
+    {
+      "source": "novo-conecta-recife",
+      "target": "mod-app-morador",
+      "relation": "valida",
+      "weight": 0.7
+    },
+    {
+      "source": "oneservice-singapore",
+      "target": "mod-whatsapp",
+      "relation": "valida",
+      "weight": 1.0
+    },
+    {
+      "source": "oneservice-singapore",
+      "target": "mod-bmc-b2g",
+      "relation": "valida",
+      "weight": 0.8
+    },
+    {
+      "source": "auto311",
+      "target": "mod-visao-classificador",
+      "relation": "informa",
+      "weight": 0.6
+    },
+    {
+      "source": "auto311",
+      "target": "mod-bmc-b2g",
+      "relation": "valida",
+      "weight": 0.7
+    },
+    {
+      "source": "auto311",
+      "target": "conformal-selective-routing",
+      "relation": "complementa",
+      "weight": 0.5,
+      "note": "Roteamento por confiança; o MOGI planeja calibração conformal além do corte pontual."
+    },
+    {
+      "source": "ijepa",
+      "target": "eixo-06-horizonte-hype",
+      "relation": "pertence_a",
+      "weight": 1.0
+    },
+    {
+      "source": "vjepa",
+      "target": "eixo-06-horizonte-hype",
+      "relation": "pertence_a",
+      "weight": 1.0
+    },
+    {
+      "source": "vjepa2",
+      "target": "eixo-06-horizonte-hype",
+      "relation": "pertence_a",
+      "weight": 1.0
+    },
+    {
+      "source": "m3jepa",
+      "target": "eixo-06-horizonte-hype",
+      "relation": "pertence_a",
+      "weight": 1.0
+    },
+    {
+      "source": "tijepa",
+      "target": "eixo-06-horizonte-hype",
+      "relation": "pertence_a",
+      "weight": 1.0
+    },
+    {
+      "source": "vmamba",
+      "target": "eixo-06-horizonte-hype",
+      "relation": "pertence_a",
+      "weight": 1.0
+    },
+    {
+      "source": "mambavision",
+      "target": "eixo-06-horizonte-hype",
+      "relation": "pertence_a",
+      "weight": 1.0
+    },
+    {
+      "source": "grounding-dino",
+      "target": "eixo-06-horizonte-hype",
+      "relation": "pertence_a",
+      "weight": 1.0
+    },
+    {
+      "source": "urbanclip",
+      "target": "eixo-06-horizonte-hype",
+      "relation": "pertence_a",
+      "weight": 1.0
+    },
+    {
+      "source": "geoclip",
+      "target": "eixo-06-horizonte-hype",
+      "relation": "pertence_a",
+      "weight": 1.0
+    },
+    {
+      "source": "liquid-neural-networks",
+      "target": "eixo-06-horizonte-hype",
+      "relation": "pertence_a",
+      "weight": 1.0
+    },
+    {
+      "source": "ijepa",
+      "target": "vjepa",
+      "relation": "precede",
+      "weight": 1.0
+    },
+    {
+      "source": "vjepa",
+      "target": "vjepa2",
+      "relation": "precede",
+      "weight": 1.0
+    },
+    {
+      "source": "m3jepa",
+      "target": "ijepa",
+      "relation": "estende",
+      "weight": 0.6
+    },
+    {
+      "source": "tijepa",
+      "target": "ijepa",
+      "relation": "estende",
+      "weight": 0.6
+    },
+    {
+      "source": "vjepa2",
+      "target": "mod-visao-classificador",
+      "relation": "horizonte_de",
+      "weight": 0.4
+    },
+    {
+      "source": "vmamba",
+      "target": "mambavision",
+      "relation": "alternativa_a",
+      "weight": 0.5
+    },
+    {
+      "source": "vmamba",
+      "target": "mod-visao-classificador",
+      "relation": "horizonte_de",
+      "weight": 0.3
+    },
+    {
+      "source": "grounding-dino",
+      "target": "eixo-02-modelos-decisao",
+      "relation": "referenciado_em",
+      "weight": 0.3,
+      "note": "Documentado no eixo 02 como detector; uso real-time sem GPU descartado no eixo 06."
+    },
+    {
+      "source": "grounding-dino",
+      "target": "rtdetrv2",
+      "relation": "descartado_em_favor_de",
+      "weight": 0.4,
+      "note": "Detectores da linha RT-DETR/YOLO são o caminho a avaliar; Grounding DINO em tempo real sem GPU está descartado."
+    },
+    {
+      "source": "urbanclip",
+      "target": "eixo-06-horizonte-hype",
+      "relation": "descartado_por",
+      "weight": 0.2
+    },
+    {
+      "source": "geoclip",
+      "target": "eixo-06-horizonte-hype",
+      "relation": "descartado_por",
+      "weight": 0.2
+    },
+    {
+      "source": "liquid-neural-networks",
+      "target": "eixo-06-horizonte-hype",
+      "relation": "descartado_por",
+      "weight": 0.2
+    }
+  ],
+  "tag_index": {
+    "#nao-llm": [
+      "typesafe-system-one",
+      "typesafe-jev-1-14",
+      "typesafe-jev-models",
+      "typesafe-jev-images",
+      "siglip2",
+      "dinov3",
+      "tabpfn-25",
+      "tabpfn-v2",
+      "tabicl",
+      "modernbert",
+      "rtdetrv2",
+      "yolo-world",
+      "yoloe",
+      "vjepa2",
+      "vjepa",
+      "ijepa",
+      "m3jepa",
+      "tijepa",
+      "vmamba",
+      "mambavision"
+    ],
+    "#modelo-decisao": [
+      "typesafe-system-one",
+      "typesafe-jev-1-14",
+      "typesafe-jev-models",
+      "typesafe-jev-images",
+      "cmu-darpa-triage",
+      "siglip2",
+      "tabpfn-25",
+      "tabpfn-v2",
+      "auto311",
+      "modernbert"
+    ],
+    "#neuro-simbolico": [
+      "cmu-darpa-triage",
+      "logicity"
+    ],
+    "#lua-regras": [
+      "cmu-darpa-triage",
+      "logicity",
+      "cornell-311-2023",
+      "berkeley-mit-cornell-2025"
+    ],
+    "#conformal-prediction": [
+      "conformal-ordinal",
+      "conformal-hitl",
+      "conformal-selective-routing",
+      "conformal-risk-control",
+      "conformal-prediction"
+    ],
+    "#revisao-humana-4-5": [
+      "conformal-ordinal",
+      "conformal-hitl",
+      "conformal-selective-routing",
+      "conformal-risk-control",
+      "conformal-prediction"
+    ],
+    "#geoai-h3": [
+      "cornell-311-2023",
+      "berkeley-mit-cornell-2025",
+      "hex2vec"
+    ],
+    "#equidade-territorial": [
+      "cornell-311-2023",
+      "berkeley-mit-cornell-2025",
+      "hex2vec"
+    ],
+    "#edge-vision": [
+      "siglip2",
+      "dinov3",
+      "mobileclip2",
+      "places365",
+      "br-aspavdam",
+      "mobileclip",
+      "rdd2022",
+      "rtdetrv2",
+      "yolo-world",
+      "yoloe",
+      "grounding-dino"
+    ],
+    "#lgpd-borda": [
+      "desafio-xexeu-pe-2026",
+      "mobileclip2",
+      "places365",
+      "mobileclip",
+      "egoblur"
+    ],
+    "#dataset-br": [
+      "br-aspavdam",
+      "rdd2022",
+      "snorkel"
+    ],
+    "#few-shot-tabular": [
+      "tabpfn-25",
+      "tabpfn-v2",
+      "tabicl",
+      "snorkel"
+    ],
+    "#govtech-b2g": [
+      "desafio-xexeu-pe-2026",
+      "novo-conecta-recife",
+      "oneservice-singapore",
+      "auto311"
+    ],
+    "#edital-pe": [
+      "desafio-xexeu-pe-2026"
+    ],
+    "#world-model": [
+      "vjepa2",
+      "vjepa",
+      "ijepa",
+      "m3jepa",
+      "tijepa"
+    ],
+    "#ssm-vision": [
+      "vmamba",
+      "mambavision"
+    ],
+    "#piloto-2027": [
+      "cmu-darpa-triage",
+      "conformal-ordinal",
+      "conformal-hitl",
+      "conformal-selective-routing",
+      "conformal-risk-control",
+      "hex2vec",
+      "conformal-prediction",
+      "siglip2",
+      "dinov3",
+      "mobileclip2",
+      "tabpfn-25",
+      "tabpfn-v2",
+      "places365",
+      "br-aspavdam",
+      "tabicl",
+      "mobileclip",
+      "rdd2022",
+      "egoblur",
+      "snorkel",
+      "modernbert",
+      "rtdetrv2",
+      "yolo-world",
+      "yoloe"
+    ],
+    "#banca-akcit": [
+      "typesafe-system-one",
+      "desafio-xexeu-pe-2026",
+      "novo-conecta-recife",
+      "cmu-darpa-triage",
+      "logicity",
+      "cornell-311-2023",
+      "oneservice-singapore",
+      "conformal-ordinal",
+      "berkeley-mit-cornell-2025",
+      "auto311"
+    ],
+    "#descartado-hype": [
+      "grounding-dino",
+      "urbanclip",
+      "geoclip",
+      "liquid-neural-networks"
+    ]
+  },
+  "stats": {
+    "nodes_total": 59,
+    "nodes_fontes": 45,
+    "nodes_eixos": 6,
+    "nodes_modulos": 8,
+    "edges": 136,
+    "tags": 19
+  }
+}
