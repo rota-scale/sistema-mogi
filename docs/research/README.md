@@ -179,6 +179,15 @@ Valores gerados a partir de `knowledge-graph.json` em 27/11/2026:
 - 19 hashtags controladas
 - 43 linhas no ranqueamento (a família TypeSafe de produto/preço compartilha o rank 8)
 
+## Levantamento de requisitos e infra (27/11/2026)
+
+Complemento do mesmo dia, fora do grafo acadêmico deste diretório. O `knowledge-graph.json` não foi alterado (continuam 59 nós, 136 arestas e 19 hashtags).
+
+- Requisitos do MVP (WhatsApp demonstrável, polish da UI, landing com QR e LGPD, pitch e B2G): [../requisitos/levantamento-mvp-2026-11-27.md](../requisitos/levantamento-mvp-2026-11-27.md)
+- Três degraus de infra, números com fonte e regra legal (LGPD art. 33, IN GSI/PR 5/2021 e Portaria SGD/MGI 5.950/2023): [../requisitos/infra-escalonamento-2026-11-27.md](../requisitos/infra-escalonamento-2026-11-27.md)
+
+Nada nesses dois arquivos altera código, deploy ou a demo em produção.
+
 ## Relação com o restante do repositório
 
 - Decisão atual de triagem (não substituída por este pacote): [ADR 0007](../adr/0007-agente-de-triagem.md) e [fluxo do agente](../fluxo-do-agente.md)

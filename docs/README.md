@@ -28,6 +28,7 @@ Monitoramento e Ocorrências com Gestão Inteligente, solução de cidade inteli
 - [pesquisa-painel-web.md](pesquisa-painel-web.md): framework do painel
 - [decisoes-e-pendencias.md](decisoes-e-pendencias.md): decisões abertas, resolvidas e backlog
 - [research/](research/): knowledge graph P1 (pesquisas RTLG-9 e RTLG-10) com ranqueamento, hashtags e grafo de evidências acadêmicas e GovTech — consulta permanente para releases, pitch e BMC
+- [requisitos/](requisitos/): levantamento de requisitos do MVP e de infra de 27/11/2026 (mentoria com Állan e decisões do Russo), ainda não mesclado na main
 - [paper/](paper/) e [pdf/](pdf/): paper técnico e documento em PDF
 
 ## Como contribuir
