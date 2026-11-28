@@ -150,6 +150,111 @@ td.ok .ck { stroke: var(--verde); }
   .marcos li { grid-template-columns: 1fr; border-left: 0; border-top: 8px solid var(--c); align-content: start; min-height: 104px; }
   tbody th[scope="row"] { max-width: none; }
 }
+
+/* Arquitetura: mapa em raias, caminho de um relato e ficha de cada peça */
+.miolo.largo { max-width: 1240px; }
+#arquitetura h3 { margin: 0; font-weight: 900; font-size: .95rem; line-height: 1.15; }
+#arquitetura .nota a { color: var(--ipe); font-weight: 900; }
+.arq-lide { font-weight: 700; font-size: 1.05rem; max-width: 52ch; }
+.arq-ic { width: 20px; height: 20px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+.arq-passos { display: flex; flex-wrap: wrap; gap: 6px; }
+.arq-passo { font: inherit; font-weight: 900; font-size: .95rem; display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 6px 12px 6px 6px; border: 2px solid #CFE0C9; background: none; color: var(--creme); cursor: pointer; }
+.arq-passo[data-passo="-1"] { padding-left: 12px; }
+.arq-passo i { font-style: normal; width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: var(--ipe); color: var(--cafe); }
+.arq-passo[aria-pressed="true"] { background: var(--ipe); border-color: var(--ipe); color: var(--cafe); }
+.arq-passo[aria-pressed="true"] i { background: var(--cafe); color: var(--ipe); }
+.arq-passo:focus-visible, .arq-no:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
+.arq-fala { background: var(--ipe); color: var(--cafe); padding: 12px 14px; display: flex; flex-wrap: wrap; gap: 4px 14px; align-items: baseline; font-weight: 700; min-height: 3.4em; }
+.arq-fala strong { font-weight: 900; font-size: 1.1rem; }
+.arq-fala code { font: 700 .85rem ui-monospace, Menlo, Consolas, monospace; color: var(--verde); }
+.arq-mapa { display: grid; grid-template-columns: minmax(0, 1fr); }
+.arq-coluna { display: grid; gap: 10px; align-content: start; min-width: 0; }
+.arq-raia { display: grid; gap: 8px; align-content: start; padding: 10px; background: var(--creme); color: var(--verde); min-width: 0; }
+.arq-raia.dentro { border-top: 8px solid var(--ipe); }
+.arq-raia.fora { background: none; color: var(--creme); outline: 2px dashed #CFE0C9; outline-offset: -2px; }
+.arq-nos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; min-width: 0; }
+.arq-no { font: inherit; text-align: left; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 8px; align-items: start; padding: 8px 9px; min-height: 56px; border: 2px solid #fff; background: #fff; color: var(--verde); cursor: pointer; min-width: 0; transition: opacity .18s ease; }
+.arq-raia.fora .arq-no { border-color: var(--creme); background: var(--creme); }
+.arq-no b { display: block; font-weight: 900; font-size: .92rem; line-height: 1.15; }
+.arq-no small { display: block; font-size: .78rem; font-weight: 700; line-height: 1.2; color: var(--apoio); overflow-wrap: anywhere; }
+.arq-no[data-st="teste"], .arq-no[data-st="novo"] { border: 2px dashed #D9731A; }
+.arq-no[data-st="plano"], .arq-no[data-st="opcional"] { border: 2px dashed var(--ceu); }
+.arq-no[aria-pressed="true"] { background: var(--verde); border: 2px solid var(--verde); color: var(--creme); }
+.arq-raia.fora .arq-no[aria-pressed="true"] { background: var(--ipe); border-color: var(--ipe); color: var(--cafe); }
+.arq-no[aria-pressed="true"] small { color: inherit; opacity: .85; }
+.arq-mapa[data-passo] .arq-no:not(.ativo) { opacity: .3; }
+.arq-mapa[data-passo] .arq-no.ativo { box-shadow: 0 0 0 3px var(--cereja); }
+.arq-elo { display: flex; justify-content: center; align-items: center; gap: 8px; padding: 6px 0; font: 700 .72rem ui-monospace, Menlo, Consolas, monospace; color: #CFE0C9; text-align: center; }
+.arq-elo svg { width: 26px; height: 12px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; transform: rotate(90deg); }
+.arq-mapa[data-passo] .arq-elo.ativo { color: var(--ipe); }
+.arq-leg { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: .85rem; font-weight: 700; color: #CFE0C9; }
+.arq-leg li { display: inline-flex; align-items: center; gap: 6px; }
+.arq-leg i { width: 22px; height: 12px; background: #fff; border: 2px solid #fff; }
+.arq-leg i.d { background: var(--creme); border-color: var(--creme); border-top: 4px solid var(--ipe); }
+.arq-leg i.f { background: none; border: 2px dashed #CFE0C9; }
+.arq-leg i.t { border: 2px dashed #D9731A; }
+.arq-leg i.p { border: 2px dashed var(--ceu); }
+.arq-ficha { background: var(--creme); color: var(--verde); padding: 16px; display: grid; gap: 12px; }
+.arq-ficha header { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; }
+.arq-ficha h3 { font-size: 1.35rem !important; }
+.arq-ficha .st { font-size: .78rem; font-weight: 900; padding: 4px 8px; background: var(--verde); color: var(--creme); }
+.arq-ficha .st.t { background: #D9731A; color: #fff; }
+.arq-ficha .st.p { background: var(--ceu); color: #fff; }
+.arq-ficha .oque { font-weight: 700; max-width: 70ch; }
+.arq-ficha dl { margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px 20px; }
+.arq-ficha dt { font-size: .74rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; color: var(--terra); }
+.arq-ficha dd { margin: 2px 0 0; overflow-wrap: anywhere; }
+.arq-ficha dd span { display: block; }
+.arq-ficha code { font: 700 .85rem ui-monospace, Menlo, Consolas, monospace; }
+@media (min-width: 900px) {
+  .arq-mapa { grid-template-columns: minmax(0, .82fr) 62px minmax(0, 1fr) 62px minmax(0, 1.95fr) 62px minmax(0, 1.2fr); align-items: stretch; }
+  .arq-nos { grid-template-columns: minmax(0, 1fr); }
+  .arq-raia.servidor .arq-nos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .arq-elo { display: grid; align-content: center; justify-items: center; gap: 4px; padding: 0; font-size: .62rem; }
+  .arq-elo svg { transform: none; width: 34px; }
+}
+@media (prefers-reduced-motion: reduce) { .arq-no { transition: none; } }
+
+/* Fluxograma da triagem */
+.fl-entra { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-weight: 900; }
+.fl-entra span { color: var(--terra); margin-right: 4px; }
+.fl-entra b { background: #fff; padding: 4px 10px; font-size: .9rem; }
+.fluxo { display: grid; gap: 26px; }
+.fluxo li { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto 1fr auto; background: #fff; min-width: 0; }
+.fluxo li > div { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; padding: 10px 12px; background: var(--c); color: #fff; }
+.fluxo li > div b { width: 34px; height: 34px; border-radius: 50%; background: var(--creme); color: var(--verde); display: grid; place-items: center; font-weight: 900; flex: none; }
+.fluxo h3 { margin: 0; font-weight: 900; font-size: 1.15rem; line-height: 1.1; }
+.fluxo small { margin-left: auto; font-weight: 700; font-size: .8rem; white-space: nowrap; }
+.fluxo li > p { padding: 10px 12px; line-height: 1.2; font-weight: 900; font-size: 1.05rem; }
+.fluxo .fl-cadeia { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.fluxo .fl-cadeia b { background: var(--creme); padding: 4px 8px; font-size: .92rem; }
+.fluxo .fl-cadeia i { width: 8px; height: 8px; border-top: 3px solid var(--terra); border-right: 3px solid var(--terra); transform: rotate(45deg); margin-right: 3px; }
+.fluxo .fl-falha { background: #F8E3D9; color: #9A3B1F; font-weight: 700; font-size: .9rem; }
+.fluxo li.lua > div { background: var(--ipe); color: var(--cafe); }
+.fluxo li:not(:last-child)::after { content: ''; position: absolute; left: 22px; bottom: -19px; width: 12px; height: 12px; border-right: 4px solid var(--verde); border-bottom: 4px solid var(--verde); transform: rotate(45deg); }
+.fl-saidas { display: grid; gap: 3px; }
+.fl-saidas li { padding: 12px 14px; display: grid; gap: 2px; }
+.fl-saidas b { font-weight: 900; font-size: 1.15rem; }
+.fl-saidas span { font-weight: 700; line-height: 1.25; }
+.faixa code { font: 700 .85em ui-monospace, Menlo, Consolas, monospace; }
+/* ADRs */
+.adrs { display: grid; gap: 3px; }
+.adrs li { display: grid; gap: 3px; padding: 12px 14px; background: var(--creme); border-left: 8px solid var(--c); align-content: start; }
+.adrs small { font-size: .78rem; font-weight: 900; letter-spacing: .06em; text-transform: uppercase; color: var(--terra); }
+.adrs b { font-weight: 900; font-size: 1.1rem; line-height: 1.15; }
+.adrs span { line-height: 1.3; }
+.adrs em { font-style: normal; display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+.adrs a { font-size: .8rem; font-weight: 900; padding: 6px 9px; background: var(--verde); color: var(--creme); text-decoration: none; }
+.adrs a:hover, .adrs a:focus-visible { background: var(--cereja); }
+.nota a { color: var(--verde); font-weight: 900; }
+@media (min-width: 700px) {
+  .fluxo { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 26px; }
+  .fluxo li:not(:last-child)::after { left: auto; right: -19px; bottom: auto; top: 20px; transform: rotate(-45deg); }
+  .fl-saidas { grid-template-columns: repeat(3, 1fr); }
+  .adrs { grid-template-columns: repeat(2, 1fr); }
+  .adrs li { border-left: 0; border-top: 8px solid var(--c); }
+}
+@media (min-width: 1000px) { .adrs { grid-template-columns: repeat(5, 1fr); } }
 </style>
 
 <div class="mosaico" aria-hidden="true" id="faixa-topo"></div>
@@ -280,6 +385,59 @@ td.ok .ck { stroke: var(--verde); }
 </div>
 </section>
 
+<section class="faixa escura" id="arquitetura" aria-labelledby="t-arq">
+<div class="miolo largo">
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><symbol id="i-pessoa" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.9 3.1-7 7-7s7 3.1 7 7"/></symbol><symbol id="i-celular" viewBox="0 0 24 24"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/></symbol><symbol id="i-tela" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M9 20h6M12 16v4"/></symbol><symbol id="i-banco" viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v12c0 1.7 3.1 3 7 3s7-1.3 7-3V6"/><path d="M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3"/></symbol><symbol id="i-nuvem" viewBox="0 0 24 24"><path d="M7 18h10a4 4 0 0 0 .6-7.96A6 6 0 0 0 6.1 9.6 4.2 4.2 0 0 0 7 18z"/></symbol><symbol id="i-escudo" viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.6-2.9 8.4-7 10-4.1-1.6-7-5.4-7-10V6z"/></symbol><symbol id="i-raio" viewBox="0 0 24 24"><path d="M13 2L5 14h6l-1 8 8-12h-6z"/></symbol><symbol id="i-olho" viewBox="0 0 24 24"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="2.8"/></symbol><symbol id="i-mapa" viewBox="0 0 24 24"><path d="M9 4L3 6.5V20l6-2.5 6 2.5 6-2.5V4l-6 2.5z"/><path d="M9 4v13.5M15 6.5V20"/></symbol><symbol id="i-regra" viewBox="0 0 24 24"><path d="M7 3h8l4 4v14H7z"/><path d="M15 3v4h4M10 12h6M10 16h6"/></symbol><symbol id="i-pino" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></symbol><symbol id="i-camera" viewBox="0 0 24 24"><path d="M4 8h3l1.5-2h7L17 8h3v11H4z"/><circle cx="12" cy="13" r="3.2"/></symbol><symbol id="i-grafico" viewBox="0 0 24 24"><path d="M4 20V4M4 20h16M8 16v-4M12 16V8M16 16v-6"/></symbol><symbol id="i-caixa" viewBox="0 0 24 24"><path d="M3 8l9-4 9 4v8l-9 4-9-4z"/><path d="M3 8l9 4 9-4M12 12v8"/></symbol><symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></symbol></defs></svg>
+  <h2 id="t-arq">Por dentro do MOGI</h2>
+  <p class="arq-lide">Toque num passo para acender o caminho. Toque numa peça para abrir a ficha.</p>
+  <div class="arq-passos" role="group" aria-label="Caminho de um relato"><button type="button" class="arq-passo" data-passo="-1" aria-pressed="true">Tudo</button><button type="button" class="arq-passo" data-passo="0" aria-pressed="false"><i>1</i>Foto</button><button type="button" class="arq-passo" data-passo="1" aria-pressed="false"><i>2</i>Envio</button><button type="button" class="arq-passo" data-passo="2" aria-pressed="false"><i>3</i>Borrão (LGPD)</button><button type="button" class="arq-passo" data-passo="3" aria-pressed="false"><i>4</i>Triagem</button><button type="button" class="arq-passo" data-passo="4" aria-pressed="false"><i>5</i>Central ao vivo</button><button type="button" class="arq-passo" data-passo="5" aria-pressed="false"><i>6</i>Equipe resolve</button><button type="button" class="arq-passo" data-passo="6" aria-pressed="false"><i>7</i>Morador vê</button></div>
+  <p class="arq-fala" id="passo-fala" aria-live="polite"><strong>Do celular do morador até a equipe na rua</strong><span>Sete passos, um servidor só.</span></p>
+  <div class="arq-mapa" id="mapa"><div class="arq-raia quem "><h3>Quem usa</h3><div class="arq-nos"><button type="button" class="arq-no" id="no-morador" data-no="morador" data-st="roda" aria-pressed="false"><svg class="arq-ic" aria-hidden="true"><use href="#i-pessoa"/></svg><span><b>Morador</b><small>relata e acompanha</small></span></button><button type="button" class="arq-no" id="no-operador" data-no="operador" data-st="roda" aria-pressed="false"><svg class="arq-ic" aria-hidden="true"><use href="#i-tela"/></svg><span><b>Operador</b><small>central, despacha</small></span></button><button type="button" class="arq-no" id="no-gestor" data-no="gestor" data-st="roda" aria-pressed="false"><svg class="arq-ic" aria-hidden="true"><use href="#i-grafico"/></svg><span><b>Gestor</b><small>números e regras</small></span></button><button type="button" class="arq-no" id="no-equipe" data-no="equipe" data-st="roda" aria-pressed="false"><svg class="arq-ic" aria-hidden="true"><use href="#i-pino"/></svg><span><b>Equipe de campo</b><small>resolve com foto</small></span></button></div></div><div class="arq-elo" id="e1"><span>usa</span><svg viewBox="0 0 34 12" aria-hidden="true"><path d="M1 6h31M27 2l5 4-5 4M7 2L2 6l5 4"/></svg><span></span></div><div class="arq-raia telas "><h3>Telas</h3><div class="arq-nos"><button type="button" class="arq-no" id="no-appweb" data-no="appweb" data-st="roda" aria-pressed="false"><svg class="arq-ic" aria-hidden="true"><use href="#i-celular"/></svg><span><b>App web do morador</b><small>/relatar · React 19, PWA</small></span></button><button type="button" class="arq-no" id="no-central" data-no="central" data-st="roda" aria-pressed="false"><svg class="arq-ic" aria-hidden="true"><use href="#i-tela"/></svg><span><b>Central e gestor</b><small>/ · mapa ao vivo</small></span></button><button type="button" class="arq-no" id="no-telacampo" data-no="telacampo" data-st="roda" aria-pressed="false"><svg class="arq-ic" aria-hidden="true"><use href="#i-celular"/></svg><span><b>Tela do campo</b><small>/campo · por secretaria</small></span></button><button type="button" class="arq-no" id="no-android" data-no="android" data-st="teste" aria-pressed="false"><svg class="arq-ic" aria-hidden="true"><use href="#i-celular"/></svg><span><b>App Android</b><small>Expo 58 · APK do CI</small></span></button><button type="button" class="arq-no" id="no-whatsapp" data-no="whatsapp" data-st="plano" aria-pressed="false"><svg class="arq-ic" aria-hidden="true"><use href="#i-chat"/></svg><span><b>WhatsApp</b><small>tela simulada, fora da main</small></span></button></div></div><div class="arq-elo" id="e2"><span>HTTPS</span><svg viewBox="0 0 34 12" aria-hidden="true"><path d="M1 6h31M27 2l5 4-5 4M7 2L2 6l5 4"/></svg><span>WebSocket</span></div><div class="arq-raia servidor dentro"><h3>Servidor: um binário Go 1.26</h3><div class="arq-nos"><button type="button" class="arq-no" id="no-api" data-no="api" data-st="roda" aria-pressed="false"><svg class="arq-ic" aria-hidden="true"><use href="#i-escudo"/></svg><span><b>Porta de entrada</b><small>JWT, papéis e limites</small></span></button><button type="button" class="arq-no" id="no-cadastro" data-no="cadastro" data-st="roda" aria-pressed="false"><svg class="arq-ic" aria-hidden="true"><use href="#i-pessoa"/></svg><span><b>Cadastro</b><small>CPF cifrado, AES-256-GCM</small></span></button><button type="button" class="arq-no" id="no-ocorrencias" data-no="ocorrencias" data-st="roda" aria-pressed="false"><svg class="arq-ic" aria-hidden="true"><use href="#i-pino"/></svg><span><b>Relatos e chamados</b><small>protocolo, agrupa em 50 m</small></span></button><button type="button" class="arq-no" id="no-midia" data-no="midia" data-st="roda" aria-pressed="false"><svg class="arq-ic" aria-hidden="true"><use href="#i-camera"/></svg><span><b>Borrão e mídia</b><small>rostos e placas, antes de tudo</small></span></button><button type="button" class="arq-no" id="no-triagem" data-no="triagem" data-st="roda" aria-pressed="false"><svg class="arq-ic" aria-hidden="true"><use href="#i-raio"/></svg><span><b>Triagem</b><small>a IA sugere, a Lua decide</small></span></button><button type="button" class="arq-no" id="no-contexto" data-no="contexto" data-st="roda" aria-pressed="false"><svg class="arq-ic" aria-hidden="true"><use href="#i-olho"/></svg><span><b>Contexto</b><small>RAG e 3 ferramentas</small></span></button><button type="button" class="arq-no" id="no-temporeal" data-no="temporeal" data-st="roda" aria-pressed="false"><svg class="arq-ic" aria-hidden="true"><use href="#i-raio"/></svg><span><b>Tempo real</b><small>WebSocket /ao-vivo</small></span></button><button type="button" class="arq-no" id="no-geo" data-no="geo" data-st="roda" aria-pressed="false"><svg class="arq-ic" aria-hidden="true"><use href="#i-mapa"/></svg><span><b>Endereço</b><small>GPS vira bairro, com cache</small></span></button><button type="button" class="arq-no" id="no-cidade" data-no="cidade" data-st="roda" aria-pressed="false"><svg class="arq-ic" aria-hidden="true"><use href="#i-mapa"/></svg><span><b>Cidade e parâmetros</b><small>cidade é dado</small></span></button><button type="button" class="arq-no" id="no-admin" data-no="admin" data-st="roda" aria-pressed="false"><svg class="arq-ic" aria-hidden="true"><use href="#i-regra"/></svg><span><b>Regras e usuários</b><small>o gestor edita a Lua</small></span></button><button type="button" class="arq-no" id="no-observa" data-no="observa" data-st="roda" aria-pressed="false"><svg class="arq-ic" aria-hidden="true"><use href="#i-grafico"/></svg><span><b>Operação e alertas</b><small>métricas, funil e vigia</small></span></button><button type="button" class="arq-no" id="no-demo" data-no="demo" data-st="novo" aria-pressed="false"><svg class="arq-ic" aria-hidden="true"><use href="#i-caixa"/></svg><span><b>Demo separada</b><small>simulado fora da lista real</small></span></button></div></div><div class="arq-elo" id="e3"><span>SQL · S3</span><svg viewBox="0 0 34 12" aria-hidden="true"><path d="M1 6h31M27 2l5 4-5 4M7 2L2 6l5 4"/></svg><span>HTTPS</span></div><div class="arq-coluna"><div class="arq-raia dados dentro"><h3>Dados, dentro da instalação</h3><div class="arq-nos"><button type="button" class="arq-no" id="no-postgres" data-no="postgres" data-st="roda" aria-pressed="false"><svg class="arq-ic" aria-hidden="true"><use href="#i-banco"/></svg><span><b>PostgreSQL 16</b><small>PostGIS 3 e H3</small></span></button><button type="button" class="arq-no" id="no-seaweed" data-no="seaweed" data-st="roda" aria-pressed="false"><svg class="arq-ic" aria-hidden="true"><use href="#i-banco"/></svg><span><b>SeaweedFS 4.50</b><small>fotos e vídeos, API S3</small></span></button><button type="button" class="arq-no" id="no-regras" data-no="regras" data-st="roda" aria-pressed="false"><svg class="arq-ic" aria-hidden="true"><use href="#i-regra"/></svg><span><b>Regras Lua</b><small>uma pasta por cidade</small></span></button></div></div><div class="arq-raia fora fora"><h3>Serviços de fora</h3><div class="arq-nos"><button type="button" class="arq-no" id="no-jev" data-no="jev" data-st="roda" aria-pressed="false"><svg class="arq-ic" aria-hidden="true"><use href="#i-nuvem"/></svg><span><b>Jev (TypeSafe)</b><small>classificador principal</small></span></button><button type="button" class="arq-no" id="no-claude" data-no="claude" data-st="opcional" aria-pressed="false"><svg class="arq-ic" aria-hidden="true"><use href="#i-nuvem"/></svg><span><b>Claude</b><small>vê a foto, e é a reserva</small></span></button><button type="button" class="arq-no" id="no-nominatim" data-no="nominatim" data-st="roda" aria-pressed="false"><svg class="arq-ic" aria-hidden="true"><use href="#i-nuvem"/></svg><span><b>Nominatim</b><small>coordenada vira endereço</small></span></button><button type="button" class="arq-no" id="no-viacep" data-no="viacep" data-st="roda" aria-pressed="false"><svg class="arq-ic" aria-hidden="true"><use href="#i-nuvem"/></svg><span><b>ViaCEP</b><small>CEP vira cidade</small></span></button><button type="button" class="arq-no" id="no-openfreemap" data-no="openfreemap" data-st="roda" aria-pressed="false"><svg class="arq-ic" aria-hidden="true"><use href="#i-mapa"/></svg><span><b>OpenFreeMap</b><small>mapa base, pelo navegador</small></span></button></div></div></div></div>
+  <ul class="arq-leg"><li><i class="d"></i>dentro da instalação da prefeitura</li><li><i class="f"></i>serviço de fora</li><li><i class="t"></i>em teste ou em andamento</li><li><i class="p"></i>simulado ou ligado por chave</li></ul>
+  <div class="arq-ficha" id="ficha" aria-live="polite"></div>
+  <p class="nota">Conferido no código da versão 0.3.3, em 28/11.</p>
+</div>
+</section>
+
+<section class="faixa" aria-labelledby="t-fluxo">
+<div class="miolo">
+  <h2 id="t-fluxo">Triagem por dentro</h2>
+  <p class="fl-entra"><span>Entra</span><b>foto borrada</b><b>texto limpo</b><b>categoria</b><b>bairro</b></p>
+  <ol class="fluxo">
+    <li style="--c:var(--verde)"><div><b>1</b><h3>Visão</h3><small>até 20 s</small></div><p>Claude descreve a foto</p><p class="fl-falha">Falhou: segue só com o texto</p></li>
+    <li style="--c:var(--ceu)"><div><b>2</b><h3>Contexto</h3><small>até 800 ms</small></div><p>Casos parecidos da cidade</p><p class="fl-falha">Falhou: segue sem contexto</p></li>
+    <li style="--c:var(--terra)"><div><b>3</b><h3>Classificação</h3><small>cadeia de três</small></div><p class="fl-cadeia"><b>Jev</b><i></i><b>Claude</b><i></i><b>local</b></p><p class="fl-falha">Falharam os três: vai para uma pessoa</p></li>
+    <li style="--c:var(--cafe)" class="lua"><div><b>4</b><h3>Regra Lua</h3><small>até 50 ms</small></div><p>A prefeitura dá o nível, de 1 a 5</p><p class="fl-falha">Falhou: vai para uma pessoa</p></li>
+  </ol>
+  <ul class="fl-saidas">
+    <li style="background:var(--folha);color:#fff"><b>Aberta</b><span>Vai para a secretaria</span></li>
+    <li style="background:var(--ipe);color:var(--cafe)"><b>Revisão</b><span>Nível 4 ou 5, ou dúvida</span></li>
+    <li style="background:var(--cereja);color:#fff"><b>A classificar</b><span>A central decide</span></li>
+  </ul>
+  <p class="nota">A IA nunca recebe a foto original, a coordenada nem quem relatou.</p>
+</div>
+</section>
+
+<section class="faixa branca" aria-labelledby="t-adr">
+<div class="miolo">
+  <h2 id="t-adr">Cada decisão tem registro</h2>
+  <p class="sub" style="max-width:40ch">26 ADRs no repositório. Toque para ler o porquê.</p>
+  <ul class="adrs">
+    <li style="--c:var(--verde)"><small>Servidor</small><b>Go, um binário só</b><em><a href="https://github.com/rota-scale/sistema-mogi/blob/main/docs/adr/0013-stack-do-mvp.md">ADR 0013</a></em></li>
+    <li style="--c:var(--folha)"><small>Organização</small><b>Monólito modular</b><em><a href="https://github.com/rota-scale/sistema-mogi/blob/main/docs/adr/0002-arquitetura-modular.md">ADR 0002</a></em></li>
+    <li style="--c:var(--ceu)"><small>Banco</small><b>PostgreSQL, PostGIS e H3</b><em><a href="https://github.com/rota-scale/sistema-mogi/blob/main/docs/adr/0006-geodados.md">ADR 0006</a><a href="https://github.com/rota-scale/sistema-mogi/blob/main/docs/adr/0013-stack-do-mvp.md">ADR 0013</a></em></li>
+    <li style="--c:var(--terra)"><small>Fotos e vídeos</small><b>SeaweedFS, com adaptador S3</b><em><a href="https://github.com/rota-scale/sistema-mogi/blob/main/docs/adr/0013-stack-do-mvp.md">ADR 0013</a><a href="https://github.com/rota-scale/sistema-mogi/blob/main/docs/adr/0015-midia-v2-varias-fotos-e-video.md">ADR 0015</a></em></li>
+    <li style="--c:var(--ipe)"><small>Regras</small><b>Lua, em sandbox de 50 ms</b><em><a href="https://github.com/rota-scale/sistema-mogi/blob/main/docs/adr/0010-protocolo-de-triagem-urbana.md">ADR 0010</a></em></li>
+    <li style="--c:var(--cereja)"><small>IA</small><b>Jev, Claude e classificador local</b><em><a href="https://github.com/rota-scale/sistema-mogi/blob/main/docs/adr/0007-agente-de-triagem.md">ADR 0007</a><a href="https://github.com/rota-scale/sistema-mogi/blob/main/docs/adr/0012-preferencia-por-open-source-no-mvp.md">ADR 0012</a></em></li>
+    <li style="--c:var(--verde)"><small>Contexto</small><b>RAG e funções só de leitura</b><em><a href="https://github.com/rota-scale/sistema-mogi/blob/main/docs/adr/0023-agente-de-contexto-rag-e-function-calling.md">ADR 0023</a></em></li>
+    <li style="--c:var(--folha)"><small>Tempo real</small><b>WebSocket e LISTEN/NOTIFY</b><em><a href="https://github.com/rota-scale/sistema-mogi/blob/main/docs/adr/0004-mapa-3d-e-tempo-real.md">ADR 0004</a><a href="https://github.com/rota-scale/sistema-mogi/blob/main/docs/adr/0009-tempo-real-por-eventos.md">ADR 0009</a></em></li>
+    <li style="--c:var(--ceu)"><small>Privacidade</small><b>Borrão, retenção e CPF cifrado</b><em><a href="https://github.com/rota-scale/sistema-mogi/blob/main/docs/adr/0008-midia-e-privacidade-lgpd.md">ADR 0008</a><a href="https://github.com/rota-scale/sistema-mogi/blob/main/docs/adr/0015-midia-v2-varias-fotos-e-video.md">ADR 0015</a><a href="https://github.com/rota-scale/sistema-mogi/blob/main/docs/adr/0024-cadastro-do-morador-com-cpf.md">ADR 0024</a></em></li>
+    <li style="--c:var(--terra)"><small>Escala</small><b>Uma cidade por instalação</b><em><a href="https://github.com/rota-scale/sistema-mogi/blob/main/docs/adr/0021-cidade-como-dado-e-escala.md">ADR 0021</a></em></li>
+  </ul>
+  <p class="nota">4 aceitos, 20 em proposta, 2 substituídos. Todos em <a href="https://github.com/rota-scale/sistema-mogi/tree/main/docs/adr">docs/adr</a>.</p>
+</div>
+</section>
+
 <section class="faixa" aria-labelledby="t-custo">
 <div class="miolo">
   <h2 id="t-custo">Três degraus de custo</h2>
@@ -356,6 +514,39 @@ if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
       t.style.background = cores[a]; t.style.setProperty('--c2', cores[b]); el.appendChild(t);
     }
   }
+})();
+
+// Arquitetura: caminho de um relato e ficha de cada peça.
+(() => {
+  const ARQ = {"st": {"roda": "roda hoje", "teste": "em teste", "plano": "simulado", "novo": "em andamento", "opcional": "liga por chave"}, "ficha": {"morador": {"o": "Abre um link no celular, se cadastra uma vez com CPF, fotografa o problema e acompanha pelo protocolo.", "f": "celular com navegador", "c": "", "l": [["App web do morador", "pelo navegador, HTTPS"], ["App Android", "em teste"]], "a": "ADR 0005, 0024"}, "operador": {"o": "Confere o que a triagem sugeriu, revisa os níveis 4 e 5 e despacha para a secretaria.", "f": "computador da central", "c": "", "l": [["Central e gestor", "pelo navegador, HTTPS"]], "a": "ADR 0016"}, "gestor": {"o": "Vê indicadores e a aba Operação, edita regras e parâmetros e é o único que abre o documento completo, com registro.", "f": "computador ou celular", "c": "", "l": [["Central e gestor", "pelo navegador, HTTPS"]], "a": "ADR 0016, 0018"}, "equipe": {"o": "Recebe ao vivo só os chamados da sua secretaria, vai ao pino e fecha com a foto do depois. Não vê quem relatou.", "f": "celular", "c": "", "l": [["Tela do campo", "pelo navegador, HTTPS"]], "a": "ADR 0016"}, "appweb": {"o": "Câmera, GPS, mapa 3D, cadastro e acompanhamento. Instala como atalho na tela inicial, sem loja.", "f": "React 19, Vite 8, TypeScript, MapLibre GL 6", "c": "painel/ (página /relatar)", "l": [["Porta de entrada", "HTTPS/JSON"], ["OpenFreeMap", "mapa base, direto do navegador"]], "a": "ADR 0005, 0014"}, "central": {"o": "Mapa ao vivo com fila, detalhe do chamado, indicadores, aba Operação e administração.", "f": "React 19, Vite 8, MapLibre GL 6, h3-js", "c": "painel/ (página /)", "l": [["Porta de entrada", "HTTPS/JSON em /api"], ["Tempo real", "WebSocket /ao-vivo"], ["OpenFreeMap", "mapa base"]], "a": "ADR 0004"}, "telacampo": {"o": "Lista e mapa dos chamados da secretaria, com o botão de resolver com foto.", "f": "React 19, Vite 8, MapLibre GL 6", "c": "painel/ (página /campo)", "l": [["Porta de entrada", "HTTPS/JSON"], ["Tempo real", "WebSocket, só a sua secretaria"]], "a": "ADR 0016"}, "android": {"o": "APK de teste gerado no CI a cada mudança. Ainda sem o cadastro, então no celular vale o app web.", "f": "Expo 58, React Native 0.88, react-native-maps", "c": "app/", "l": [["Porta de entrada", "HTTPS/JSON"]], "a": "ADR 0025, 0026"}, "whatsapp": {"o": "Tela de demonstração de 27/11 que manda o relato para a mesma API. Está num ramo que ainda não entrou na main. O canal oficial depende da Meta.", "f": "página do painel, em ramo local", "c": "ramo feat/whatsapp-demo, fora da main", "l": [["Porta de entrada", "mesmo POST /ocorrencias"]], "a": "sem ADR"}, "api": {"o": "Recebe tudo por HTTPS, confere o token e o papel e aplica o limite de envios por aparelho e por IP. As rotas valem na raiz e em /api, e o mesmo binário serve as páginas.", "f": "Go 1.26, net/http, JWT", "c": "backend/cmd/api, internal/httpx, internal/auth", "l": [["todas as telas", "HTTPS/JSON"], ["os módulos do servidor", "chamada de função, mesmo processo"]], "a": "ADR 0002, 0013"}, "cadastro": {"o": "Guarda nome e CPF ou CNPJ. O documento é cifrado, achado por HMAC sem decifrar e mostrado só mascarado. O morador apaga a conta no próprio app.", "f": "AES-256-GCM, HMAC-SHA256", "c": "backend/internal/morador", "l": [["PostgreSQL", "SQL"], ["ViaCEP", "só os dígitos do CEP, pelo servidor"]], "a": "ADR 0024"}, "ocorrencias": {"o": "Recebe o envio, devolve o protocolo, junta relatos do mesmo problema (50 m e 30 dias, parâmetros da cidade), despacha e resolve. Reenvio devolve o mesmo protocolo.", "f": "Go, pgx", "c": "backend/internal/ocorrencias", "l": [["PostgreSQL", "SQL"], ["Borrão e mídia", "mesmo processo"], ["Triagem", "mesmo processo"]], "a": "ADR 0003, 0020"}, "midia": {"o": "Borra rostos e regiões com cara de placa antes de gravar e antes de qualquer IA. Só o Go fala com o armazenamento e entrega a foto por link assinado. A original some em 90 dias.", "f": "Pigo para rostos, heurística de bordas para placas", "c": "backend/internal/midia, internal/imagem", "l": [["SeaweedFS", "API S3"]], "a": "ADR 0008, 0015"}, "triagem": {"o": "Orquestra visão, contexto, cadeia de classificadores e regra Lua. Nunca devolve erro: qualquer falha vira a classificar, para uma pessoa.", "f": "Go, saída em esquema JSON", "c": "backend/internal/triagem", "l": [["Claude", "HTTPS, foto borrada"], ["Jev", "HTTPS, foto borrada e texto limpo"], ["Contexto", "mesmo processo"], ["Regras Lua", "arquivo, sandbox de 50 ms"]], "a": "ADR 0007, 0010"}, "contexto": {"o": "Antes da classificação, traz até 2 orientações da base da prefeitura e 3 casos parecidos do histórico da cidade, em até 800 ms. Atende as 3 funções só de leitura que a IA pode chamar.", "f": "BM25 em Markdown, busca de texto do Postgres", "c": "backend/internal/conhecimento", "l": [["PostgreSQL", "SQL, to_tsvector"], ["Triagem", "mesmo processo"]], "a": "ADR 0023, proposta já ligada no código"}, "temporeal": {"o": "Escuta o NOTIFY do Postgres e repassa pelo WebSocket. Cada réplica escuta por conta própria, e a equipe de campo só recebe a sua secretaria.", "f": "coder/websocket, LISTEN/NOTIFY", "c": "backend/internal/temporeal", "l": [["PostgreSQL", "LISTEN/NOTIFY"], ["Central e Tela do campo", "WebSocket /ao-vivo"]], "a": "ADR 0004, 0009"}, "geo": {"o": "Transforma a coordenada em endereço e bairro, com cache no banco.", "f": "Go, Nominatim", "c": "backend/internal/geo", "l": [["Nominatim", "HTTPS, só a coordenada"], ["PostgreSQL", "cache"]], "a": "ADR 0006"}, "cidade": {"o": "Nome, centro, cerca do município e parâmetros (raio de agrupamento, limites de envio, retenção) ficam no banco. O gestor edita no painel.", "f": "Go, cache de 15 s", "c": "backend/internal/cidade", "l": [["PostgreSQL", "SQL"]], "a": "ADR 0018, 0021"}, "admin": {"o": "O gestor edita a regra Lua pelo painel. O sistema simula 13 cenários antes de salvar e guarda cada versão no histórico.", "f": "Go, gopher-lua", "c": "backend/internal/admin", "l": [["Regras Lua", "arquivo"], ["PostgreSQL", "histórico"]], "a": "ADR 0010, 0018"}, "observa": {"o": "Métricas por rota, funil do relato, telemetria dos aparelhos sem dado pessoal e o vigia, que avisa no log, na aba Operação e por webhook quando banco, fotos ou triagem caem.", "f": "Go, métricas em memória", "c": "backend/internal/observa", "l": [["Central e gestor", "aba Operação"], ["webhook", "ALERTA_URL, opcional"]], "a": "ADR 0019"}, "demo": {"o": "Chamado simulado fica marcado e fora da lista real. Com DEMO_CHAMADOS=0 a central vê só relatos reais. Entrou depois da v0.3.3.", "f": "Go", "c": "backend/internal/demo", "l": [["PostgreSQL", "coluna demo"]], "a": "CHANGELOG, em andamento"}, "postgres": {"o": "Chamados, relatos, moradores, eventos, regras e parâmetros. O local é geography do PostGIS e o quadrante é H3 resolução 9. São 11 migrações, que só acrescentam.", "f": "PostgreSQL 16, PostGIS 3, H3", "c": "infra/postgres, backend/internal/banco/migracoes", "l": [["o servidor Go", "SQL e LISTEN/NOTIFY"]], "a": "ADR 0006, 0013"}, "seaweed": {"o": "Foto original, foto borrada, vídeo e foto do depois. Só o Go acessa; nenhuma tela fala direto com ele.", "f": "SeaweedFS 4.50", "c": "docker-compose.yml, backend/internal/midia", "l": [["Borrão e mídia", "API S3"]], "a": "ADR 0012, 0015"}, "regras": {"o": "A pasta da cidade tem um arquivo comum, com as faixas da GUT e os limiares, e um arquivo por categoria. O motor lê a cada triagem, num estado Lua novo.", "f": "Lua 5.1 pelo gopher-lua", "c": "backend/regras/itamogi, backend/internal/triagem/lua.go", "l": [["Triagem", "leitura"], ["Regras e usuários", "edição pelo gestor"]], "a": "ADR 0010"}, "jev": {"o": "Responde perguntas fechadas com probabilidades. Recebe só a foto borrada, o texto limpo, a categoria e o bairro. É a única peça fechada, e fica fora do país.", "f": "API da TypeSafe", "c": "backend/internal/triagem/jev.go", "l": [["Triagem", "HTTPS"]], "a": "ADR 0007"}, "claude": {"o": "Descreve a foto em campos estruturados e é o segundo da cadeia. Pode chamar as 3 funções de contexto. Sem a chave, a triagem segue sem ele.", "f": "API da Anthropic, modelo no .env", "c": "backend/internal/triagem/ia.go", "l": [["Triagem", "HTTPS"]], "a": "ADR 0007, 0023"}, "nominatim": {"o": "Recebe a coordenada e devolve endereço e bairro. Pode ser trocado por instância própria.", "f": "OpenStreetMap", "c": "backend/internal/geo", "l": [["Endereço", "HTTPS"]], "a": "ADR 0006"}, "viacep": {"o": "Recebe só os dígitos do CEP e devolve cidade e bairro.", "f": "serviço público", "c": "rota GET /cep/{cep}", "l": [["o servidor Go", "HTTPS, com cache"]], "a": "ADR 0024"}, "openfreemap": {"o": "Entrega o desenho do mapa. O navegador busca direto, sem passar pelo servidor.", "f": "tiles vetoriais", "c": "painel/src/estiloMapa.ts", "l": [["App web e Central", "HTTPS, do navegador"]], "a": "ADR 0004"}}, "passos": [{"t": "Foto", "d": "O morador aponta a câmera. O app pega o GPS e mostra o mapa.", "p": "câmera e GPS do navegador", "n": ["morador", "appweb", "openfreemap"], "e": ["e1"]}, {"t": "Envio", "d": "O relato sobe com foto, GPS e texto. Precisa do cadastro, e o reenvio devolve o mesmo protocolo.", "p": "POST /ocorrencias", "n": ["appweb", "api", "cadastro", "ocorrencias"], "e": ["e2"]}, {"t": "Borrão (LGPD)", "d": "Rostos e placas saem da foto antes de gravar e antes de qualquer IA ver.", "p": "API S3", "n": ["ocorrencias", "midia", "seaweed"], "e": ["e3"]}, {"t": "Triagem", "d": "O Claude descreve, o contexto traz casos parecidos, o Jev pontua e a regra Lua da prefeitura dá o nível de 1 a 5.", "p": "HTTPS e sandbox Lua", "n": ["triagem", "contexto", "claude", "jev", "regras", "postgres"], "e": ["e3"]}, {"t": "Central ao vivo", "d": "O chamado é gravado, o Postgres avisa e o Go repassa. O pino aparece na central com som.", "p": "NOTIFY e WebSocket /ao-vivo", "n": ["ocorrencias", "postgres", "temporeal", "central", "operador"], "e": ["e1", "e2", "e3"]}, {"t": "Equipe resolve", "d": "A equipe recebe só a sua secretaria, vai ao pino e fecha com a foto do depois.", "p": "POST /ocorrencias/{id}/resolucao", "n": ["equipe", "telacampo", "temporeal", "api", "ocorrencias", "midia", "seaweed"], "e": ["e1", "e2", "e3"]}, {"t": "Morador vê", "d": "O morador abre o acompanhamento e vê o andamento e a foto do serviço feito.", "p": "GET /acompanhar/{protocolo}", "n": ["morador", "appweb", "api", "ocorrencias"], "e": ["e1", "e2"]}]};
+  const mapa = document.getElementById('mapa'), caixa = document.getElementById('ficha'), fala = document.getElementById('passo-fala');
+  if (!mapa || !caixa) return;
+  const esc = (s) => String(s).replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+  const falaPadrao = fala.innerHTML;
+  function abrir(id) {
+    const f = ARQ.ficha[id], b = document.getElementById('no-' + id);
+    if (!f || !b) return;
+    mapa.querySelectorAll('.arq-no').forEach((n) => n.setAttribute('aria-pressed', String(n === b)));
+    const st = b.dataset.st, cor = st === 'roda' ? '' : (st === 'plano' || st === 'opcional') ? ' p' : ' t';
+    caixa.innerHTML = `<header><h3>${esc(b.querySelector('b').textContent)}</h3><span class="st${cor}">${esc(ARQ.st[st] || st)}</span></header>
+      <p class="oque">${esc(f.o)}</p>
+      <dl><div><dt>Feito com</dt><dd>${esc(f.f)}</dd></div>${f.c ? `<div><dt>No código</dt><dd><code>${esc(f.c)}</code></dd></div>` : ''}
+      <div><dt>Fala com</dt><dd>${f.l.map(([q, c]) => `<span><b>${esc(q)}</b>: ${esc(c)}</span>`).join('')}</dd></div>
+      <div><dt>Decisão registrada</dt><dd>${esc(f.a)}</dd></div></dl>`;
+  }
+  function passo(i) {
+    document.querySelectorAll('.arq-passo').forEach((p) => p.setAttribute('aria-pressed', String(Number(p.dataset.passo) === i)));
+    mapa.querySelectorAll('.ativo').forEach((n) => n.classList.remove('ativo'));
+    const p = ARQ.passos[i];
+    if (!p) { delete mapa.dataset.passo; fala.innerHTML = falaPadrao; return; }
+    mapa.dataset.passo = String(i + 1);
+    p.n.forEach((id) => { const n = document.getElementById('no-' + id); if (n) n.classList.add('ativo'); });
+    p.e.forEach((id) => { const n = document.getElementById(id); if (n) n.classList.add('ativo'); });
+    fala.innerHTML = `<strong>${i + 1}. ${esc(p.t)}</strong><span>${esc(p.d)}</span><code>${esc(p.p)}</code>`;
+  }
+  mapa.addEventListener('click', (ev) => { const b = ev.target.closest('.arq-no'); if (b) abrir(b.dataset.no); });
+  document.querySelectorAll('.arq-passo').forEach((p) => p.addEventListener('click', () => passo(Number(p.dataset.passo))));
+  abrir('triagem');
 })();
 </script>
 </html>
