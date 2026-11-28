@@ -67,11 +67,8 @@ h2 { font-size: clamp(1.6rem, 6vw, 2.6rem); }
 
 /* Vídeos */
 .filme video { width: 100%; aspect-ratio: 16 / 9; background: #12301A; border: 6px solid var(--ipe); }
-.vaga { display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: center; padding: 14px; border: 3px dashed var(--ipe); }
-.vaga .play { width: 44px; height: 44px; border-radius: 50%; background: var(--ipe); position: relative; }
-.vaga .play::after { content: ''; position: absolute; left: 17px; top: 13px; border-left: 14px solid var(--verde); border-block: 9px solid transparent; }
-.vaga b { display: block; font-weight: 900; }
-.vaga small { display: block; font-size: .85rem; color: var(--ipe); font-weight: 700; }
+.filme figcaption { padding-top: 8px; font-weight: 900; }
+.videos { display: grid; gap: 1.25rem; }
 
 /* Números */
 .numeros { display: grid; grid-template-columns: 1fr; }
@@ -127,7 +124,6 @@ td.ok .ck { stroke: var(--verde); }
 .priv { display: grid; grid-template-columns: 1fr 1fr; }
 .priv li { display: grid; gap: 8px; padding: 14px; font-weight: 900; line-height: 1.15; align-content: start; }
 .priv svg { width: 40px; height: 40px; }
-.falta { width: fit-content; padding: 6px 10px; border: 2px dashed var(--cereja); color: var(--cereja); font-weight: 700; font-size: .85rem; }
 
 /* Próximos passos */
 .marcos { display: grid; gap: 3px; }
@@ -140,9 +136,7 @@ td.ok .ck { stroke: var(--verde); }
 
 @media (min-width: 700px) {
   .topo { grid-template-columns: 1.1fr 1fr; }
-  .videos { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; align-items: start; }
-  .videos > * + * { margin-top: 0; }
-  .vaga { grid-template-columns: 1fr; justify-items: center; text-align: center; aspect-ratio: 3 / 4; align-content: center; }
+  .videos { grid-template-columns: 1fr 1fr; gap: 20px; }
   .numeros { grid-template-columns: repeat(3, 1fr); }
   .numeros li { grid-template-columns: 1fr; align-content: start; }
   .passos { grid-template-columns: repeat(3, 1fr); }
@@ -188,17 +182,18 @@ td.ok .ck { stroke: var(--verde); }
 
 <section class="faixa escura" aria-labelledby="t-filme">
 <div class="miolo">
-  <h2 id="t-filme">O MOGI em 85 segundos</h2>
+  <h2 id="t-filme">Veja em vídeo</h2>
   <div class="videos">
     <figure class="filme">
       <video src="assets/mogi-85s.mp4" poster="assets/mogi-85s-capa.jpg" controls preload="none" playsinline width="1280" height="720" aria-label="Vídeo do Sistema MOGI, 85 segundos, com som"></video>
+      <figcaption>O sistema em 85 segundos</figcaption>
     </figure>
-    <div class="vaga">
-      <span class="play" aria-hidden="true"></span>
-      <div><b>Depoimento do prefeito</b><small>[FALTA: consentimento para publicar]</small></div>
-    </div>
+    <figure class="filme">
+      <video src="assets/prefeito-itamogi.mp4" poster="assets/prefeito-itamogi.jpg" controls preload="none" playsinline width="1280" height="720" aria-label="Depoimento do prefeito de Itamogi sobre o MOGI, 79 segundos, com som"></video>
+      <figcaption>O prefeito de Itamogi fala do MOGI</figcaption>
+    </figure>
   </div>
-  <p class="nota">Telas reais do sistema. Cenas de rua geradas por IA, marcadas no vídeo. O prefeito avaliou o protótipo em 18/11; o piloto ainda é proposta.</p>
+  <p class="nota">Telas reais do sistema. Cenas de rua geradas por IA, marcadas no vídeo. Depoimento gravado em 18/11; o piloto com a prefeitura ainda é proposta.</p>
 </div>
 </section>
 
@@ -317,7 +312,7 @@ td.ok .ck { stroke: var(--verde); }
     <li style="background:var(--terra);color:var(--creme)"><svg viewBox="0 0 60 60" aria-hidden="true"><rect x="16" y="20" width="28" height="32" fill="#F5F1E8"/><rect x="10" y="12" width="40" height="6" fill="#F5F1E8"/><rect x="24" y="6" width="12" height="6" fill="#F5F1E8"/></svg><span>Morador apaga a conta</span></li>
     <li style="background:var(--folha);color:var(--creme)"><svg viewBox="0 0 60 60" aria-hidden="true"><path d="M30 6l24 24-24 24L6 30z" fill="#E9B526"/><circle cx="30" cy="30" r="9" fill="#1E3F8A"/></svg><span>A IA só vê a foto borrada</span></li>
   </ul>
-  <p class="falta">[FALTA: política de privacidade e encarregado de dados]</p>
+  <p class="nota">Política de privacidade e encarregado de dados: a definir com a prefeitura, antes do piloto.</p>
 </div>
 </section>
 
