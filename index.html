@@ -255,6 +255,47 @@ td.ok .ck { stroke: var(--verde); }
   .adrs li { border-left: 0; border-top: 8px solid var(--c); }
 }
 @media (min-width: 1000px) { .adrs { grid-template-columns: repeat(5, 1fr); } }
+
+/* Medido e testado */
+.numeros.quatro { grid-template-columns: 1fr 1fr; }
+.numeros.quatro li { grid-template-columns: 1fr; align-content: start; }
+.numeros.quatro b { font-size: clamp(1.7rem, 7.6vw, 2.8rem); }
+.tst { display: flex; flex-wrap: wrap; gap: 6px; }
+.tst li { display: inline-flex; align-items: baseline; gap: 6px; padding: 6px 10px; border: 2px solid #CFE0C9; font-weight: 700; font-size: .92rem; }
+.tst b { font-weight: 900; font-size: 1.15rem; color: var(--ipe); }
+/* Como cresce */
+.sub3 { margin: 0; font-weight: 900; font-size: 1.25rem; line-height: 1.1; }
+.miolo > .sub3 { margin-top: clamp(1.75rem, 6vw, 2.75rem); }
+.insts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; max-width: 720px; }
+.insts li { display: grid; gap: 4px; padding: 10px; background: var(--verde); color: var(--creme); align-content: start; min-width: 0; }
+.insts li.plano { background: none; color: var(--ceu); outline: 2px dashed var(--ceu); outline-offset: -2px; }
+.insts b { font-weight: 900; line-height: 1.1; margin-bottom: 2px; }
+.insts span { font-size: .8rem; font-weight: 700; padding: 3px 6px; background: var(--creme); color: var(--verde); }
+.insts li.plano span { background: #fff; color: var(--ceu); }
+.qd { display: grid; grid-template-columns: minmax(0, 1fr) repeat(4, clamp(38px, 11vw, 84px)); gap: 5px 0; align-items: center; max-width: 720px; font-weight: 900; }
+.qd b { text-align: center; font-size: .82rem; color: var(--terra); }
+.qd .l { padding-right: 10px; line-height: 1.15; font-size: .95rem; }
+.qd i { height: 16px; }
+.qd i.on { background: var(--verde); }
+.qd i.cond { background: repeating-linear-gradient(90deg, var(--ceu) 0 7px, transparent 7px 11px); }
+.fora-c { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-weight: 900; }
+.fora-c span { color: var(--terra); margin-right: 4px; }
+.fora-c s { padding: 5px 10px; background: #F8E3D9; color: #9A3B1F; text-decoration-thickness: 2px; }
+.fora-c em { font-style: normal; font-size: .9rem; padding: 5px 10px; outline: 2px dashed var(--terra); outline-offset: -2px; color: var(--terra); }
+/* O que sai da instalação */
+.sai3 { display: grid; gap: 3px; }
+.sai3 li { display: flex; flex-wrap: wrap; gap: 5px; align-items: center; padding: 12px 14px; background: var(--c); color: #fff; }
+.sai3 b { flex-basis: 100%; font-weight: 900; font-size: 1.05rem; line-height: 1.15; margin-bottom: 2px; }
+.sai3 span { font-size: .88rem; font-weight: 900; padding: 4px 9px; background: var(--creme); color: var(--verde); }
+.lgpd-b { display: flex; height: 22px; max-width: 720px; }
+.lgpd-b i { background: var(--verde); } .lgpd-b u { background: var(--ipe); }
+.lgpd-p { font-weight: 700; margin-top: 6px !important; }
+.lgpd-p b { font-weight: 900; font-size: 1.3rem; }
+@media (min-width: 700px) {
+  .numeros.quatro { grid-template-columns: repeat(4, 1fr); }
+  .sai3 { grid-template-columns: 1.1fr 1.3fr .9fr; }
+  .sai3 li { align-content: start; }
+}
 </style>
 
 <div class="mosaico" aria-hidden="true" id="faixa-topo"></div>
@@ -406,7 +447,7 @@ td.ok .ck { stroke: var(--verde); }
   <ol class="fluxo">
     <li style="--c:var(--verde)"><div><b>1</b><h3>Visão</h3><small>até 20 s</small></div><p>Claude descreve a foto</p><p class="fl-falha">Falhou: segue só com o texto</p></li>
     <li style="--c:var(--ceu)"><div><b>2</b><h3>Contexto</h3><small>até 800 ms</small></div><p>Casos parecidos da cidade</p><p class="fl-falha">Falhou: segue sem contexto</p></li>
-    <li style="--c:var(--terra)"><div><b>3</b><h3>Classificação</h3><small>cadeia de três</small></div><p class="fl-cadeia"><b>Jev</b><i></i><b>Claude</b><i></i><b>local</b></p><p class="fl-falha">Falharam os três: vai para uma pessoa</p></li>
+    <li style="--c:var(--terra)"><div><b>3</b><h3>Classificação</h3><small>em cadeia</small></div><p class="fl-cadeia"><b>Jev</b><i></i><b>Claude</b><i></i><b>local</b></p><p class="fl-falha">Falharam os três: vai para uma pessoa</p></li>
     <li style="--c:var(--cafe)" class="lua"><div><b>4</b><h3>Regra Lua</h3><small>até 50 ms</small></div><p>A prefeitura dá o nível, de 1 a 5</p><p class="fl-falha">Falhou: vai para uma pessoa</p></li>
   </ol>
   <ul class="fl-saidas">
@@ -438,6 +479,22 @@ td.ok .ck { stroke: var(--verde); }
 </div>
 </section>
 
+<section class="faixa escura" aria-labelledby="t-med">
+<div class="miolo">
+  <h2 id="t-med">Medido e testado</h2>
+  <ul class="numeros quatro">
+    <li style="background:var(--ipe);color:var(--cafe)"><b>10 de 11</b><span>casos no nível esperado</span><small>escritos pelo time, 15/11</small></li>
+    <li style="background:var(--creme);color:var(--verde)"><b>160 ms</b><span>decisão do Jev, mediana</span><small>15/11</small></li>
+    <li style="background:var(--ceu);color:var(--creme)"><b>R$ 0,0007</b><span>de IA por relato com foto</span><small>12/11</small></li>
+    <li style="background:var(--cereja);color:var(--creme)"><b>0</b><span>números de campo, por enquanto</span><small>o teste na rua vem antes do piloto</small></li>
+  </ul>
+  <ul class="tst">
+    <li><b>362</b>testes no painel</li><li><b>87</b>testes em Go</li><li><b>31</b>testes no app Android</li><li><b>113</b>conferências da API, 0 falhas</li><li><b>CI</b>a cada mudança</li>
+  </ul>
+  <p class="nota">Contagens de 16 a 18/11, no README e no histórico de versões do repositório.</p>
+</div>
+</section>
+
 <section class="faixa" aria-labelledby="t-custo">
 <div class="miolo">
   <h2 id="t-custo">Três degraus de custo</h2>
@@ -456,6 +513,28 @@ td.ok .ck { stroke: var(--verde); }
     </g>
   </svg>
   <p class="nota">Por mês. Estimativa de lista na AWS São Paulo (15/11), não fatura. Nada contratado.</p>
+  <h3 class="sub3">Uma cidade por instalação</h3>
+  <ul class="insts">
+    <li><b>Itamogi</b><span>Go</span><span>Postgres</span><span>fotos</span><span>regras</span></li>
+    <li class="plano"><b>Cidade 2</b><span>Go</span><span>Postgres</span><span>fotos</span><span>regras</span></li>
+    <li class="plano"><b>Cidade 3</b><span>Go</span><span>Postgres</span><span>fotos</span><span>regras</span></li>
+  </ul>
+  <h3 class="sub3">O que entra em cada degrau</h3>
+  <div class="qd" role="img" aria-label="Hoje: contêineres, módulos num processo só e servidor sem estado. Degrau 1: servidor na prefeitura e backup fora. Degrau 2: banco e fotos gerenciados, contêiner gerenciado e, se o volume pedir, funções em segundo plano. Degrau 3: fila de triagem e, só com modelo próprio, GPU.">
+    <span class="l"></span><b>Hoje</b><b>1</b><b>2</b><b>3</b>
+    <span class="l">Contêineres</span><i class="on ini"></i><i class="on"></i><i class="on"></i><i class="on"></i>
+    <span class="l">Módulos num processo só</span><i class="on ini"></i><i class="on"></i><i class="on"></i><i class="on"></i>
+    <span class="l">Servidor sem estado</span><i class="on ini"></i><i class="on"></i><i class="on"></i><i class="on"></i>
+    <span class="l">Servidor na prefeitura</span><i class=""></i><i class="on ini"></i><i class="on"></i><i class="on"></i>
+    <span class="l">Backup fora da prefeitura</span><i class=""></i><i class="on ini"></i><i class="on"></i><i class="on"></i>
+    <span class="l">Banco e fotos gerenciados</span><i class=""></i><i class=""></i><i class="on ini"></i><i class="on"></i>
+    <span class="l">Contêiner gerenciado</span><i class=""></i><i class=""></i><i class="on ini"></i><i class="on"></i>
+    <span class="l">Funções em segundo plano</span><i class=""></i><i class=""></i><i class="cond ini"></i><i class="cond"></i>
+    <span class="l">Fila de triagem</span><i class=""></i><i class=""></i><i class=""></i><i class="on ini"></i>
+    <span class="l">GPU, só com modelo próprio</span><i class=""></i><i class=""></i><i class=""></i><i class="cond ini"></i>
+  </div>
+  <p class="fora-c"><span>Fora do caminho</span><s>Kubernetes</s><s>Microsserviços</s><s>API em função</s></p>
+  <p class="nota">A fila entra quando o envio passar de 8 s no p95. Tracejado: só se o volume pedir. Sem teste de carga até aqui.</p>
 </div>
 </section>
 
@@ -470,6 +549,15 @@ td.ok .ck { stroke: var(--verde); }
     <li style="background:var(--terra);color:var(--creme)"><svg viewBox="0 0 60 60" aria-hidden="true"><rect x="16" y="20" width="28" height="32" fill="#F5F1E8"/><rect x="10" y="12" width="40" height="6" fill="#F5F1E8"/><rect x="24" y="6" width="12" height="6" fill="#F5F1E8"/></svg><span>Morador apaga a conta</span></li>
     <li style="background:var(--folha);color:var(--creme)"><svg viewBox="0 0 60 60" aria-hidden="true"><path d="M30 6l24 24-24 24L6 30z" fill="#E9B526"/><circle cx="30" cy="30" r="9" fill="#1E3F8A"/></svg><span>A IA só vê a foto borrada</span></li>
   </ul>
+  <h3 class="sub3">O que sai da instalação</h3>
+  <ul class="sai3">
+    <li style="--c:var(--verde)"><b>Fica na prefeitura</b><span>CPF cifrado</span><span>nome</span><span>foto original</span><span>vídeo</span></li>
+    <li style="--c:var(--terra)"><b>Vai para a IA, fora do país</b><span>foto borrada</span><span>texto limpo</span><span>categoria</span><span>bairro</span></li>
+    <li style="--c:var(--ceu)"><b>Vai para achar o endereço</b><span>coordenada</span><span>CEP</span></li>
+  </ul>
+  <div class="lgpd-b" role="img" aria-label="Checklist de LGPD: 17 de 23 itens já estão no código"><i style="flex:17"></i><u style="flex:6"></u></div>
+  <p class="lgpd-p"><b>17 de 23</b> itens de LGPD já no código</p>
+  <p class="fora-c"><span>Faltam</span><em>encarregado</em><em>base legal</em><em>termo final</em><em>borrão em fotos reais</em><em>guarda da chave</em><em>gov.br</em></p>
   <p class="nota">Política de privacidade e encarregado de dados: a definir com a prefeitura, antes do piloto.</p>
 </div>
 </section>
@@ -484,6 +572,7 @@ td.ok .ck { stroke: var(--verde); }
     <li style="--c:var(--terra)"><small>1º sem. 2027</small><span>Piloto</span></li>
     <li style="--c:var(--cereja)"><small>com dados</small><span>Modelo próprio</span></li>
   </ol>
+  <p class="fora-c"><span>Ainda não</span><em>aviso no celular</em><em>CPF conferido no gov.br</em><em>WhatsApp oficial</em><em>teste de carga</em><em>piloto homologado</em></p>
 </div>
 </section>
 
