@@ -1,447 +1,366 @@
+<!doctype html>
+<html lang="pt-BR">
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Sistema MOGI</title>
+<meta name="description" content="MOGI: o morador fotografa o problema da rua e a prefeitura de Itamogi recebe por ordem de urgência.">
 <meta name="claude:viewport-fit-sides" content="cover">
+<link rel="icon" href="assets/simbolo-mogi.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Urbanist:wght@500;700;900&family=JetBrains+Mono:wght@700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Urbanist:wght@500;700;900&display=swap">
 <style>
-/* Brand kit do MOGI (brand/README.md, aprovado em 01/11): Bauhaus/Kiosko em mosaico,
-   paleta terra, Urbanist Black, blocos retos de cor chapada e fotos em janelas de forma. */
+/* Página do QR do pitch. Feita primeiro para 360 px de largura; cresce a partir daí.
+   Marca: brand/README.md (mosaico Bauhaus, paleta terra, Urbanist Black, blocos retos). */
 :root {
   --verde: #1F4D2B; --folha: #3E7B3A; --cereja: #B3261E; --cafe: #4A2C1D; --terra: #8C3B2A;
-  --ipe: #E9B526; --creme: #F5F1E8; --ceu: #3B6EA5; --azul-icone: #1E3F8A;
+  --ipe: #E9B526; --creme: #F5F1E8; --ceu: #3B6EA5; --apoio: #5E5548;
   --n1: #3E7B3A; --n2: #7A9A2E; --n3: #E9B526; --n4: #D9731A; --n5: #B3261E;
-  --apoio: #5E5548;
-  --display: 'Urbanist', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
-  --mono: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+  --borda: max(16px, env(safe-area-inset-left, 0px));
   color-scheme: light;
 }
-* { box-sizing: border-box; }
-body { margin: 0; background: var(--creme); color: var(--verde); font: 500 1rem/1.5 var(--display); }
-img, video { display: block; max-width: 100%; }
-h1, h2, h3, p { margin: 0; }
-h1, h2 { font-weight: 900; line-height: 1.02; letter-spacing: -0.015em; text-wrap: balance; }
-h2 { font-size: clamp(1.9rem, 5vw, 3.1rem); }
-p { text-wrap: pretty; }
-.faixa { padding: clamp(2.5rem, 6vw, 4.5rem) max(18px, env(safe-area-inset-right, 0px)) clamp(2.5rem, 6vw, 4.5rem) max(18px, env(safe-area-inset-left, 0px)); }
-.miolo { max-width: 1120px; margin: 0 auto; display: grid; gap: clamp(1.25rem, 3vw, 2rem); }
-.rotulo { font: 700 .74rem/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; }
-.nota { color: var(--apoio); font-size: .92rem; max-width: 62ch; }
-.ia { position: absolute; left: 8px; top: 8px; z-index: 2; font: 700 .6rem/1 var(--mono); letter-spacing: .06em; text-transform: uppercase; background: rgba(31,77,43,.88); color: var(--creme); padding: 5px 7px; }
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--creme); color: var(--verde); font: 500 1rem/1.45 'Urbanist', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif; overflow-wrap: break-word; }
+img, video, svg { display: block; max-width: 100%; height: auto; }
+h1, h2, p, ul, ol, figure { margin: 0; padding: 0; }
+ul, ol { list-style: none; }
+h1, h2 { font-weight: 900; line-height: 1.05; letter-spacing: -0.01em; text-wrap: balance; }
+h1 { font-size: clamp(2.1rem, 8.4vw, 4.2rem); }
+h1 em { font-style: normal; color: var(--cereja); }
+h2 { font-size: clamp(1.6rem, 6vw, 2.6rem); }
+.so-leitor { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.faixa { padding: clamp(2rem, 7vw, 4rem) var(--borda); }
+.miolo { max-width: 1080px; margin-inline: auto; }
+.miolo > * + * { margin-top: clamp(1rem, 3.5vw, 1.75rem); }
+.branca { background: #fff; }
+.escura { background: var(--verde); color: var(--creme); }
+.nota { font-size: .9rem; color: var(--apoio); max-width: 60ch; }
+.escura .nota { color: #CFE0C9; }
+.selo { display: inline-block; font-size: .78rem; font-weight: 700; padding: 4px 8px; background: var(--verde); color: var(--creme); }
 
-/* Faixa de mosaico: a assinatura do brand kit. */
-.mosaico { display: grid; grid-template-columns: repeat(auto-fill, minmax(56px, 1fr)); grid-auto-rows: 56px; overflow: hidden; height: 56px; }
+/* Faixa de mosaico */
+.mosaico { display: grid; grid-template-columns: repeat(auto-fill, minmax(48px, 1fr)); grid-auto-rows: 48px; height: 48px; overflow: hidden; }
 .t { position: relative; overflow: hidden; }
 .t::after { content: ''; position: absolute; }
-.t.disco::after { inset: 14px; border-radius: 50%; background: var(--c2); }
-.t.anel::after { inset: 12px; border-radius: 50%; border: 9px solid var(--c2); }
-.t.meia::after { left: 0; right: 0; bottom: 0; height: 50%; border-radius: 28px 28px 0 0; background: var(--c2); }
-.t.quarto::after { left: 0; top: 0; width: 100%; height: 100%; border-radius: 0 0 100% 0; background: var(--c2); }
+.t.disco::after { inset: 12px; border-radius: 50%; background: var(--c2); }
+.t.anel::after { inset: 10px; border-radius: 50%; border: 8px solid var(--c2); }
+.t.meia::after { inset: 50% 0 0 0; border-radius: 24px 24px 0 0; background: var(--c2); }
+.t.quarto::after { inset: 0; border-radius: 0 0 100% 0; background: var(--c2); }
 .t.tri::after { inset: 0; background: var(--c2); clip-path: polygon(0 0, 100% 100%, 0 100%); }
-.t.losango::after { inset: 12px; background: var(--c2); transform: rotate(45deg); }
+.t.losango::after { inset: 11px; background: var(--c2); transform: rotate(45deg); }
 
 /* Topo */
-.topo { background: var(--creme); }
-.marca { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; }
-.marca img { height: clamp(44px, 7vw, 64px); width: auto; }
-.marca .rotulo { color: var(--folha); }
-.heroi { display: grid; grid-template-columns: 1.05fr 1fr; gap: clamp(1.5rem, 4vw, 3rem); align-items: center; }
-.heroi h1 { font-size: clamp(2.4rem, 6.4vw, 4.6rem); }
-.heroi h1 em { font-style: normal; color: var(--cereja); }
-.heroi .sub { font-size: clamp(1.05rem, 2vw, 1.3rem); font-weight: 700; color: var(--cafe); max-width: 34ch; }
-.escala { display: grid; grid-template-columns: repeat(5, 1fr); max-width: 420px; }
-.escala span { aspect-ratio: 1; display: grid; place-items: center; font: 900 clamp(1.3rem, 3vw, 1.8rem)/1 var(--display); color: #fff; }
-.escala-leg { display: flex; justify-content: space-between; max-width: 420px; font-size: .82rem; font-weight: 700; color: var(--apoio); margin-top: 6px; }
-/* Mosaico do herói: 3x3, com vídeo e foto em janelas de forma. */
-.grade { display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr); aspect-ratio: 1; }
+.logo { width: clamp(150px, 42vw, 230px); }
+.topo { display: grid; gap: clamp(1.25rem, 4vw, 2.5rem); align-items: center; }
+.topo .texto { display: grid; gap: 1rem; }
+.sub { font-size: clamp(1.05rem, 3.6vw, 1.3rem); font-weight: 700; color: var(--cafe); max-width: 30ch; }
+.escala { display: grid; grid-template-columns: repeat(5, 1fr); max-width: 380px; }
+.escala span { aspect-ratio: 1; display: grid; place-items: center; font-weight: 900; font-size: clamp(1.2rem, 5vw, 1.7rem); color: #fff; }
+.escala-leg { display: flex; justify-content: space-between; max-width: 380px; font-size: .8rem; font-weight: 700; color: var(--apoio); margin-top: 4px; }
+.grade { display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr); aspect-ratio: 1; width: 100%; max-width: 460px; justify-self: center; }
 .grade > * { position: relative; overflow: hidden; }
-.grade video, .grade img { width: 100%; height: 100%; object-fit: cover; }
-.janela-meia { border-radius: 999px 999px 0 0; }
-.janela-quarto { border-radius: 100% 0 0 0; }
-.janela-disco { border-radius: 50%; }
-.legenda-foto { position: absolute; left: 0; bottom: 0; z-index: 2; background: var(--creme); color: var(--verde); font-weight: 900; font-size: .82rem; padding: 4px 8px; }
+.grade video, .grade img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.grade .selo { position: absolute; left: 0; bottom: 0; }
+.arco { border-radius: 999px 999px 0 0; }
+.quarto { border-radius: 100% 0 0 0; }
 
-/* A dor */
-.canais { display: flex; flex-wrap: wrap; gap: 6px; align-items: stretch; }
-.canais span { padding: .55rem .9rem; background: #fff; border: 2px solid var(--verde); font-weight: 700; text-decoration: line-through; text-decoration-color: var(--cereja); text-decoration-thickness: 2px; }
-.canais .seta { border: 0; background: none; text-decoration: none; font-weight: 900; font-size: 1.4rem; padding: .3rem .4rem; }
-.canais .mogi { background: var(--ipe); border-color: var(--ipe); color: var(--cafe); text-decoration: none; font-weight: 900; }
-.blocos { display: grid; grid-template-columns: repeat(3, 1fr); }
-.bloco { padding: clamp(1.2rem, 3vw, 2rem); display: grid; gap: .5rem; align-content: start; min-height: 190px; position: relative; overflow: hidden; }
-.bloco b { font: 900 clamp(2.2rem, 5.5vw, 3.6rem)/1 var(--display); position: relative; }
-.bloco small { font-size: .95rem; font-weight: 700; max-width: 26ch; position: relative; }
-.bloco i { position: absolute; right: -28px; bottom: -28px; width: 110px; height: 110px; border-radius: 50%; }
+/* Vídeos */
+.filme video { width: 100%; aspect-ratio: 16 / 9; background: #12301A; border: 6px solid var(--ipe); }
+.vaga { display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: center; padding: 14px; border: 3px dashed var(--ipe); }
+.vaga .play { width: 44px; height: 44px; border-radius: 50%; background: var(--ipe); position: relative; }
+.vaga .play::after { content: ''; position: absolute; left: 17px; top: 13px; border-left: 14px solid var(--verde); border-block: 9px solid transparent; }
+.vaga b { display: block; font-weight: 900; }
+.vaga small { display: block; font-size: .85rem; color: var(--ipe); font-weight: 700; }
 
-/* Como funciona: passos como os cartões da peça de marketing. */
-.passos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-.passo { display: grid; grid-template-columns: auto 1fr; gap: 14px; align-items: center; padding: 18px; color: #fff; min-height: 104px; }
-.passo em { font-style: normal; width: 58px; height: 58px; border-radius: 50%; background: var(--creme); color: var(--verde); display: grid; place-items: center; font: 900 1.7rem/1 var(--display); }
-.passo b { display: block; font-size: 1.2rem; font-weight: 900; line-height: 1.1; }
-.passo small { display: block; font-size: .86rem; font-weight: 700; opacity: .9; }
-.passo.escuro { color: var(--cafe); }
-.passo.escuro em { background: var(--cafe); color: var(--ipe); }
+/* Números */
+.numeros { display: grid; grid-template-columns: 1fr; }
+.numeros li { padding: 16px 18px; display: grid; grid-template-columns: minmax(0, auto) 1fr; gap: 4px 16px; align-items: baseline; }
+.numeros b { font-weight: 900; font-size: clamp(2rem, 9vw, 3rem); line-height: 1; white-space: nowrap; }
+.numeros span { font-weight: 700; }
+.numeros small { grid-column: 1 / -1; font-size: .8rem; opacity: .85; }
 
-/* Na mão do morador */
-.palco { display: grid; grid-template-columns: minmax(280px, 400px) 1fr; gap: clamp(1.5rem, 4vw, 3rem); align-items: center; }
-.palco-fundo { position: relative; padding: clamp(22px, 3.5vw, 40px); background: var(--ipe); display: grid; place-items: center; overflow: hidden; }
-.palco-fundo::before { content: ''; position: absolute; width: 70%; aspect-ratio: 1; border-radius: 50%; background: var(--verde); left: -30%; top: -18%; }
-.palco-fundo::after { content: ''; position: absolute; width: 55%; aspect-ratio: 1; background: var(--cereja); right: -22%; bottom: -14%; border-radius: 100% 0 0 0; }
-.celular { position: relative; z-index: 1; margin: 0; width: 100%; max-width: 350px; border-radius: 44px; padding: 10px; background: #111; box-shadow: 0 30px 60px rgba(31,77,43,.35); }
-.celular video { width: 100%; aspect-ratio: 390/844; object-fit: cover; border-radius: 35px; background: #ece5d8; }
-.palco-fundo > .ia { left: 0; top: 0; z-index: 2; }
-.etapas { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(10px, 2vw, 18px); }
-.etapa { display: grid; gap: 10px; align-content: start; }
-.etapa .num { display: flex; align-items: center; gap: 10px; font-weight: 900; font-size: 1.05rem; line-height: 1.1; }
-.etapa .num span { flex: none; width: 38px; height: 38px; display: grid; place-items: center; color: #fff; font-size: 1.2rem; }
-.mini { margin: 0; border-radius: 22px; padding: 6px; background: #111; }
-.mini img { width: 100%; aspect-ratio: 390/700; object-fit: cover; object-position: top; border-radius: 17px; }
-.mini.baixo img { object-position: bottom; }
-.selo-sim { justify-self: start; padding: 6px 10px; background: var(--cereja); color: #fff; font-weight: 700; font-size: .85rem; }
+/* Passos */
+.passos { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.passos li { display: grid; grid-template-columns: auto 1fr; gap: 10px; align-items: center; padding: 12px; min-height: 68px; font-weight: 900; line-height: 1.15; }
+.passos b { width: 36px; height: 36px; border-radius: 50%; background: var(--creme); color: var(--verde); display: grid; place-items: center; font-size: 1.1rem; }
 
-/* Na rua: vídeos verticais gerados por IA, em janelas de forma. */
-.ruas { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
-.rua { position: relative; margin: 0; overflow: hidden; }
-.rua video { width: 100%; aspect-ratio: 9/14; object-fit: cover; }
-.rua:nth-child(1) video { border-radius: 999px 999px 0 0; }
-.rua:nth-child(2) video { border-radius: 0 100% 0 0; }
-.rua:nth-child(3) video { clip-path: polygon(0 0, 100% 0, 100% 88%, 0 100%); }
-.rua:nth-child(4) video { border-radius: 100% 0 0 0; }
-.rua .ia { top: auto; bottom: 62px; }
-.rua figcaption { display: flex; align-items: center; gap: 10px; padding: 12px 0 0; color: var(--creme); font-weight: 900; font-size: 1.05rem; line-height: 1.1; }
-.rua figcaption span { flex: none; width: 34px; height: 34px; display: grid; place-items: center; font-size: 1.1rem; color: #fff; }
+/* Celular e vídeos de rua */
+.palco { display: grid; gap: 1.25rem; justify-items: center; }
+.celular { width: min(100%, 260px); border-radius: 36px; padding: 8px; background: #111; box-shadow: 0 20px 40px rgba(31, 77, 43, .28); }
+.celular video { width: 100%; aspect-ratio: 390 / 844; object-fit: cover; border-radius: 28px; background: #ECE5D8; }
+.ruas { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; max-width: 560px; }
+.rua .quadro { position: relative; }
+.rua video { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; background: #12301A; }
+.rua .nivel { position: absolute; left: 0; top: 0; width: 36px; height: 36px; display: grid; place-items: center; font-weight: 900; font-size: 1.1rem; }
+.rua figcaption { padding-top: 6px; font-weight: 900; line-height: 1.15; }
 
-/* Vídeo institucional e depoimento, logo depois do topo */
-.filme-faixa { background: var(--verde); color: var(--creme); }
-.videos { display: grid; grid-template-columns: 2fr 1fr; gap: 12px; align-items: start; }
-.videos figure { margin: 0; display: grid; gap: 10px; }
-.videos figcaption { font-size: .9rem; color: #CFE0C9; max-width: 60ch; }
-.filme-principal video { width: 100%; height: auto; aspect-ratio: 16/9; background: #12301A; border: 8px solid var(--ipe); }
-.vaga { aspect-ratio: 9/16; max-height: 520px; display: grid; place-content: center; justify-items: center; gap: 10px; padding: 20px; text-align: center; border: 4px dashed var(--ipe); background: rgba(245,241,232,.06); }
-.vaga .play { width: 64px; height: 64px; border-radius: 50%; background: var(--ipe); position: relative; }
-.vaga .play::after { content: ''; position: absolute; left: 25px; top: 19px; border-left: 20px solid var(--verde); border-top: 13px solid transparent; border-bottom: 13px solid transparent; }
-.vaga b { font-size: 1.1rem; font-weight: 900; }
-.vaga small { font: 700 .78rem/1.35 var(--mono); color: var(--ipe); }
+/* Checklist */
+.rolagem { position: relative; overflow-x: auto; -webkit-overflow-scrolling: touch; margin-inline: calc(-1 * var(--borda)); padding-inline: var(--borda); }
+@media (min-width: 700px) { .rolagem { margin-inline: 0; padding-inline: 0; } }
+.rolagem:focus-visible { outline: 3px solid var(--ipe); outline-offset: 2px; }
+table { border-collapse: separate; border-spacing: 2px; font-size: .92rem; min-width: 640px; width: 100%; }
+th, td { padding: 8px 8px; text-align: center; font-weight: 700; white-space: nowrap; }
+thead th { background: var(--verde); color: var(--creme); font-weight: 900; }
+thead th.hx { background: var(--ipe); color: var(--cafe); }
+thead th.hm, td.mg { background: var(--cereja); color: var(--creme); font-weight: 900; }
+tbody th[scope="row"] { text-align: left; background: var(--creme); position: sticky; left: 0; z-index: 1; white-space: normal; min-width: 140px; max-width: 44vw; }
+td.canto { position: sticky; left: 0; z-index: 1; background: var(--creme); }
+tr.grupo th { text-align: left; background: var(--creme); color: var(--terra); font-weight: 900; padding-top: 12px; position: sticky; left: 0; }
+td.ok { background: #DCE9D8; } td.nao { background: #F8E3D9; color: #9A3B1F; } td.nd { background: var(--creme); color: #6B6054; } td.na { color: #6B6054; }
+.ck { display: inline-block; width: 18px; height: 18px; vertical-align: -3px; fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: square; }
+td.ok .ck { stroke: var(--verde); }
 
-/* IA em duas raias */
-.raia { display: grid; grid-template-columns: 150px 1fr; }
-.raia + .raia { margin-top: 8px; }
-.raia .selo { display: grid; place-items: center; padding: 14px; font-weight: 900; text-align: center; color: #fff; }
-.raia .fila { display: grid; grid-template-columns: repeat(4, 1fr); }
-.raia .fila span { padding: 14px 12px; font-weight: 900; line-height: 1.15; display: flex; align-items: center; min-height: 72px; border-right: 3px solid #fff; }
-.raia.plano .fila span { border: 3px dashed var(--ceu); color: var(--ceu); }
-.raia.plano .fila span + span { border-left: 0; }
+/* IA */
+.raias { display: grid; gap: 8px; }
+.raia { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+.raia > b { grid-column: 1 / -1; padding: 8px 12px; color: #fff; font-weight: 900; }
+.raia span { padding: 10px 12px; font-weight: 900; line-height: 1.15; background: var(--creme); min-height: 52px; display: flex; align-items: center; }
+.raia .lua { background: var(--ipe); color: var(--cafe); }
+.raia.plano span:not(.lua) { background: none; outline: 2px dashed var(--ceu); outline-offset: -2px; color: var(--ceu); }
 
 /* Custo */
-.grafico { width: 100%; height: auto; max-height: 380px; }
-.grafico text { font-family: var(--display); }
+.grafico { width: 100%; max-width: 620px; }
+.grafico text { font-family: 'Urbanist', system-ui, sans-serif; }
 
 /* Privacidade */
-.icones { display: grid; grid-template-columns: repeat(3, 1fr); }
-.icones div { display: grid; grid-template-columns: 60px 1fr; gap: 14px; align-items: center; padding: 18px; font-weight: 900; font-size: 1.05rem; line-height: 1.15; }
-.icones svg { width: 60px; height: 60px; }
-.falta { justify-self: start; padding: 8px 12px; border: 2px dashed var(--cereja); color: var(--cereja); font: 700 .8rem/1.3 var(--mono); }
+.priv { display: grid; grid-template-columns: 1fr 1fr; }
+.priv li { display: grid; gap: 8px; padding: 14px; font-weight: 900; line-height: 1.15; align-content: start; }
+.priv svg { width: 40px; height: 40px; }
+.falta { width: fit-content; padding: 6px 10px; border: 2px dashed var(--cereja); color: var(--cereja); font-weight: 700; font-size: .85rem; }
 
-/* Benchmarks */
-.bench { display: grid; grid-template-columns: 1.4fr 1fr 1fr; }
-.bench > div { padding: clamp(1.2rem, 3vw, 2rem); display: grid; gap: .6rem; align-content: start; min-height: 220px; }
-.bench b { font: 900 clamp(2rem, 5vw, 3.2rem)/1 var(--display); }
-.bench small { font-size: .95rem; font-weight: 700; }
+/* Próximos passos */
+.marcos { display: grid; gap: 3px; }
+.marcos li { display: grid; grid-template-columns: 96px 1fr; gap: 12px; align-items: center; padding: 10px 12px; background: var(--creme); border-left: 8px solid var(--c); font-weight: 900; line-height: 1.15; }
+.marcos small { font-size: .82rem; font-weight: 700; color: var(--apoio); }
 
-/* Linha do tempo em blocos */
-.tempo { display: grid; grid-template-columns: repeat(5, 1fr); }
-.marco { padding: 16px 14px 18px; display: grid; gap: 6px; align-content: start; min-height: 150px; border-top: 10px solid var(--c); background: var(--creme); }
-.marco + .marco { border-left: 3px solid #fff; }
-.marco .quando { font: 700 .72rem/1 var(--mono); text-transform: uppercase; letter-spacing: .08em; color: var(--apoio); }
-.marco b { font-size: 1.15rem; font-weight: 900; line-height: 1.1; }
-.marco small { font-weight: 700; color: var(--apoio); }
-.marco.feito { background: var(--verde); color: var(--creme); }
-.marco.feito .quando, .marco.feito small { color: #CFE0C9; }
-
-.rodape { background: var(--verde); color: var(--creme); }
-.rodape p { max-width: 70ch; }
+.rodape a { color: var(--ipe); font-weight: 900; }
 .rodape strong { color: var(--ipe); }
-.rodape img { height: 52px; width: auto; justify-self: start; }
+.rodape .logo { background: var(--creme); padding: 6px 10px; }
 
-@media (max-width: 860px) {
-  .faixa { padding-block: 2.25rem; }
-  .miolo { gap: 1.1rem; }
-  .heroi, .palco, .videos { grid-template-columns: 1fr; }
-  .grade { max-width: 420px; justify-self: center; width: 100%; }
-  .vaga { aspect-ratio: auto; min-height: 200px; }
-  .palco-fundo { max-width: 380px; justify-self: center; width: 100%; }
-  .etapas, .selo-sim { display: none; }
-  .canais .seta { display: none; }
-  .canais span { padding: .4rem .7rem; font-size: .9rem; }
-  /* Trilhos com deslize: o card seguinte aparece pela metade e convida a deslizar */
-  .blocos, .passos, .ruas, .bench, .tempo {
-    display: flex; gap: 8px; overflow-x: auto; overscroll-behavior-x: contain;
-    scroll-snap-type: x mandatory; scroll-padding-inline: max(18px, env(safe-area-inset-left, 0px));
-    margin-inline: calc(-1 * max(18px, env(safe-area-inset-left, 0px))); padding-inline: max(18px, env(safe-area-inset-left, 0px));
-    padding-bottom: 6px; scrollbar-width: none;
-  }
-  .blocos::-webkit-scrollbar, .passos::-webkit-scrollbar, .ruas::-webkit-scrollbar, .bench::-webkit-scrollbar, .tempo::-webkit-scrollbar { display: none; }
-  .blocos > *, .passos > *, .bench > *, .tempo > * { flex: 0 0 78%; scroll-snap-align: start; min-height: 0; }
-  .ruas > * { flex: 0 0 62%; scroll-snap-align: start; }
-  .marco + .marco { border-left: 0; }
-  .bloco { min-height: 168px; }
-  .icones { grid-template-columns: 1fr 1fr; }
-  .icones div { grid-template-columns: 1fr; gap: 8px; padding: 14px; font-size: .95rem; }
-  .icones svg { width: 44px; height: 44px; }
-  .raia { grid-template-columns: 1fr; }
-  .raia .fila { grid-template-columns: 1fr 1fr; }
-  .raia .fila span { min-height: 56px; font-size: .95rem; }
+@media (min-width: 700px) {
+  .topo { grid-template-columns: 1.1fr 1fr; }
+  .videos { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; align-items: start; }
+  .videos > * + * { margin-top: 0; }
+  .vaga { grid-template-columns: 1fr; justify-items: center; text-align: center; aspect-ratio: 3 / 4; align-content: center; }
+  .numeros { grid-template-columns: repeat(3, 1fr); }
+  .numeros li { grid-template-columns: 1fr; align-content: start; }
+  .passos { grid-template-columns: repeat(3, 1fr); }
+  .palco { grid-template-columns: 260px 1fr; gap: 2.5rem; align-items: center; justify-items: stretch; }
+  .ruas { grid-template-columns: repeat(4, 1fr); max-width: none; }
+  .raia { grid-template-columns: 130px repeat(4, 1fr); }
+  .raia > b { grid-column: auto; display: flex; align-items: center; }
+  .priv { grid-template-columns: repeat(3, 1fr); }
+  .priv li { grid-template-columns: 40px 1fr; align-items: center; }
+  .marcos { grid-template-columns: repeat(5, 1fr); }
+  .marcos li { grid-template-columns: 1fr; border-left: 0; border-top: 8px solid var(--c); align-content: start; min-height: 104px; }
+  tbody th[scope="row"] { max-width: none; }
 }
-@media (max-width: 860px) {
-  .celular { max-width: 250px; border-radius: 34px; padding: 8px; }
-  .celular video { border-radius: 27px; }
-  .grafico .eixo { font-size: 15px; }
-  .grafico .sub { display: none; }
-  .grafico .rot { font-size: 26px; }
-  .grafico .valor { font-size: 30px; }
-}
-.deslize { display: none; font: 700 .78rem/1 var(--mono); letter-spacing: .06em; text-transform: uppercase; opacity: .7; }
-@media (max-width: 860px) { .deslize { display: block; } }
 </style>
 
 <div class="mosaico" aria-hidden="true" id="faixa-topo"></div>
 
-<header class="faixa topo">
-  <div class="miolo">
-    <div class="marca">
-      <img src="assets/logo-mogi.svg" alt="MOGI">
-      <span class="rotulo">Zeladoria urbana · Itamogi-MG · Final AKCIT 28/11</span>
-    </div>
-    <div class="heroi">
-      <div style="display:grid;gap:1.4rem">
-        <h1>Viu um problema na rua? <em>Abre o MOGI, tira a foto e pronto.</em></h1>
-        <p class="sub">A prefeitura recebe tudo numa fila só, do mais urgente para o menos urgente.</p>
-        <div>
-          <div class="escala" role="img" aria-label="Escala de urgência de 1 a 5">
-            <span style="background:var(--n1)">1</span><span style="background:var(--n2)">2</span><span style="background:var(--n3);color:var(--cafe)">3</span><span style="background:var(--n4)">4</span><span style="background:var(--n5)">5</span>
-          </div>
-          <div class="escala-leg"><span>sem pressa</span><span>crítico, prazo de 2 h</span></div>
+<header class="faixa">
+<div class="miolo">
+  <img class="logo" src="assets/logo-mogi.svg" alt="MOGI" width="1700" height="460">
+  <div class="topo">
+    <div class="texto">
+      <h1>Viu um problema na rua? <em>Abre o MOGI, tira a foto e pronto.</em></h1>
+      <p class="sub">A prefeitura de Itamogi recebe tudo numa fila só, por urgência.</p>
+      <div>
+        <div class="escala" role="img" aria-label="Escala de urgência de 1 a 5">
+          <span style="background:var(--n1)">1</span><span style="background:var(--n2)">2</span><span style="background:var(--n3);color:var(--cafe)">3</span><span style="background:var(--n4)">4</span><span style="background:var(--n5)">5</span>
         </div>
+        <div class="escala-leg"><span>sem pressa</span><span>crítico</span></div>
       </div>
-      <div class="grade" aria-label="Mosaico com o antes e o depois de uma rua">
-        <div style="background:var(--ipe)"><div class="janela-meia" style="position:absolute;inset:18% 0 0 0;background:var(--verde)"></div></div>
-        <div class="janela-meia" style="grid-column:span 2;grid-row:span 2"><video src="assets/rua-agua.mp4" poster="assets/rua-agua.jpg" autoplay muted loop playsinline aria-label="Vídeo de um cano estourado jorrando água na rua"></video><span class="ia" style="top:auto;bottom:40px">Vídeo gerado por IA</span><span class="legenda-foto">Antes · nível 5</span></div>
-        <div style="background:var(--cereja)"><div class="janela-disco" style="position:absolute;inset:18%;background:var(--creme)"></div><div class="janela-disco" style="position:absolute;inset:36%;background:var(--cereja)"></div></div>
-        <div style="background:var(--ceu)"><div style="position:absolute;inset:24%;background:var(--ipe);transform:rotate(45deg)"></div></div>
-        <div style="background:var(--folha)"><div style="position:absolute;inset:0;background:var(--verde);clip-path:polygon(0 0,100% 100%,0 100%)"></div></div>
-        <div class="janela-quarto"><img src="assets/agua-depois.jpg" alt="A mesma rua com o cano consertado, imagem gerada por IA"><span class="legenda-foto" style="left:auto;right:0">Depois</span></div>
-      </div>
+    </div>
+    <div class="grade">
+      <div style="background:var(--ipe)"><div class="arco" style="position:absolute;inset:20% 0 0 0;background:var(--verde)"></div></div>
+      <div class="arco" style="grid-column:span 2;grid-row:span 2"><video src="assets/rua-agua.mp4" poster="assets/rua-agua.jpg" width="540" height="960" autoplay muted loop playsinline aria-label="Cano estourado jorrando água na rua, vídeo gerado por IA"></video><span class="selo">Antes · vídeo de IA</span></div>
+      <div style="background:var(--cereja)"><div style="position:absolute;inset:18%;border-radius:50%;background:var(--creme)"></div><div style="position:absolute;inset:36%;border-radius:50%;background:var(--cereja)"></div></div>
+      <div style="background:var(--ceu)"><div style="position:absolute;inset:24%;background:var(--ipe);transform:rotate(45deg)"></div></div>
+      <div style="background:var(--folha)"><div style="position:absolute;inset:0;background:var(--verde);clip-path:polygon(0 0,100% 100%,0 100%)"></div></div>
+      <div class="quarto"><img src="assets/agua-depois.jpg" alt="A mesma rua com o cano consertado, imagem gerada por IA" width="672" height="900"><span class="selo" style="left:auto;right:0">Depois</span></div>
     </div>
   </div>
+</div>
 </header>
 
-<section class="faixa filme-faixa" aria-labelledby="t-filme">
-  <div class="miolo">
-    <h2 id="t-filme">O MOGI em 85 segundos.</h2>
-    <div class="videos">
-      <figure class="filme-principal">
-        <video src="assets/mogi-85s.mp4" poster="assets/mogi-85s-capa.jpg" controls preload="none" playsinline width="1280" height="720" aria-label="Vídeo institucional do Sistema MOGI, 85 segundos, com som"></video>
-        <figcaption>App do morador, central ao vivo, equipe de campo e como a IA decide. Telas reais de 15/11; cenas de rua geradas por IA, marcadas no vídeo.</figcaption>
-      </figure>
-      <figure class="depoimento">
-        <div class="vaga" role="img" aria-label="Espaço reservado para o depoimento do prefeito">
-          <span class="play" aria-hidden="true"></span>
-          <b>Depoimento do prefeito de Itamogi</b>
-          <small>[FALTA: consentimento do prefeito para publicar o vídeo]</small>
-        </div>
-        <figcaption>Ele avaliou o protótipo em 18/11. Avaliar não é aprovar: o piloto é proposta.</figcaption>
-      </figure>
+<section class="faixa escura" aria-labelledby="t-filme">
+<div class="miolo">
+  <h2 id="t-filme">O MOGI em 85 segundos</h2>
+  <div class="videos">
+    <figure class="filme">
+      <video src="assets/mogi-85s.mp4" poster="assets/mogi-85s-capa.jpg" controls preload="none" playsinline width="1280" height="720" aria-label="Vídeo do Sistema MOGI, 85 segundos, com som"></video>
+    </figure>
+    <div class="vaga">
+      <span class="play" aria-hidden="true"></span>
+      <div><b>Depoimento do prefeito</b><small>[FALTA: consentimento para publicar]</small></div>
     </div>
   </div>
+  <p class="nota">Telas reais do sistema. Cenas de rua geradas por IA, marcadas no vídeo. O prefeito avaliou o protótipo em 18/11; o piloto ainda é proposta.</p>
+</div>
 </section>
 
-<section class="faixa" style="background:#fff">
-  <div class="miolo">
-    <h2>O urgente se perde no meio do comum.</h2>
-    <div class="canais" aria-label="Hoje o pedido chega por vários canais soltos">
-      <span>telefone</span><span>WhatsApp solto</span><span>Facebook</span><span>balcão</span><span>papel</span><span class="seta" aria-hidden="true">→</span><span class="mogi">uma fila, por urgência</span>
-    </div>
-    <p class="deslize" aria-hidden="true">Deslize →</p>
-    <div class="blocos">
-      <div class="bloco" style="background:var(--verde);color:var(--creme)"><i style="background:var(--folha)"></i><b>~230 h</b><small>de servidor por mês devolvidas com 400 pedidos. Estimativa, a confirmar.</small></div>
-      <div class="bloco" style="background:var(--ipe);color:var(--cafe)"><i style="background:#fff;border-radius:0;transform:rotate(45deg)"></i><b>R$ 0,0007</b><small>de IA por relato com foto. Medido pelo time.</small></div>
-      <div class="bloco" style="background:var(--cereja);color:var(--creme)"><i style="background:var(--terra);border-radius:100% 0 0 0"></i><b>10 de 11</b><small>casos no nível certo. Casos escritos pelo time.</small></div>
-    </div>
-  </div>
+<section class="faixa branca" aria-labelledby="t-dor">
+<div class="miolo">
+  <h2 id="t-dor">O urgente se perde no meio do comum</h2>
+  <ul class="numeros">
+    <li style="background:var(--cereja);color:var(--creme)"><b>39,5%</b><span>da água tratada do Brasil se perde</span><small>Trata Brasil, 2026</small></li>
+    <li style="background:var(--verde);color:var(--creme)"><b>5 canais</b><span>telefone, WhatsApp, Facebook, balcão e papel</span><small>sem ordem de urgência</small></li>
+    <li style="background:var(--ipe);color:var(--cafe)"><b>~230 h</b><span>de servidor por mês devolvidas</span><small>estimativa com 400 pedidos</small></li>
+  </ul>
+</div>
 </section>
 
-<section class="faixa">
-  <div class="miolo">
-    <h2>Do relato à foto do conserto.</h2>
-    <p class="deslize" aria-hidden="true">Deslize →</p>
-    <div class="passos">
-      <div class="passo" style="background:var(--verde)"><em>1</em><span><b>Morador fotografa</b><small>no app ou no WhatsApp</small></span></div>
-      <div class="passo" style="background:var(--terra)"><em>2</em><span><b>Rosto e placa borrados</b><small>antes de qualquer pessoa ver</small></span></div>
-      <div class="passo" style="background:var(--ceu)"><em>3</em><span><b>A IA responde perguntas</b><small>fechadas, sem texto livre</small></span></div>
-      <div class="passo escuro" style="background:var(--ipe)"><em>4</em><span><b>A regra da prefeitura dá o nível</b><small>de 1 a 5, escrita em Lua</small></span></div>
-      <div class="passo" style="background:var(--cereja)"><em>5</em><span><b>Uma pessoa confere</b><small>os níveis 4 e 5</small></span></div>
-      <div class="passo" style="background:var(--folha)"><em>6</em><span><b>Equipe resolve</b><small>e manda a foto do depois</small></span></div>
-    </div>
-    <p class="nota">Níveis 1 a 3 vão direto para a equipe da secretaria.</p>
-  </div>
+<section class="faixa" aria-labelledby="t-como">
+<div class="miolo">
+  <h2 id="t-como">Do relato à foto do conserto</h2>
+  <ol class="passos">
+    <li style="background:var(--verde);color:var(--creme)"><b>1</b><span>Morador fotografa</span></li>
+    <li style="background:var(--terra);color:var(--creme)"><b>2</b><span>Rosto e placa borrados</span></li>
+    <li style="background:var(--ceu);color:var(--creme)"><b>3</b><span>IA responde perguntas</span></li>
+    <li style="background:var(--ipe);color:var(--cafe)"><b>4</b><span>Regra da cidade dá o nível</span></li>
+    <li style="background:var(--cereja);color:var(--creme)"><b>5</b><span>Pessoa confere 4 e 5</span></li>
+    <li style="background:var(--folha);color:var(--creme)"><b>6</b><span>Equipe resolve com foto</span></li>
+  </ol>
+</div>
 </section>
 
-<section class="faixa" style="background:#fff">
-  <div class="miolo">
-    <h2>Foto, ponto e pronto.</h2>
-    <div class="palco">
-      <div class="palco-fundo">
-        <figure class="celular">
-          <video loading="lazy" width="390" height="844" src="assets/zap-fluxo.mp4" poster="assets/zap-1-saudacao.jpg" autoplay muted loop playsinline aria-label="Gravação da conversa simulada: foto, ponto no mapa, frase, tipo e protocolo"></video>
-        </figure>
-        <span class="ia">Gravação da tela simulada</span>
-      </div>
-      <div style="display:grid;gap:1.25rem">
-        <span class="selo-sim">Tela simulada no estilo WhatsApp · o relato cai na central de verdade</span>
-        <div class="etapas">
-          <div class="etapa"><div class="num"><span style="background:var(--verde)">1</span>Manda a foto</div><figure class="mini"><img loading="lazy" width="390" height="844" src="assets/zap-3-foto.jpg" alt="Conversa com a foto do cano estourado enviada"></figure></div>
-          <div class="etapa"><div class="num"><span style="background:var(--ceu)">2</span>Marca o ponto</div><figure class="mini"><img loading="lazy" width="390" height="844" src="assets/zap-4-local.jpg" alt="Conversa com o ponto marcado no mapa"></figure></div>
-          <div class="etapa"><div class="num"><span style="background:var(--cereja)">3</span>Recebe o protocolo</div><figure class="mini baixo"><img loading="lazy" width="390" height="844" src="assets/zap-6-recibo.jpg" alt="Recibo com protocolo MOGI-2026-000001 e nível 5 crítico"></figure></div>
-        </div>
-        <p class="nota">Gravado na cópia de teste do sistema em 27/11. As fotos de exemplo são geradas por IA e marcadas na própria conversa.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="faixa" style="background:var(--verde);color:var(--creme)">
-  <div class="miolo">
-    <h2>O que chega na fila.</h2>
-    <p class="deslize" aria-hidden="true">Deslize →</p>
+<section class="faixa branca" aria-labelledby="t-mao">
+<div class="miolo">
+  <h2 id="t-mao">Foto, ponto e pronto</h2>
+  <div class="palco">
+    <figure class="celular">
+      <video loading="lazy" width="390" height="844" src="assets/zap-fluxo.mp4" poster="assets/zap-1-saudacao.jpg" autoplay muted loop playsinline aria-label="Gravação da conversa simulada: foto, ponto no mapa, frase e protocolo"></video>
+    </figure>
     <div class="ruas">
-      <figure class="rua"><video loading="lazy" width="540" height="960" src="assets/rua-agua.mp4" poster="assets/rua-agua.jpg" autoplay muted loop playsinline aria-label="Cano estourado"></video><span class="ia">Gerado por IA</span><figcaption><span style="background:var(--n5)">5</span>Cano estourado</figcaption></figure>
-      <figure class="rua"><video loading="lazy" width="540" height="960" src="assets/rua-iluminacao.mp4" poster="assets/rua-iluminacao.jpg" autoplay muted loop playsinline aria-label="Fio solto no poste"></video><span class="ia">Gerado por IA</span><figcaption><span style="background:var(--n4)">4</span>Fio solto no poste</figcaption></figure>
-      <figure class="rua"><video loading="lazy" width="540" height="960" src="assets/rua-vias.mp4" poster="assets/rua-vias.jpg" autoplay muted loop playsinline aria-label="Buraco na rua"></video><span class="ia">Gerado por IA</span><figcaption><span style="background:var(--n3);color:var(--cafe)">3</span>Buraco na rua</figcaption></figure>
-      <figure class="rua"><video loading="lazy" width="540" height="960" src="assets/rua-limpeza.mp4" poster="assets/rua-limpeza.jpg" autoplay muted loop playsinline aria-label="Lixo na calçada"></video><span class="ia">Gerado por IA</span><figcaption><span style="background:var(--n2)">2</span>Lixo na calçada</figcaption></figure>
-    </div>
-    <p class="nota" style="color:#CFE0C9">Vídeos gerados por IA, não são de Itamogi. Os níveis são ilustrativos: quem dá o nível é a regra da cidade.</p>
-  </div>
-</section>
-
-
-<section class="faixa" style="background:#fff">
-  <div class="miolo">
-    <h2>A IA sugere. A prefeitura decide.</h2>
-    <div>
-      <div class="raia">
-        <span class="selo" style="background:var(--verde)">Na demo hoje</span>
-        <div class="fila"><span style="background:var(--creme)">Claude descreve a foto</span><span style="background:var(--creme)">Jev classifica</span><span style="background:var(--ipe);color:var(--cafe)">Regra Lua dá o nível</span><span style="background:var(--creme)">Pessoa confere</span></div>
-      </div>
-      <div class="raia plano">
-        <span class="selo" style="background:var(--ceu)">Piloto 2027</span>
-        <div class="fila"><span>Encoder visual aberto</span><span>Classificador pequeno</span><span style="background:var(--ipe);color:var(--cafe);border-color:var(--ipe)">Mesma regra Lua</span><span>Pessoa confere</span></div>
-      </div>
-    </div>
-    <p class="nota">Sem LLM decidindo. No piloto, o modelo roda na própria instalação e a foto deixa de sair da cidade. Isso ainda não existe.</p>
-  </div>
-</section>
-
-<section class="faixa">
-  <div class="miolo">
-    <h2>Três degraus. Sobe só com volume.</h2>
-    <svg class="grafico" viewBox="0 0 760 300" role="img" aria-label="Custo mensal estimado por degrau: piloto cerca de 363 reais, região cerca de 1533 reais, escala a cotar">
-      <g stroke="#D9CFBB" stroke-width="1">
-        <line x1="70" y1="180" x2="740" y2="180" stroke-dasharray="3 5"/><line x1="70" y1="120" x2="740" y2="120" stroke-dasharray="3 5"/><line x1="70" y1="60" x2="740" y2="60" stroke-dasharray="3 5"/>
-      </g>
-      <g class="eixo" font-size="12" fill="#5E5548" text-anchor="end" font-weight="700">
-        <text x="62" y="244">R$ 0</text><text x="62" y="184">R$ 500</text><text x="62" y="124">R$ 1.000</text><text x="62" y="64">R$ 1.500</text>
-      </g>
-      <!-- escala: 120 px por R$ 1.000 -->
-      <rect x="120" y="196.4" width="140" height="43.6" fill="#1F4D2B"/>
-      <circle cx="190" cy="218" r="12" fill="#E9B526"/>
-      <rect x="330" y="56" width="140" height="184" fill="#3B6EA5"/>
-      <path d="M330 240a70 70 0 0 1 140 0z" fill="#E9B526"/>
-      <rect x="540" y="40" width="140" height="200" fill="none" stroke="#8C3B2A" stroke-width="3" stroke-dasharray="8 7"/>
-      <line x1="70" y1="240" x2="740" y2="240" stroke="#1F4D2B" stroke-width="3"/>
-      <g text-anchor="middle" font-weight="900">
-        <text x="190" y="184" class="valor" font-size="22" fill="#1F4D2B">~R$ 363</text>
-        <text x="400" y="44" class="valor" font-size="22" fill="#1F4D2B">~R$ 1.533</text>
-        <text x="610" y="146" font-size="19" fill="#8C3B2A">a cotar</text>
-      </g>
-      <g text-anchor="middle">
-        <text class="rot" x="190" y="266" font-size="16" font-weight="900" fill="#1F4D2B">1 · Piloto</text><text class="sub" x="190" y="286" font-size="12" font-weight="700" fill="#5E5548">1 máquina · 1 mil relatos/mês</text>
-        <text class="rot" x="400" y="266" font-size="16" font-weight="900" fill="#1F4D2B">2 · Região</text><text class="sub" x="400" y="286" font-size="12" font-weight="700" fill="#5E5548">1 a 5 cidades · 20 mil/mês</text>
-        <text class="rot" x="610" y="266" font-size="16" font-weight="900" fill="#1F4D2B">3 · Escala</text><text class="sub" x="610" y="286" font-size="12" font-weight="700" fill="#5E5548">fila, alta disponibilidade, GPU</text>
-      </g>
-    </svg>
-    <p class="nota">Estimativa de lista na AWS São Paulo (15/11), não fatura. Provedor nacional a cotar. Nada contratado.</p>
-  </div>
-</section>
-
-<section class="faixa" style="background:#fff">
-  <div class="miolo">
-    <h2>Privacidade desde a captura.</h2>
-    <div class="icones">
-      <div style="background:var(--verde);color:var(--creme)"><svg viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="30" fill="#F5F1E8"/><circle cx="30" cy="25" r="9" fill="#1F4D2B"/><path d="M14 46c4-9 28-9 32 0z" fill="#1F4D2B"/><rect x="6" y="27" width="48" height="8" fill="#E9B526" transform="rotate(-35 30 31)"/></svg>Rosto e placa borrados</div>
-      <div style="background:var(--cereja);color:var(--creme)"><svg viewBox="0 0 60 60" aria-hidden="true"><path d="M8 30L30 10l22 20v22H8z" fill="#F5F1E8"/><rect x="4" y="27" width="52" height="7" fill="#1F4D2B" transform="rotate(45 30 30)"/></svg>Foto de dentro de casa recusada</div>
-      <div style="background:var(--ceu);color:var(--creme)"><svg viewBox="0 0 60 60" aria-hidden="true"><rect x="12" y="26" width="36" height="26" fill="#F5F1E8"/><path d="M19 26v-6a11 11 0 0 1 22 0v6" fill="none" stroke="#F5F1E8" stroke-width="6"/><circle cx="30" cy="39" r="5" fill="#3B6EA5"/></svg>CPF cifrado e mascarado</div>
-      <div style="background:var(--ipe);color:var(--cafe)"><svg viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="24" fill="#4A2C1D"/><path d="M30 30V6a24 24 0 0 1 24 24z" fill="#E9B526"/></svg>Original apagada em 90 dias</div>
-      <div style="background:var(--terra);color:var(--creme)"><svg viewBox="0 0 60 60" aria-hidden="true"><rect x="16" y="20" width="28" height="32" fill="#F5F1E8"/><rect x="10" y="12" width="40" height="6" fill="#F5F1E8"/><rect x="24" y="6" width="12" height="6" fill="#F5F1E8"/></svg>Morador apaga a conta</div>
-      <div style="background:var(--folha);color:var(--creme)"><svg viewBox="0 0 60 60" aria-hidden="true"><path d="M30 6l24 24-24 24L6 30z" fill="#E9B526"/><circle cx="30" cy="30" r="9" fill="#1E3F8A"/></svg>Para a IA, só a foto borrada e o bairro</div>
-    </div>
-    <p class="falta">[FALTA: política de privacidade formal e encarregado de dados]</p>
-  </div>
-</section>
-
-<section class="faixa">
-  <div class="miolo">
-    <h2>Quem compra já pediu isso.</h2>
-    <p class="deslize" aria-hidden="true">Deslize →</p>
-    <div class="bench">
-      <div style="background:var(--verde);color:var(--creme)"><span class="rotulo" style="color:var(--ipe)">Xexéu, PE · 31/07/2026</span><b>Mesmo escopo</b><small>Desafio público de zeladoria: foto obrigatória, duplicados agrupados, prioridade automática, WhatsApp, rosto e placa anonimizados.</small></div>
-      <div style="background:var(--ipe);color:var(--cafe)"><span class="rotulo">Recife · Conecta Zap</span><b>500 mil</b><small>usuários no canal de WhatsApp da prefeitura.</small></div>
-      <div style="background:var(--ceu);color:var(--creme)"><span class="rotulo">Singapura · OneService</span><b>160 mil</b><small>casos pelo chatbot em WhatsApp e Telegram.</small></div>
+      <figure class="rua"><div class="quadro"><video loading="lazy" width="540" height="960" src="assets/rua-agua.mp4" poster="assets/rua-agua.jpg" autoplay muted loop playsinline aria-label="Cano estourado, vídeo gerado por IA"></video><span class="nivel" style="background:var(--n5);color:#fff">5</span></div><figcaption>Cano estourado</figcaption></figure>
+      <figure class="rua"><div class="quadro"><video loading="lazy" width="540" height="960" src="assets/rua-iluminacao.mp4" poster="assets/rua-iluminacao.jpg" autoplay muted loop playsinline aria-label="Fio solto no poste, vídeo gerado por IA"></video><span class="nivel" style="background:var(--n4);color:#fff">4</span></div><figcaption>Fio solto no poste</figcaption></figure>
+      <figure class="rua"><div class="quadro"><video loading="lazy" width="540" height="960" src="assets/rua-vias.mp4" poster="assets/rua-vias.jpg" autoplay muted loop playsinline aria-label="Buraco na rua, vídeo gerado por IA"></video><span class="nivel" style="background:var(--n3);color:var(--cafe)">3</span></div><figcaption>Buraco na rua</figcaption></figure>
+      <figure class="rua"><div class="quadro"><video loading="lazy" width="540" height="960" src="assets/rua-limpeza.mp4" poster="assets/rua-limpeza.jpg" autoplay muted loop playsinline aria-label="Lixo na calçada, vídeo gerado por IA"></video><span class="nivel" style="background:var(--n2);color:#fff">2</span></div><figcaption>Lixo na calçada</figcaption></figure>
     </div>
   </div>
+  <p class="nota">A conversa é uma tela simulada no estilo WhatsApp, gravada em 27/11; o relato cai na central de verdade. Vídeos de rua gerados por IA, com níveis ilustrativos.</p>
+</div>
 </section>
 
-<section class="faixa" style="background:#fff">
-  <div class="miolo">
-    <h2>Depois da final.</h2>
-    <p class="deslize" aria-hidden="true">Deslize →</p>
-    <div class="tempo">
-      <div class="marco feito" style="--c:var(--ipe)"><span class="quando">28/11</span><b>Final AKCIT</b><small>BMC e pitch</small></div>
-      <div class="marco" style="--c:var(--ceu)"><span class="quando">a definir</span><b>WhatsApp de teste</b><small>sandbox da Meta e áudio</small></div>
-      <div class="marco" style="--c:var(--folha)"><span class="quando">a definir</span><b>Teste de campo</b><small>moradores de Itamogi</small></div>
-      <div class="marco" style="--c:var(--terra)"><span class="quando">1º sem 2027</span><b>Piloto</b><small>proposta à prefeitura</small></div>
-      <div class="marco" style="--c:var(--cereja)"><span class="quando">com dados</span><b>Modelo próprio</b><small>com relatos reais rotulados</small></div>
-    </div>
+<section class="faixa" aria-labelledby="t-bench">
+<div class="miolo">
+  <h2 id="t-bench">Quem entrega o quê</h2>
+  <div class="rolagem" tabindex="0" role="region" aria-labelledby="t-bench">
+    <table>
+      <thead><tr><td class="canto"></td><th scope="col" class="hm">MOGI</th><th scope="col" class="hx">Xexéu*</th><th scope="col">Legado</th><th scope="col">Colab</th><th scope="col">Recife</th><th scope="col">Singapura</th></tr></thead>
+      <tbody>
+          <tr class="grupo"><th scope="rowgroup" colspan="7">Para o morador</th></tr>
+          <tr><th scope="row">Relato com foto</th><td class="mg"><svg class="ck" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.2 3.2L13 5"/></svg><span class="so-leitor">sim</span></td><td class="ok"><svg class="ck" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.2 3.2L13 5"/></svg><span class="so-leitor">sim</span></td><td class="nao">não</td><td class="ok"><svg class="ck" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.2 3.2L13 5"/></svg><span class="so-leitor">sim</span></td><td class="ok"><svg class="ck" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.2 3.2L13 5"/></svg><span class="so-leitor">sim</span></td><td class="ok"><svg class="ck" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.2 3.2L13 5"/></svg><span class="so-leitor">sim</span></td></tr>
+          <tr><th scope="row">Relato pelo WhatsApp</th><td class="mg"><svg class="ck" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.2 3.2L13 5"/></svg><span class="so-leitor">sim</span> em demo</td><td class="ok"><svg class="ck" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.2 3.2L13 5"/></svg><span class="so-leitor">sim</span></td><td class="nao">solto</td><td class="nd">n/d</td><td class="ok"><svg class="ck" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.2 3.2L13 5"/></svg><span class="so-leitor">sim</span></td><td class="ok"><svg class="ck" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.2 3.2L13 5"/></svg><span class="so-leitor">sim</span></td></tr>
+          <tr><th scope="row">Foto do conserto de volta</th><td class="mg"><svg class="ck" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.2 3.2L13 5"/></svg><span class="so-leitor">sim</span></td><td class="ok"><svg class="ck" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.2 3.2L13 5"/></svg><span class="so-leitor">sim</span></td><td class="nao">não</td><td class="nd">n/d</td><td class="nd">n/d</td><td class="nd">n/d</td></tr>
+          <tr class="grupo"><th scope="rowgroup" colspan="7">Para a prefeitura</th></tr>
+          <tr><th scope="row">IA lê foto e texto</th><td class="mg"><svg class="ck" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.2 3.2L13 5"/></svg><span class="so-leitor">sim</span></td><td class="na">—</td><td class="nao">não</td><td class="nd">n/d</td><td class="nd">n/d</td><td class="ok"><svg class="ck" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.2 3.2L13 5"/></svg><span class="so-leitor">sim</span></td></tr>
+          <tr><th scope="row">Prioridade automática</th><td class="mg"><svg class="ck" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.2 3.2L13 5"/></svg><span class="so-leitor">sim</span> 1 a 5</td><td class="ok"><svg class="ck" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.2 3.2L13 5"/></svg><span class="so-leitor">sim</span></td><td class="nao">não</td><td class="nd">n/d</td><td class="nd">n/d</td><td class="nd">n/d</td></tr>
+          <tr><th scope="row">Regra auditável da cidade</th><td class="mg"><svg class="ck" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.2 3.2L13 5"/></svg><span class="so-leitor">sim</span> em Lua</td><td class="na">—</td><td class="nao">não</td><td class="nd">n/d</td><td class="nd">n/d</td><td class="nd">n/d</td></tr>
+          <tr><th scope="row">Duplicados agrupados</th><td class="mg"><svg class="ck" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.2 3.2L13 5"/></svg><span class="so-leitor">sim</span> a 50 m</td><td class="ok"><svg class="ck" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.2 3.2L13 5"/></svg><span class="so-leitor">sim</span></td><td class="nao">não</td><td class="nd">n/d</td><td class="nd">n/d</td><td class="nd">n/d</td></tr>
+          <tr><th scope="row">Pessoa confere os graves</th><td class="mg"><svg class="ck" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.2 3.2L13 5"/></svg><span class="so-leitor">sim</span> 4 e 5</td><td class="na">—</td><td class="nao">manual</td><td class="nd">n/d</td><td class="nd">n/d</td><td class="nd">n/d</td></tr>
+          <tr><th scope="row">Rosto e placa borrados</th><td class="mg"><svg class="ck" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.2 3.2L13 5"/></svg><span class="so-leitor">sim</span></td><td class="ok"><svg class="ck" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.2 3.2L13 5"/></svg><span class="so-leitor">sim</span></td><td class="nao">não</td><td class="nd">n/d</td><td class="nd">n/d</td><td class="nd">n/d</td></tr>
+          <tr class="grupo"><th scope="rowgroup" colspan="7">Para crescer</th></tr>
+          <tr><th scope="row">Custo de IA por relato público</th><td class="mg"><svg class="ck" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.2 3.2L13 5"/></svg><span class="so-leitor">sim</span> R$ 0,0007</td><td class="na">—</td><td class="na">—</td><td class="nd">n/d</td><td class="nd">n/d</td><td class="nd">n/d</td></tr>
+          <tr><th scope="row">Nova cidade sem reprogramar</th><td class="mg"><svg class="ck" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.2 3.2L13 5"/></svg><span class="so-leitor">sim</span></td><td class="na">—</td><td class="na">—</td><td class="nd">n/d</td><td class="nd">n/d</td><td class="nd">n/d</td></tr>
+          <tr><th scope="row">Código aberto</th><td class="mg"><svg class="ck" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.2 3.2L13 5"/></svg><span class="so-leitor">sim</span></td><td class="na">—</td><td class="na">—</td><td class="nao">não</td><td class="nd">n/d</td><td class="nd">n/d</td></tr>
+      </tbody>
+    </table>
   </div>
+  <p class="nota">* O que o edital de Xexéu-PE pede (31/07/2026). n/d: a página do sistema não informa. No MOGI, o WhatsApp é tela de demonstração.</p>
+</div>
 </section>
 
-<footer class="faixa rodape">
-  <div class="miolo">
-    <img src="assets/logo-mogi.svg" alt="MOGI">
-    <p><strong>Real:</strong> o sistema roda inteiro, com triagem ao vivo, borrão e tempo real. <strong>Simulado:</strong> fotos e vídeos de rua gerados por IA, a tela do WhatsApp e os pinos de fundo do mapa. O piloto é uma proposta.</p>
-    <p>Equipe ROTA Scale · código aberto, Apache-2.0 · github.com/rota-scale/sistema-mogi</p>
+<section class="faixa branca" aria-labelledby="t-ia">
+<div class="miolo">
+  <h2 id="t-ia">A IA sugere, a prefeitura decide</h2>
+  <div class="raias">
+    <div class="raia"><b style="background:var(--verde)">Hoje</b><span>Claude descreve</span><span>Jev pontua</span><span class="lua">Regra Lua decide</span><span>Pessoa confere</span></div>
+    <div class="raia plano"><b style="background:var(--ceu)">Piloto 2027</b><span>Encoder aberto</span><span>Modelo da cidade</span><span class="lua">Mesma regra Lua</span><span>Pessoa confere</span></div>
   </div>
+  <p class="nota">O plano de 2027 ainda não existe: depende de 500 relatos reais rotulados.</p>
+</div>
+</section>
+
+<section class="faixa" aria-labelledby="t-custo">
+<div class="miolo">
+  <h2 id="t-custo">Três degraus de custo</h2>
+  <svg class="grafico" viewBox="0 0 640 330" role="img" aria-label="Custo mensal estimado: piloto cerca de 363 reais, região cerca de 1.533 reais, escala a cotar">
+    <!-- escala: 120 px por R$ 1.000, base em y=250 -->
+    <rect x="30" y="206.4" width="170" height="43.6" fill="#1F4D2B"/>
+    <rect x="235" y="66" width="170" height="184" fill="#3B6EA5"/>
+    <rect x="440" y="52" width="170" height="198" fill="none" stroke="#8C3B2A" stroke-width="3" stroke-dasharray="9 8"/>
+    <line x1="10" y1="250" x2="630" y2="250" stroke="#1F4D2B" stroke-width="3"/>
+    <g text-anchor="middle" font-weight="900" fill="#1F4D2B">
+      <text x="115" y="194" font-size="30">~R$ 363</text><text x="320" y="54" font-size="30">~R$ 1.533</text><text x="525" y="160" font-size="28" fill="#8C3B2A">a cotar</text>
+      <text x="115" y="284" font-size="24">Piloto</text><text x="320" y="284" font-size="24">Região</text><text x="525" y="284" font-size="24">Escala</text>
+    </g>
+    <g text-anchor="middle" font-weight="700" fill="#5E5548" font-size="19">
+      <text x="115" y="312">1 máquina</text><text x="320" y="312">1 a 5 cidades</text><text x="525" y="312">alta disponibilidade</text>
+    </g>
+  </svg>
+  <p class="nota">Por mês. Estimativa de lista na AWS São Paulo (15/11), não fatura. Nada contratado.</p>
+</div>
+</section>
+
+<section class="faixa branca" aria-labelledby="t-priv">
+<div class="miolo">
+  <h2 id="t-priv">Privacidade desde a captura</h2>
+  <ul class="priv">
+    <li style="background:var(--verde);color:var(--creme)"><svg viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="30" fill="#F5F1E8"/><circle cx="30" cy="25" r="9" fill="#1F4D2B"/><path d="M14 46c4-9 28-9 32 0z" fill="#1F4D2B"/><rect x="6" y="27" width="48" height="8" fill="#E9B526" transform="rotate(-35 30 31)"/></svg><span>Rosto e placa borrados</span></li>
+    <li style="background:var(--cereja);color:var(--creme)"><svg viewBox="0 0 60 60" aria-hidden="true"><path d="M8 30L30 10l22 20v22H8z" fill="#F5F1E8"/><rect x="4" y="27" width="52" height="7" fill="#1F4D2B" transform="rotate(45 30 30)"/></svg><span>Foto de dentro de casa recusada</span></li>
+    <li style="background:var(--ceu);color:var(--creme)"><svg viewBox="0 0 60 60" aria-hidden="true"><rect x="12" y="26" width="36" height="26" fill="#F5F1E8"/><path d="M19 26v-6a11 11 0 0 1 22 0v6" fill="none" stroke="#F5F1E8" stroke-width="6"/><circle cx="30" cy="39" r="5" fill="#3B6EA5"/></svg><span>CPF cifrado</span></li>
+    <li style="background:var(--ipe);color:var(--cafe)"><svg viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="24" fill="#4A2C1D"/><path d="M30 30V6a24 24 0 0 1 24 24z" fill="#E9B526"/></svg><span>Original apagada em 90 dias</span></li>
+    <li style="background:var(--terra);color:var(--creme)"><svg viewBox="0 0 60 60" aria-hidden="true"><rect x="16" y="20" width="28" height="32" fill="#F5F1E8"/><rect x="10" y="12" width="40" height="6" fill="#F5F1E8"/><rect x="24" y="6" width="12" height="6" fill="#F5F1E8"/></svg><span>Morador apaga a conta</span></li>
+    <li style="background:var(--folha);color:var(--creme)"><svg viewBox="0 0 60 60" aria-hidden="true"><path d="M30 6l24 24-24 24L6 30z" fill="#E9B526"/><circle cx="30" cy="30" r="9" fill="#1E3F8A"/></svg><span>A IA só vê a foto borrada</span></li>
+  </ul>
+  <p class="falta">[FALTA: política de privacidade e encarregado de dados]</p>
+</div>
+</section>
+
+<section class="faixa" aria-labelledby="t-prox">
+<div class="miolo">
+  <h2 id="t-prox">Depois da final</h2>
+  <ol class="marcos">
+    <li style="--c:var(--ipe)"><small>28/11</small><span>Final AKCIT</span></li>
+    <li style="--c:var(--ceu)"><small>a definir</small><span>WhatsApp real</span></li>
+    <li style="--c:var(--folha)"><small>a definir</small><span>Teste de campo</span></li>
+    <li style="--c:var(--terra)"><small>1º sem. 2027</small><span>Piloto</span></li>
+    <li style="--c:var(--cereja)"><small>com dados</small><span>Modelo próprio</span></li>
+  </ol>
+</div>
+</section>
+
+<footer class="faixa escura rodape">
+<div class="miolo">
+  <img class="logo" src="assets/logo-mogi.svg" alt="MOGI" width="1700" height="460" loading="lazy">
+  <p><strong>Real:</strong> o sistema, a triagem ao vivo e o borrão. <strong>Simulado:</strong> fotos e vídeos de rua (IA), a tela do WhatsApp e os pinos de fundo do mapa.</p>
+  <p>João Russo e Renan · ROTA Scale · código aberto (Apache-2.0)<br><a href="https://github.com/rota-scale/sistema-mogi">github.com/rota-scale/sistema-mogi</a></p>
+</div>
 </footer>
 <div class="mosaico" aria-hidden="true" id="faixa-pe"></div>
 
 <script>
-// Quem pede menos movimento não vê vídeo tocando sozinho; o quadro fica no pôster.
+// Quem pede menos movimento não vê vídeo tocando sozinho: fica o pôster, com controles.
 if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
   document.querySelectorAll('video[autoplay]').forEach((v) => { v.removeAttribute('autoplay'); v.pause(); v.controls = true; });
 }
-// Faixas de mosaico com as formas do brand kit: disco, anel, meio círculo, quarto, triângulo e losango.
+// Faixas de mosaico com as formas da marca.
 (() => {
   const cores = ['#1F4D2B', '#3E7B3A', '#B3261E', '#E9B526', '#3B6EA5', '#8C3B2A', '#F5F1E8', '#4A2C1D'];
   const formas = ['disco', 'anel', 'meia', 'quarto', 'tri', 'losango', ''];
   for (const [id, semente] of [['faixa-topo', 3], ['faixa-pe', 11]]) {
-    const el = document.getElementById(id);
-    let s = semente;
+    const el = document.getElementById(id); let s = semente;
     const r = (n) => { s = (s * 9301 + 49297) % 233280; return Math.floor((s / 233280) * n); };
-    for (let i = 0; i < 40; i++) {
+    for (let i = 0; i < 48; i++) {
       const a = r(cores.length); let b = r(cores.length); if (b === a) b = (b + 3) % cores.length;
-      const t = document.createElement('div');
-      t.className = 't ' + formas[r(formas.length)];
-      t.style.background = cores[a]; t.style.setProperty('--c2', cores[b]);
-      el.appendChild(t);
+      const t = document.createElement('div'); t.className = 't ' + formas[r(formas.length)];
+      t.style.background = cores[a]; t.style.setProperty('--c2', cores[b]); el.appendChild(t);
     }
   }
 })();
 </script>
+</html>
